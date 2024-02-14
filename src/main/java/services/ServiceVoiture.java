@@ -7,9 +7,11 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class ServiceVoiture implements IService<Voiture> {
+public class ServiceVoiture implements IService<Voiture> {
     Connection cnx = DataSource.getInstance().getCnx();
 
+    public ServiceVoiture() {
+    }
 
     @Override
     public void ajouter(Voiture v) {
@@ -49,6 +51,11 @@ public abstract class ServiceVoiture implements IService<Voiture> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void supprimer(int id) {
+
     }
 
     @Override
@@ -101,6 +108,23 @@ public abstract class ServiceVoiture implements IService<Voiture> {
 
         return voitureById;
     }
+
+    public void supprimer(int id_voiture) {
+        String req = "DELETE FROM Voiture WHERE id_voiture=?";
+        try {
+            PreparedStatement ps = cnx.prepareStatement(req);
+            ps.setInt(1, getId_voiture);
+            int rowsDeleted = ps.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Voiture supprimé avec succès !");
+            } else {
+                System.out.println("Aucun voiture trouvé avec cet identifiant.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 
 }

@@ -2,11 +2,13 @@
 package tests;
 
 import entities.Parking;
+import entities.Voiture;
 import services.ServiceParking;
+import services.ServiceVoiture;
 
 public class Main {
     public static void main(String[] args) {
-/*
+
         //ajout voiture
 
         // Create a new instance of ServiceVoiture
@@ -20,7 +22,7 @@ public class Main {
         String marque = "TestMarque";
         String couleur = "Noir";
 
-        voiture newVoiture = new voiture(id_voiture, nom, email, num_serie, marque, couleur);
+        Voiture newVoiture = new Voiture(id_voiture, nom, email, num_serie, marque, couleur);
 
         // Add the car to the database
         serviceVoiture.ajouter(newVoiture);
@@ -32,13 +34,13 @@ public class Main {
         String newMarque = "NouvelleMarque";
         String newCouleur = "Blanc";
 
-        voiture voitureModif = new voiture(1, newNom, newEmail, newNum_serie, newMarque, newCouleur);
+        Voiture voitureModif = new Voiture(1, newNom, newEmail, newNum_serie, newMarque, newCouleur);
 
         //modifier voiture
         serviceVoiture.modifier(voitureModif);
 
         // Retrieve the modified car using the getCarById method
-        voiture voitureRecup = serviceVoiture.getvoitureById(1);
+        Voiture voitureRecup = serviceVoiture.getvoitureById(1);
         if (voitureRecup != null) {
             // Verify if the car has been modified successfully
             System.out.println(voitureRecup.getId_voiture() + ", "
@@ -50,7 +52,7 @@ public class Main {
         } else {
             System.out.println("Car with ID 1 not found");
         }
-*/
+
         //ajout parking
 
         // Create a new instance of ServiceParking

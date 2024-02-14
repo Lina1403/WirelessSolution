@@ -95,7 +95,7 @@ public class ServiceParking implements IService<Parking> {
 
 @Override
     public void supprimer(int id) {
-        String req = "DELETE FROM parking WHERE id_parking=?";
+        String req = "DELETE FROM Parking WHERE id_parking=?";
         try {
             PreparedStatement ps = cnx.prepareStatement(req);
             ps.setInt(1, id);
