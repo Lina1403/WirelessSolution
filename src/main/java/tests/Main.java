@@ -2,12 +2,18 @@ package tests;
 
 import entities.voiture;
 import services.ServiceVoiture;
+import entities.parking;
+import services.ServiceParking;
+
 
 public class Main {
     public static void main(String[] args) {
-        // Create a new instance of ServiceCar
+            /*// ajout voiture
+
+    }
+       // Create a new instance of ServiceCar
         ServiceVoiture serviceVoiture = new ServiceVoiture();
-/*
+
         // Create a new instance of the Car class with test values
         int id_voiture = 1;
         String nom = "Voiture de test";
@@ -20,7 +26,7 @@ public class Main {
 
         // Add the car to the database
         serviceVoiture.ajouter(newVoiture);
-*/
+
         // Modify the car with id 1 with new values
         String newNom = " adem";
         String newEmail = "linaa@mail.com";
@@ -29,7 +35,7 @@ public class Main {
         String newCouleur = "Blanc";
 
         voiture voitureModif = new voiture(1, newNom, newEmail, newNum_serie, newMarque, newCouleur);
-
+//modifier voiture
         serviceVoiture.modifier(voitureModif);
 
         // Retrieve the modified car using the getCarById method
@@ -45,5 +51,56 @@ public class Main {
         } else {
             System.out.println("Car with ID 1 not found");
         }
+*///ajout parking
+/*
+            // Create a new instance of ServiceParking
+            ServiceParking serviceParking = new ServiceParking();
+
+            // Create a new instance of the parking class with test values
+            int id_parking = 1;
+            String place = "Test Parking";
+            int nbr_place = 50;
+            int capacite_parking = 100;
+
+            parking newParking = new parking(id_parking, place, nbr_place, capacite_parking);
+
+            // Add the parking to the database
+            serviceParking.ajouter(newParking);
+*/
+            // Modify the parking with id 1 with new values
+        String newPlace = "New Parking";
+        int newNbr_place = 60;
+        int newCapacite_parking = 120;
+
+        // Create an instance of ServiceParking
+        ServiceParking serviceParking = new ServiceParking();
+
+        // Create a modified parking object
+        parking parkingModif = new parking(1, newPlace, newNbr_place, newCapacite_parking);
+
+        // Call the modifier method
+        serviceParking.modifier(parkingModif);
+
+        // Retrieve the modified parking using the getParkingById method
+        parking parkingRecup = serviceParking.getParkingById(1);
+        if (parkingRecup != null) {
+            // Verify if the parking has been modified successfully
+            System.out.println(parkingRecup.getId_parking() + ", "
+                    + parkingRecup.getPlace() + ", "
+                    + parkingRecup.getNbr_place() + ", "
+                    + parkingRecup.getCapacite_parking());
+        } else {
+            System.out.println("Parking with ID 1 not found");
+        }
     }
 }
+
+
+
+
+
+
+
+
+
+

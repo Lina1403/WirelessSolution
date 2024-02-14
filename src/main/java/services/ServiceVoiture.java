@@ -7,20 +7,21 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ServiceVoiture implements IService<voiture> {
+public   class ServiceVoiture implements IService<voiture> {
     Connection cnx = DataSource.getInstance().getCnx();
 
+
     @Override
-    public void ajouter(voiture newVoiture) {
+    public void ajouter(voiture v) {
         String req = "INSERT INTO voiture(id_voiture, nom, email, num_serie, marque, couleur) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = cnx.prepareStatement(req);
-            ps.setInt(1, newVoiture.getId_voiture());
-            ps.setString(2, newVoiture.getNom());
-            ps.setString(3, newVoiture.getEmail());
-            ps.setString(4, newVoiture.getNum_serie());
-            ps.setString(5, newVoiture.getMarque());
-            ps.setString(6, newVoiture.getCouleur());
+            ps.setInt(1, v.getId_voiture());
+            ps.setString(2, v.getNom());
+            ps.setString(3, v.getEmail());
+            ps.setString(4, v.getNum_serie());
+            ps.setString(5, v.getMarque());
+            ps.setString(6, v.getCouleur());
             ps.executeUpdate();
             System.out.println("Voiture ajoutée avec succès !");
         } catch (SQLException e) {
@@ -29,16 +30,16 @@ public class ServiceVoiture implements IService<voiture> {
     }
 
     @Override
-    public void modifier(voiture updatedVoiture) {
+    public void modifier(voiture v) {
         String req = "UPDATE voiture SET nom=?, email=?, num_serie=?, marque=?, couleur=? WHERE id_voiture=?";
         try {
             PreparedStatement ps = cnx.prepareStatement(req);
-            ps.setString(1, updatedVoiture.getNom());
-            ps.setString(2, updatedVoiture.getEmail());
-            ps.setString(3, updatedVoiture.getNum_serie());
-            ps.setString(4, updatedVoiture.getMarque());
-            ps.setString(5, updatedVoiture.getCouleur());
-            ps.setInt(6, updatedVoiture.getId_voiture());
+            ps.setString(1, v.getNom());
+            ps.setString(2, v.getEmail());
+            ps.setString(3, v.getNum_serie());
+            ps.setString(4, v.getMarque());
+            ps.setString(5, v.getCouleur());
+            ps.setInt(6, v.getId_voiture());
             int rowsUpdated = ps.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Voiture modifiée avec succès !");
@@ -100,4 +101,6 @@ public class ServiceVoiture implements IService<voiture> {
 
         return voitureById;
     }
+
+
 }
