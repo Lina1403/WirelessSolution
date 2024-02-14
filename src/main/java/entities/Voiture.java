@@ -2,7 +2,7 @@ package entities;
 
 import java.util.Objects;
 
-public class voiture {
+public class Voiture {
 
     private int id_voiture;
     private String nom;
@@ -11,7 +11,7 @@ public class voiture {
     private String marque;
     private String couleur;
 
-    public voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur) {
+    public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur) {
         this.id_voiture = id_voiture;
         this.nom = nom;
         this.email = email;
@@ -84,7 +84,7 @@ public class voiture {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        voiture voiture = (voiture) o;
+        Voiture voiture = (Voiture) o;
         return id_voiture == voiture.id_voiture &&
                 Objects.equals(nom, voiture.nom) &&
                 Objects.equals(email, voiture.email) &&

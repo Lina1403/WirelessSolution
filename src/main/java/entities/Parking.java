@@ -2,14 +2,14 @@ package entities;
 
 import java.util.Objects;
 
-public class parking {
+public class Parking {
 
     private int id_parking;
     private String place;
     private int nbr_place;
     private int capacite_parking;
 
-    public parking(int id_parking, String place, int nbr_place, int capacite_parking) {
+    public Parking(int id_parking, String place, int nbr_place, int capacite_parking) {
         this.id_parking = id_parking;
         this.place = place;
         this.nbr_place = nbr_place;
@@ -62,7 +62,7 @@ public class parking {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        parking parking = (parking) o;
+        Parking parking = (Parking) o;
         return id_parking == parking.id_parking &&
                 nbr_place == parking.nbr_place &&
                 capacite_parking == parking.capacite_parking &&

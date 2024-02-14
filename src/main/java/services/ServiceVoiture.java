@@ -1,19 +1,19 @@
 package services;
 
-import entities.voiture;
+import entities.Voiture;
 import utils.DataSource;
 
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public   class ServiceVoiture implements IService<voiture> {
+public abstract class ServiceVoiture implements IService<Voiture> {
     Connection cnx = DataSource.getInstance().getCnx();
 
 
     @Override
-    public void ajouter(voiture v) {
-        String req = "INSERT INTO voiture(id_voiture, nom, email, num_serie, marque, couleur) VALUES (?, ?, ?, ?, ?, ?)";
+    public void ajouter(Voiture v) {
+        String req = "INSERT INTO Voiture(id_voiture, nom, email, num_serie, marque, couleur) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = cnx.prepareStatement(req);
             ps.setInt(1, v.getId_voiture());
@@ -30,8 +30,8 @@ public   class ServiceVoiture implements IService<voiture> {
     }
 
     @Override
-    public void modifier(voiture v) {
-        String req = "UPDATE voiture SET nom=?, email=?, num_serie=?, marque=?, couleur=? WHERE id_voiture=?";
+    public void modifier(Voiture v) {
+        String req = "UPDATE Voiture SET nom=?, email=?, num_serie=?, marque=?, couleur=? WHERE id_voiture=?";
         try {
             PreparedStatement ps = cnx.prepareStatement(req);
             ps.setString(1, v.getNom());
@@ -52,8 +52,8 @@ public   class ServiceVoiture implements IService<voiture> {
     }
 
     @Override
-    public Set<voiture> getAll() {
-        Set<voiture> voitures = new HashSet<>();
+    public Set<Voiture> getAll() {
+        Set<Voiture> voitures = new HashSet<>();
 
         String req = "SELECT * FROM voiture";
         try {
@@ -66,7 +66,7 @@ public   class ServiceVoiture implements IService<voiture> {
                 String num_serie = res.getString("num_serie");
                 String marque = res.getString("marque");
                 String couleur = res.getString("couleur");
-                voiture voiture = new voiture(id_voiture, nom, email, num_serie, marque, couleur);
+                Voiture voiture = new Voiture(id_voiture, nom, email, num_serie, marque, couleur);
                 voitures.add(voiture);
             }
         } catch (SQLException e) {
@@ -76,11 +76,11 @@ public   class ServiceVoiture implements IService<voiture> {
         return voitures;
     }
 
-    public voiture getvoitureById(int id) {
-        voiture voitureById = null;
+    public Voiture getvoitureById(int id) {
+        Voiture voitureById = null;
 
         try {
-            String query = "SELECT * FROM voiture WHERE id_voiture=?";
+            String query = "SELECT * FROM Voiture WHERE id_voiture=?";
             PreparedStatement statement = cnx.prepareStatement(query);
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -93,7 +93,7 @@ public   class ServiceVoiture implements IService<voiture> {
                 String marque = resultSet.getString("marque");
                 String couleur = resultSet.getString("couleur");
 
-                voitureById = new voiture(id_voiture, nom, email, num_serie, marque, couleur);
+                voitureById = new Voiture(id_voiture, nom, email, num_serie, marque, couleur);
             }
         } catch (SQLException e) {
             e.printStackTrace();
