@@ -53,11 +53,28 @@ public class ServiceVoiture implements IService<Voiture> {
         }
     }
 
+
+
     @Override
-    public void supprimer(int id) {
-
+    public Voiture getOneById(int id) {
+        Voiture voiture = null;
+        String req = "SELECT * FROM `voiture` WHERE `id_voiture`=" + id;
+        try {
+            Statement st = cnx.createStatement();
+            ResultSet rs = st.executeQuery(req);
+            if (rs.next()) {
+                voiture = new Voiture();
+                voiture .setCouleur (rs.getString("couleur "));
+                voiture .setNom(rs.getString("nom"));
+                voiture .setEmail(rs.getString("taille"));
+                voiture .setNum_serie(rs.getString("Num_serie"));
+                voiture .setMarque(rs.getString("Marque"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return voiture;
     }
-
     @Override
     public Set<Voiture> getAll() {
         Set<Voiture> voitures = new HashSet<>();
@@ -109,17 +126,13 @@ public class ServiceVoiture implements IService<Voiture> {
         return voitureById;
     }
 
-    public void supprimer(int id_voiture) {
-        String req = "DELETE FROM Voiture WHERE id_voiture=?";
+    @Override
+    public void supprimer(int id) {
+        String req = "DELETE FROM `voiture` WHERE `id_voiture`=" + id;
         try {
-            PreparedStatement ps = cnx.prepareStatement(req);
-            ps.setInt(1, getId_voiture);
-            int rowsDeleted = ps.executeUpdate();
-            if (rowsDeleted > 0) {
-                System.out.println("Voiture supprimé avec succès !");
-            } else {
-                System.out.println("Aucun voiture trouvé avec cet identifiant.");
-            }
+            Statement st = cnx.createStatement();
+            st.executeUpdate(req);
+            System.out.println("voiture supprimé !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

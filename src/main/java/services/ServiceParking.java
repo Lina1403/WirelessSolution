@@ -1,6 +1,7 @@
 package services;
 
 import entities.Parking;
+import entities.Voiture;
 import utils.DataSource;
 import java.sql.*;
 import java.util.HashSet;
@@ -93,47 +94,55 @@ public class ServiceParking implements IService<Parking> {
     }
 
 
-@Override
+    @Override
     public void supprimer(int id) {
-        String req = "DELETE FROM Parking WHERE id_parking=?";
+        String req = "DELETE FROM parking WHERE id_parking= ?";
         try {
             PreparedStatement ps = cnx.prepareStatement(req);
-            ps.setInt(1, id);
+            ps.setInt(1, id); // Set the id parameter
             int rowsDeleted = ps.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("Parking supprimé avec succès !");
+                System.out.println("Parking supprimé !");
             } else {
-                System.out.println("Aucun parking trouvé avec cet identifiant.");
+                System.out.println("Aucun parking trouvé avec l'ID spécifié.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Une erreur s'est produite lors de la suppression du parking : " + e.getMessage());
         }
     }
 
 
 
-    /* @Override
-    public void afficher(parking p) {
+    @Override
+    public Parking getOneById(int id) {
+        Parking ParkingById = null;
+
         try {
             String query = "SELECT * FROM parking WHERE id_parking=?";
             PreparedStatement statement = cnx.prepareStatement(query);
-            statement.setInt(1, p.getId_parking());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                System.out.println("id_parking: " + resultSet.getInt("id_parking"));
-                System.out.println("place: " + resultSet.getString("place"));
-                System.out.println("nbr_place: " + resultSet.getInt("nbr_place"));
-                System.out.println("capacite_parking: " + resultSet.getInt("capacite_parking"));
-            } else {
-                System.out.println("Aucun parking trouvé avec cet identifiant.");
+                int id_parking = resultSet.getInt("id_parking");
+                String place = resultSet.getString("place");
+                int nbr_place = resultSet.getInt("nbr_place");
+                int capacite_parking = resultSet.getInt("capacite_parking");
+
+
+                ParkingById = new Parking(id_parking, place, nbr_place, capacite_parking);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return ParkingById;
     }
-
-*/
-
-
 }
+
+
+
+
+
+
+

@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 public class Parking {
@@ -8,6 +11,7 @@ public class Parking {
     private String place;
     private int nbr_place;
     private int capacite_parking;
+    List<Voiture> voitures = new ArrayList<>();
 
     public Parking(int id_parking, String place, int nbr_place, int capacite_parking) {
         this.id_parking = id_parking;

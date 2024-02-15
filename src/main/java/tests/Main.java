@@ -6,6 +6,8 @@ import entities.Voiture;
 import services.ServiceParking;
 import services.ServiceVoiture;
 
+import java.util.Set;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -59,51 +61,53 @@ public class Main {
         ServiceParking serviceParking = new ServiceParking();
 
         // Create a new instance of the parking class with test values
-        int id_parking = 5;
+        int id_parking = 4;
         String place = "Test Parking";
         int nbr_place = 50;
-        int capacite_parking = 100;
+        int capacite_parking = 200;
 
         Parking newParking = new Parking(id_parking, place, nbr_place, capacite_parking);
 
         // Add the parking to the database
         serviceParking.ajouter(newParking);
 
-    /*    // Modify the parking with id 1 with new values
+        /// Modify the parking with id 1 with new values
+        int idModif = 2 ;
         String newPlace = "New Parking";
         int newNbr_place = 60;
-        int newCapacite_parking = 120;
+        int newCapacite_parking = 200;
 
         // Create an instance of ServiceParking
         ServiceParking ServiceParking = new ServiceParking();
 
         // Create a modified parking object
-        parking parkingModif = new parking(1, newPlace, newNbr_place, newCapacite_parking);
+        Parking  ParkingModif = new Parking (idModif, newPlace, newNbr_place, newCapacite_parking );
 
         // Call the modifier method
-        serviceParking.modifier(parkingModif);
+        serviceParking .modifier(ParkingModif);
 
-        // Retrieve the modified parking using the getParkingById method
-        parking parkingRecup = serviceParking.getParkingById(1);
-        if (parkingRecup != null) {
-            // Verify if the parking has been modified successfully
-            System.out.println(parkingRecup.getId_parking() + ", "
-                    + parkingRecup.getPlace() + ", "
-                    + parkingRecup.getNbr_place() + ", "
-                    + parkingRecup.getCapacite_parking());
+        // Retrieve the modified Parking  using the getParking ById method
+        Parking  ParkingRecup = serviceParking .getParkingById(1);
+        if (ParkingRecup != null) {
+            // Verify if the Parking  has been modified successfully
+            System.out.println(ParkingRecup.getId_parking () + ", "
+                    + ParkingRecup.getPlace() + ", "
+                    + ParkingRecup.getNbr_place() + ", "
+                    + ParkingRecup.getCapacite_parking ());
         } else {
             System.out.println("Parking with ID 1 not found");
         }
 
         // Afficher tous les parkings
 
-        Set<parking> parkings = serviceParking.getAll();
-        for (parking p : parkings) {
+        Set<Parking> parkings = serviceParking.getAll();
+        for (Parking p : parkings) {
             System.out.println(p);
         }
-*/
+
         // Supprimer un parking
-        serviceParking.supprimer(1);
+        int id = 1;
+        serviceParking.supprimer(id);
 
     }
 
