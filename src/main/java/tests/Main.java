@@ -10,30 +10,33 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-
-        //ajout voiture
-
-        // Create a new instance of ServiceVoiture
+// Create a new instance of ServiceVoiture
         ServiceVoiture serviceVoiture = new ServiceVoiture();
 
-        // Create a new instance of the Car class with test values
-        int id_voiture = 1;
-        String nom = "Voiture de test";
-        String email = "test@mail.com";
+// Create a new instance of the Car class with test values
+        String nom = "lina";
+        String email = "ademm@mail.com";
         String num_serie = "123456789";
         String marque = "TestMarque";
         String couleur = "Noir";
 
-        Voiture newVoiture = new Voiture(id_voiture, nom, email, num_serie, marque, couleur);
+        Voiture newVoiture = new Voiture(nom, email, num_serie, marque, couleur);
 
-        // Add the car to the database
+// Add the car to the database
         serviceVoiture.ajouter(newVoiture);
+
+// Print the details of the added car
+        System.out.println("Voiture ajoutée : " + newVoiture.toString());
+
+// Print the details of the added car
+        System.out.println("Voiture ajoutée : " + newVoiture);
+
 
         // Modify the car with id 1 with new values
         String newNom = "adem";
-        String newEmail = "linaa@mail.com";
-        String newNum_serie = "987654321";
-        String newMarque = "NouvelleMarque";
+        String newEmail = "zitouni@mail.com";
+        String newNum_serie = "000000000";
+        String newMarque = "bmw";
         String newCouleur = "Blanc";
 
         Voiture voitureModif = new Voiture(1, newNom, newEmail, newNum_serie, newMarque, newCouleur);
@@ -54,6 +57,10 @@ public class Main {
         } else {
             System.out.println("Car with ID 1 not found");
         }
+
+
+
+
 
         //ajout parking
 
@@ -108,7 +115,7 @@ public class Main {
         // Supprimer un parking
         int id = 1;
         serviceParking.supprimer(id);
-
+*/
     }
 
 

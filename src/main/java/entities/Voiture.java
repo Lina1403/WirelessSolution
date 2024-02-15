@@ -10,7 +10,17 @@ public class Voiture {
     private String num_serie;
     private String marque;
     private String couleur;
-    public Voiture(){}
+
+    public Voiture() {
+    }
+
+    public Voiture(String nom, String email , String num_serie, String marque, String couleur){
+        this.nom = nom;
+        this.email = email;
+        this.num_serie = num_serie;
+        this.marque = marque;
+        this.couleur = couleur;
+    }
     public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur) {
         this.id_voiture = id_voiture;
         this.nom = nom;

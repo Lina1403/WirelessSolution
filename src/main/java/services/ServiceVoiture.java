@@ -12,24 +12,27 @@ public class ServiceVoiture implements IService<Voiture> {
 
     public ServiceVoiture() {
     }
-
     @Override
     public void ajouter(Voiture v) {
-        String req = "INSERT INTO Voiture(id_voiture, nom, email, num_serie, marque, couleur) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO Voiture(nom, email, num_serie, marque, couleur) VALUES (?, ?, ?, ?, ?)";
         try {
-            PreparedStatement ps = cnx.prepareStatement(req);
-            ps.setInt(1, v.getId_voiture());
-            ps.setString(2, v.getNom());
-            ps.setString(3, v.getEmail());
-            ps.setString(4, v.getNum_serie());
-            ps.setString(5, v.getMarque());
-            ps.setString(6, v.getCouleur());
-            ps.executeUpdate();
-            System.out.println("Voiture ajoutée avec succès !");
+            if (v.getNom() != null) { // Vérifie que la valeur de la propriété "nom" n'est pas nulle
+                PreparedStatement ps = cnx.prepareStatement(req);
+                ps.setString(1, v.getNom());
+                ps.setString(2, v.getEmail());
+                ps.setString(3, v.getNum_serie());
+                ps.setString(4, v.getMarque());
+                ps.setString(5, v.getCouleur());
+                ps.executeUpdate();
+                System.out.println("Voiture ajoutée avec succès !");
+            } else {
+                System.out.println("La valeur de la propriété \"nom\" ne peut pas être nulle.");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Override
     public void modifier(Voiture v) {
@@ -63,7 +66,7 @@ public class ServiceVoiture implements IService<Voiture> {
             Statement st = cnx.createStatement();
             ResultSet rs = st.executeQuery(req);
             if (rs.next()) {
-                voiture = new Voiture();
+                voiture = new Voiture("Voiture de test", "test@mail.com", "123456789", "TestMarque", "Noir");
                 voiture .setCouleur (rs.getString("couleur "));
                 voiture .setNom(rs.getString("nom"));
                 voiture .setEmail(rs.getString("taille"));
@@ -137,6 +140,7 @@ public class ServiceVoiture implements IService<Voiture> {
             System.out.println(e.getMessage());
         }
     }
+
 
 
 
