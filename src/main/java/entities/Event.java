@@ -12,11 +12,12 @@ public class Event {
     private int nbrPersonne;
     private String statutEvent;
     private String description;
+    private Integer numEspace;
 
     public Event() {
     }
 
-    public Event(Integer idEvent, String name, String email, String title, Date date, int nbrPersonne, String statutEvent, String description) {
+    public Event(Integer idEvent, String name, String email, String title, Date date, int nbrPersonne, String statutEvent, String description, Integer numEspace) {
         this.idEvent = idEvent;
         this.name = name;
         this.email = email;
@@ -25,10 +26,10 @@ public class Event {
         this.nbrPersonne = nbrPersonne;
         this.statutEvent = statutEvent;
         this.description = description;
+        this.numEspace = numEspace;
     }
 
-    // Constructeur avec les valeurs de chaque propriété
-    public Event(String name, String email, String title, Date date, int nbrPersonne, String statutEvent, String description) {
+    public Event(String name, String email, String title, Date date, int nbrPersonne, String statutEvent, String description, Integer numEspace) {
         this.name = name;
         this.email = email;
         this.title = title;
@@ -36,10 +37,9 @@ public class Event {
         this.nbrPersonne = nbrPersonne;
         this.statutEvent = statutEvent;
         this.description = description;
+        this.numEspace = numEspace;
     }
 
-
-    // Getters et Setters pour chaque propriété
     public Integer getIdEvent() {
         return idEvent;
     }
@@ -51,7 +51,6 @@ public class Event {
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;
@@ -105,9 +104,17 @@ public class Event {
         this.description = description;
     }
 
+    public Integer getNumEspace() {
+        return numEspace;
+    }
+
+    public void setNumEspace(Integer numEspace) {
+        this.numEspace = numEspace;
+    }
+
     @Override
     public String toString() {
-        return "Event{" +
+        return "event{" +
                 "idEvent=" + idEvent +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
@@ -116,6 +123,7 @@ public class Event {
                 ", nbrPersonne=" + nbrPersonne +
                 ", statutEvent='" + statutEvent + '\'' +
                 ", description='" + description + '\'' +
+                ", numEspace=" + numEspace +
                 '}';
     }
 
@@ -130,7 +138,10 @@ public class Event {
                 Objects.equals(email, event.email) &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(date, event.date) &&
-                Objects.equals(statutEvent, event.statutEvent)
-                && Objects.equals(description, event.description);
+                Objects.equals(statutEvent, event.statutEvent) &&
+                Objects.equals(description, event.description) &&
+                Objects.equals(numEspace, event.numEspace);
     }
+
+
 }

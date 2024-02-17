@@ -1,4 +1,3 @@
-
 package services;
 
 import entities.Event;
@@ -9,130 +8,99 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
-
 public class ServiceEspace implements IService<Espace> {
     Connection cnx = DataSource.getInstance().getCnx();
 
     @Override
-    public void ajouter(Espace e) {
-        Connection cnx = DataSource.getInstance().getCnx();
+    public void ajouter(Espace espace) {
+        String req = "INSERT INTO `espace` (`name`, `etat`, `capacite`, `description`, `numEspace`) " +
+                "VALUES (?, ?, ?, ?, ?)";
         try {
-            PreparedStatement PS = cnx.prepareStatement("INSERT INTO espace(name,email,etat,capacite,description) VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            PS.setString(1, e.getName()); // Correction : getName() au lieu de getIdEspace()
-            PS.setString(2, e.getEmail());
-            PS.setString(3, e.getEtat()); // Correction : getEtat() au lieu de getTypeEspace()
-            PS.setInt(4, e.getCapacite());
-            PS.setString(5, e.getDescription());
-            PS.executeUpdate();
-
-            // Récupérer l'ID auto-incrémenté généré par la base de données
-            ResultSet generatedKeys = PS.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int idEspace = generatedKeys.getInt(1);
-                e.setIdEspace(idEspace);
-            }
-
-            System.out.println("Espace ajouté");
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            PreparedStatement st = cnx.prepareStatement(req);
+            st.setString(1, espace.getName());
+            st.setString(2, espace.getEtat());
+            st.setInt(3, espace.getCapacite());
+            st.setString(4, espace.getDescription());
+            st.setInt(5, espace.getNumEspace());
+            st.executeUpdate();
+            System.out.println("Espace added !");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-
-    public Set<Espace> getAll() {
+    public Set<Espace> getAll() throws SQLException {
         Set<Espace> espaces = new HashSet<>();
 
         String req = "SELECT * FROM espace";
-        try {
-            Statement st = cnx.createStatement();
-            ResultSet res = st.executeQuery(req);
-            while (res.next()) {
-                int idEspace = res.getInt("idEspace");
-                String name = res.getString("name");
-                String email = res.getString("email");
-                String etat = res.getString("etat");
-                int capacite = res.getInt("capacite");
-                String description = res.getString("description");
-                Espace e = new Espace(name, email, etat, capacite, description);
-                e.setIdEspace(idEspace);
-                espaces.add(e);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+
+        Statement st = cnx.createStatement();
+        ResultSet res = st.executeQuery(req);
+        while (res.next()) {
+            int idEspace = res.getInt("idEspace");
+            String name = res.getString("name");
+            String etat = res.getString("etat");
+            int capacite = res.getInt("capacite");
+            String description = res.getString("description");
+            int numEspace = res.getInt("numEspace");
+            Espace e = new Espace(name, etat, capacite, description, numEspace);
+            e.setIdEspace(idEspace);
+            espaces.add(e);
         }
 
         return espaces;
     }
 
+    @Override
+    public void modifier(Espace e) throws SQLException {
+        String req = "UPDATE `espace` SET " +
+                "`name`=?," +
+                "`etat`=?," +
+                "`capacite`=?," +
+                "`description`=?," +
+                "`numEspace`=?" +
+                " WHERE `idEspace`=?";
+        try {
+            PreparedStatement st = cnx.prepareStatement(req);
+            st.setString(1, e.getName());
+            st.setString(2, e.getEtat());
+            st.setInt(3, e.getCapacite());
+            st.setString(4, e.getDescription());
+            st.setInt(5, e.getNumEspace());
+            st.setInt(6, e.getIdEspace());
+            st.executeUpdate();
+            System.out.println("Espace updated !");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+
+    public Espace getOneById(int id) throws SQLException {
+        Espace espaceById = null;
+
+        PreparedStatement PS = cnx.prepareStatement("SELECT * FROM espace WHERE idEspace=?");
+        PS.setInt(1, id);
+        ResultSet res = PS.executeQuery();
+
+        if (res.next()) {
+            String name = res.getString("name");
+            String EtatEspace = res.getString("etat");
+            int capacite = res.getInt("capacite");
+            String description = res.getString("description");
+            int numEspace = res.getInt("numEspace");
+            espaceById = new Espace(name, EtatEspace, capacite, description, numEspace);
+            espaceById.setIdEspace(id);
+        }
+
+        return espaceById;
+    }
 
     @Override
-    public void modifier(Espace e) { // Correction : utiliser Espace au lieu de E
-        try {
-            PreparedStatement PS = cnx.prepareStatement("UPDATE espace SET name=?, email=?, etat=?, capacite=?, description=? WHERE idEspace=?");
-
-            PS.setString(1, e.getName()); // Correction : getName() au lieu de getNomEspace()
-            PS.setString(2, e.getEmail()); // Correction : getEmail() au lieu de getAdresseEspace()
-            PS.setString(3, e.getEtat()); // Correction : getEtat() au lieu de getTypeEspace()
-            PS.setInt(4, e.getCapacite());
-            PS.setString(5, e.getDescription());
-
-            Integer espaceId = e.getIdEspace();
-            if (espaceId != null) { // Vérifier si l'objet e a un identifiant
-                PS.setInt(6, espaceId.intValue()); // Convertir l'Integer en int
-            } else {
-                System.out.println("L'objet Espace ne possède pas d'identifiant.");
-                return; // Sortir de la méthode si l'objet n'a pas d'identifiant
-            }
-
-            PS.executeUpdate();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void supprimer(int idEspace) throws SQLException {
+        PreparedStatement PS = cnx.prepareStatement("DELETE FROM espace WHERE idEspace=?");
+        PS.setInt(1, idEspace);
+        PS.executeUpdate();
+        System.out.println("Espace supprimé");
     }
-
-
-    public Espace getOneByName(String E) {
-        Espace espaceByName = null;
-
-        try {
-            PreparedStatement PS = cnx.prepareStatement("SELECT * FROM espace WHERE name=?");
-            PS.setString(1, E);
-            ResultSet res = PS.executeQuery();
-
-            if (res.next()) {
-                int idEspace = res.getInt("idEspace");
-                String name = res.getString("name");
-                String email = res.getString("email");
-                String etat = res.getString("Etat");
-                int capacite = res.getInt("capacite");
-                String description = res.getString("description");
-                espaceByName = new Espace(name, email, etat, capacite, description);
-                espaceByName.setName(name);
-                espaceByName.setIdEspace(idEspace);
-                espaceByName.setEmail(email);
-                espaceByName.setEtat(etat);
-                espaceByName.setCapacite(capacite);
-                espaceByName.setDescription(description);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-
-        }
-
-        return espaceByName;
-    }
-
-    public void supprimer(String E) {
-        try {
-            PreparedStatement PS = cnx.prepareStatement("DELETE FROM espace WHERE name=?");
-            PS.setString(1, E);
-            PS.executeUpdate();
-            System.out.println("Espace supprimé");
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
 }

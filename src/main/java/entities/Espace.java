@@ -6,35 +6,37 @@ import java.util.List;
 public class Espace {
     private int idEspace;
     private String name;
-    private String email;
     private String etat;
     private int capacite;
     private String description;
-    private List<Event> numEvent = new ArrayList<>();
+    private int numEspace; // Ajout de l'attribut numEspace
 
-    public Espace(String name, String email, String etat, int capacite, String description) {
+    private List<Event> listEvent = new ArrayList<>();
+
+    public Espace(String name, String etat, int capacite, String description, int numEspace) {
         this.name = name;
-        this.email = email;
         this.etat = etat;
         this.capacite = capacite;
         this.description = description;
-        this.numEvent = numEvent;
+        this.numEspace = numEspace;
+        this.listEvent = listEvent;
     }
 
     public Espace() {
     }
 
     public List<Event> getNumEvent() {
-        return numEvent;
+        return listEvent;
     }
 
     public void setNumEvent(List<Event> numEvent) {
-        this.numEvent = numEvent;
+        this.listEvent = numEvent;
     }
 
     public int getIdEspace() {
         return idEspace;
     }
+
     public void setIdEspace(int idEspace) {
         this.idEspace = idEspace;
     }
@@ -45,14 +47,6 @@ public class Espace {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getEtat() {
@@ -72,15 +66,15 @@ public class Espace {
     }
 
     public List<Event> getEvents() {
-        return numEvent;
+        return listEvent;
     }
 
     public void addEvent(Event event) {
-        numEvent.add(event);
+        listEvent.add(event);
     }
 
     public void removeEvent(Event event) {
-        numEvent.remove(event);
+        listEvent.remove(event);
     }
 
     public String getDescription() {
@@ -90,22 +84,40 @@ public class Espace {
     public void setDescription(String description) {
         this.description = description;
     }
-    // Redéfinition de la méthode toString() pour afficher les informations de l'espace
+
+    // Ajout des méthodes getter et setter pour numEspace
+    public int getNumEspace() {
+        return numEspace;
+    }
+
+    public void setNumEspace(int numEspace) {
+        this.numEspace = numEspace;
+    }
+
     @Override
     public String toString() {
-        return "Espace {idEspace=" + idEspace + ", nom=" + name + ", email=" + email + ", etat=" + etat + ", capacite=" + capacite + ", description=" + description + "}";
+        return "Espace{" +
+                "idEspace=" + idEspace +
+                ", name='" + name + '\'' +
+                ", etat='" + etat + '\'' +
+                ", capacite=" + capacite +
+                ", description='" + description + '\'' +
+                ", numEspace=" + numEspace +
+                ", numEvent=" + listEvent +
+                '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof Espace)) return false;
         Espace e = (Espace) o;
         return e.getName().equals(name) &&
-                e.getEmail().equals(email) &&
                 e.getEtat().equals(etat) &&
                 e.getCapacite() == capacite &&
-                e.getDescription().equals(description);
+                e.getDescription().equals(description) &&
+                e.getNumEvent() == listEvent &&
+                e.getNumEspace() == numEspace;
+
     }
-
-
 }

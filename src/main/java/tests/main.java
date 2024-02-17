@@ -5,88 +5,36 @@ import entities.Event;
 import services.ServiceEspace;
 import services.ServiceEvent;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Set;
 
 public class main {
 
-    public static void main(String[] args) {
-       ServiceEvent serviceEvent = new ServiceEvent();
-/// test event
+    public static void main(String[] args) throws SQLException {
+     ServiceEvent Sevent = new ServiceEvent();
+     Event e1 = new Event("Birthday","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",1);
+        Event e2 = new Event("hhhhhh","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",1);
+        Event e3 = new Event("ppppp","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",3);
+        Event e4 = new Event("fffff","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",5);
+        Event e5 = new Event("aaaaaa","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",8);
+       /* Sevent.ajouter(e1);
+        Sevent.ajouter(e2);
+        Sevent.ajouter(e3);
+        Sevent.ajouter(e4);
+        Sevent.ajouter(e5);
+        */
+        e1.setIdEvent(1);
+        e1.setName("Nouveau nom");
+        e1.setEmail("nouvellemail@gmail.com");
+        e1.setTitle("Nouveau titre");
+        e1.setDate(new Date()); // Fixez la nouvelle date de l'événement
+        e1.setNbrPersonne(20);
+        e1.setStatutEvent("Actif");
+        e1.setDescription("Nouvelle description");
 
-        // Ajouter un nouvel événement
-        Event event1 = new Event(1,"kais ", "email@example.com", "ademm", new Date(), 10, "nouveau", "Description de l'événement");
-        serviceEvent.ajouter(event1);
-
-     // Récupérer l'événement en fonction de son nom
-     Event retrievedEvent = serviceEvent.getOneByName("name");
-
-     // Afficher tous les événements
-        Set<Event> events = serviceEvent.getAll();
-        for (Event e : events) {
-            System.out.println(e);
-        }
-
-
-     // Vérifier si l'événement a été trouvé
-     if (retrievedEvent != null) {
-      // Modifier l'événement
-      retrievedEvent.setName("testestest");
-      retrievedEvent.setNbrPersonne(40);
-      serviceEvent.modifier(retrievedEvent);
-     } else {
-      System.out.println("L'événement n'a pas été trouvé.");
-     }
-
-        // Supprimer un événement
-     String nomEvenement = "sarra";
-     serviceEvent.supprimer(nomEvenement);
-
-
-
-
-
-
-
-
-  /// test espace
-        ServiceEspace SE = new ServiceEspace();
-
-
-        Espace e1 = new Espace("salon","salon@gmail","occupé",5,"aaa") ;
-        Espace e2 = new Espace("aa","salon@gmail","occupé",5,"aaa") ;
-        Espace e3 = new Espace("bbb","salon@gmail","occupé",5,"aaa") ;
-        Espace e4 = new Espace("ccc","salon@gmail","occupé",5,"aaa") ;
-
-        /// ajout
-       SE.ajouter(e1);
-        SE.ajouter(e2);
-        SE.ajouter(e3);
-        SE.ajouter(e4);
-
-
-        // Récupérer un événement en fonction de son ID
-        Espace retrievedEspace= SE.getOneByName("name");
-        System.out.println("L'espace avec nom : " + retrievedEspace);
-
-        // Afficher tous les événements
-        Set<Espace> espaces = SE.getAll();
-        for (Espace e : espaces) {
-            System.out.println(e.toString());
-        }
-
-
-        //modification
-        retrievedEspace.setName("LINA");
-        retrievedEspace.setDescription("Nouveau titre");
-        retrievedEspace.setEtat("libre");
-        SE.modifier(retrievedEspace);
-
-// supprimer
-      String nomEspace = "LINA";
-SE.supprimer(nomEspace);
-
-
-
+        Sevent.modifier(e1);
     }
+
+
 }
