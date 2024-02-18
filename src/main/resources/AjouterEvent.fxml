@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="AjouterEvent"
+            fx:controller="controllers.AjouterEvent"
             prefHeight="400.0" prefWidth="600.0">
+    <GridPane alignment="center" hgap="10" vgap="10">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+        <Label text="NAME:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField promptText="Enter name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
+        <Label text="E-MAIL:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="PLACE TO RESERVE:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField promptText="Enter place" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="NUMBER OF PEOPLE:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField promptText="Enter number of people" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="DATE AND HOUR:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextField promptText="Enter date and hour" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label text="EVENT TITLE:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <TextField promptText="Enter title" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label text="DESCRIPTION:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <TextArea promptText="Enter description" GridPane.columnIndex="1" GridPane.rowIndex="6" prefHeight="100"/>
+
+    </GridPane>
+    <Button layoutX="465.0" layoutY="360.0" mnemonicParsing="false" onAction="#ajouterEvent" text="Ajouter" />
 </AnchorPane>

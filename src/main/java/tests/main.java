@@ -4,37 +4,59 @@ import entities.Espace;
 import entities.Event;
 import services.ServiceEspace;
 import services.ServiceEvent;
-
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 public class main {
 
     public static void main(String[] args) throws SQLException {
-     ServiceEvent Sevent = new ServiceEvent();
-     Event e1 = new Event("Birthday","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",1);
-        Event e2 = new Event("hhhhhh","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",1);
-        Event e3 = new Event("ppppp","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",3);
-        Event e4 = new Event("fffff","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",5);
-        Event e5 = new Event("aaaaaa","lina@lina","AAAA",new Date(),15,"BBBB","aaaaaaa",8);
-       /* Sevent.ajouter(e1);
-        Sevent.ajouter(e2);
-        Sevent.ajouter(e3);
-        Sevent.ajouter(e4);
-        Sevent.ajouter(e5);
-        */
-        e1.setIdEvent(1);
-        e1.setName("Nouveau nom");
-        e1.setEmail("nouvellemail@gmail.com");
-        e1.setTitle("Nouveau titre");
-        e1.setDate(new Date()); // Fixez la nouvelle date de l'événement
-        e1.setNbrPersonne(20);
-        e1.setStatutEvent("Actif");
-        e1.setDescription("Nouvelle description");
+        ServiceEvent serviceEvent = new ServiceEvent();
+        ServiceEspace serviceEspace = new ServiceEspace();
 
-        Sevent.modifier(e1);
+        Espace e = new Espace();
+
+
+    // Création des événements
+        Event e1 = new Event("Birthday", "lina@lina", "event", new Date(), 20, "aaaa", e);
+        System.out.println(e1);
+        // Ajout des événements à la base de données
+        serviceEvent.ajouter(e1);
+
+        // Affichage de confirmation
+        System.out.println("Events added successfully!");
+
+
+    // Création d'un nouvel espace
+        Espace nouvelEspace = new Espace();
+        nouvelEspace.setName("Salle de réunion");
+        nouvelEspace.setEtat("Libre");
+        nouvelEspace.setCapacite(20);
+        nouvelEspace.setDescription("Salle de réunion équipée avec projecteur et tableau blanc.");
+        nouvelEspace.setNumEspace(1); // Assurez-vous d'avoir un numéro d'espace valide
+
+        // Ajout de l'espace à la base de données
+        serviceEspace.ajouter(nouvelEspace);
+
+        // Affichage de l'espace ajouté
+     /*   try {
+            System.out.println("Espace ajouté : " + serviceEspace.getOneById(nouvelEspace.getIdEspace()));
+        } catch (SQLException e) {
+            System.out.println("Une erreur s'est produite lors de la récupération de l'espace ajouté : " + e.getMessage());
+        }
+    */
+        //test de getALL
+        Set<Event> setEvents =new HashSet<>(serviceEvent.getAll());
+        for (Event a : setEvents){
+            System.out.println(a);
+        }
     }
-
-
 }
+
+
+
+
+
+
+
+
+

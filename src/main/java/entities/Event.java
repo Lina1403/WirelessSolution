@@ -10,35 +10,35 @@ public class Event {
     private String title;
     private Date date;
     private int nbrPersonne;
-    private String statutEvent;
     private String description;
-    private Integer numEspace;
-
+    Espace espace ;
     public Event() {
     }
 
-    public Event(Integer idEvent, String name, String email, String title, Date date, int nbrPersonne, String statutEvent, String description, Integer numEspace) {
+
+
+    public Event(Integer idEvent, String name, String email, String title, Date date, int nbrPersonne,  String description, Espace espace) {
         this.idEvent = idEvent;
         this.name = name;
         this.email = email;
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
-        this.statutEvent = statutEvent;
         this.description = description;
-        this.numEspace = numEspace;
+        this.espace = espace;
     }
 
-    public Event(String name, String email, String title, Date date, int nbrPersonne, String statutEvent, String description, Integer numEspace) {
+    public Event( String name, String email, String title, Date date, int nbrPersonne,  String description, Espace espace) {
+
         this.name = name;
         this.email = email;
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
-        this.statutEvent = statutEvent;
         this.description = description;
-        this.numEspace = numEspace;
+        this.espace = espace;
     }
+
 
     public Integer getIdEvent() {
         return idEvent;
@@ -88,13 +88,6 @@ public class Event {
         this.nbrPersonne = nbrPersonne;
     }
 
-    public String getStatutEvent() {
-        return statutEvent;
-    }
-
-    public void setStatutEvent(String statutEvent) {
-        this.statutEvent = statutEvent;
-    }
 
     public String getDescription() {
         return description;
@@ -104,26 +97,24 @@ public class Event {
         this.description = description;
     }
 
-    public Integer getNumEspace() {
-        return numEspace;
+    public Espace getEspace() {
+        return espace;
     }
 
-    public void setNumEspace(Integer numEspace) {
-        this.numEspace = numEspace;
+    public void setEspace(Espace espace) {
+        this.espace = espace;
     }
 
     @Override
     public String toString() {
-        return "event{" +
-                "idEvent=" + idEvent +
-                ", name='" + name + '\'' +
+        return "Event{" +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", title='" + title + '\'' +
                 ", date=" + date +
                 ", nbrPersonne=" + nbrPersonne +
-                ", statutEvent='" + statutEvent + '\'' +
                 ", description='" + description + '\'' +
-                ", numEspace=" + numEspace +
+                ", espace=" + espace +
                 '}';
     }
 
@@ -132,16 +123,11 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return nbrPersonne == event.nbrPersonne &&
-                Objects.equals(idEvent, event.idEvent) &&
-                Objects.equals(name, event.name) &&
-                Objects.equals(email, event.email) &&
-                Objects.equals(title, event.title) &&
-                Objects.equals(date, event.date) &&
-                Objects.equals(statutEvent, event.statutEvent) &&
-                Objects.equals(description, event.description) &&
-                Objects.equals(numEspace, event.numEspace);
+        return Objects.equals(name, event.name) && Objects.equals(title, event.title) && Objects.equals(date, event.date);
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, title, date);
+    }
 }

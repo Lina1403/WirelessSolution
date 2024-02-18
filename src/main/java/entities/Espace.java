@@ -11,7 +11,6 @@ public class Espace {
     private String description;
     private int numEspace; // Ajout de l'attribut numEspace
 
-    private List<Event> listEvent = new ArrayList<>();
 
     public Espace(String name, String etat, int capacite, String description, int numEspace) {
         this.name = name;
@@ -19,19 +18,12 @@ public class Espace {
         this.capacite = capacite;
         this.description = description;
         this.numEspace = numEspace;
-        this.listEvent = listEvent;
     }
 
     public Espace() {
     }
 
-    public List<Event> getNumEvent() {
-        return listEvent;
-    }
 
-    public void setNumEvent(List<Event> numEvent) {
-        this.listEvent = numEvent;
-    }
 
     public int getIdEspace() {
         return idEspace;
@@ -65,20 +57,15 @@ public class Espace {
         this.capacite = capacite;
     }
 
-    public List<Event> getEvents() {
-        return listEvent;
-    }
 
-    public void addEvent(Event event) {
-        listEvent.add(event);
-    }
 
-    public void removeEvent(Event event) {
-        listEvent.remove(event);
-    }
 
     public String getDescription() {
         return description;
+    }
+
+    public Espace(int numEspace) {
+        this.numEspace = numEspace;
     }
 
     public void setDescription(String description) {
@@ -97,13 +84,12 @@ public class Espace {
     @Override
     public String toString() {
         return "Espace{" +
-                "idEspace=" + idEspace +
+
                 ", name='" + name + '\'' +
                 ", etat='" + etat + '\'' +
                 ", capacite=" + capacite +
                 ", description='" + description + '\'' +
                 ", numEspace=" + numEspace +
-                ", numEvent=" + listEvent +
                 '}';
     }
 
@@ -116,7 +102,6 @@ public class Espace {
                 e.getEtat().equals(etat) &&
                 e.getCapacite() == capacite &&
                 e.getDescription().equals(description) &&
-                e.getNumEvent() == listEvent &&
                 e.getNumEspace() == numEspace;
 
     }

@@ -16,18 +16,27 @@ public class ServiceEspace implements IService<Espace> {
         String req = "INSERT INTO `espace` (`name`, `etat`, `capacite`, `description`, `numEspace`) " +
                 "VALUES (?, ?, ?, ?, ?)";
         try {
-            PreparedStatement st = cnx.prepareStatement(req);
+            PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, espace.getName());
             st.setString(2, espace.getEtat());
             st.setInt(3, espace.getCapacite());
             st.setString(4, espace.getDescription());
             st.setInt(5, espace.getNumEspace());
             st.executeUpdate();
+
+            // Récupérer l'ID généré automatiquement
+            ResultSet generatedKeys = st.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int idEspace = generatedKeys.getInt(1);
+                espace.setIdEspace(idEspace);
+            }
+
             System.out.println("Espace added !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
 
     public Set<Espace> getAll() throws SQLException {
         Set<Espace> espaces = new HashSet<>();
@@ -43,7 +52,8 @@ public class ServiceEspace implements IService<Espace> {
             int capacite = res.getInt("capacite");
             String description = res.getString("description");
             int numEspace = res.getInt("numEspace");
-            Espace e = new Espace(name, etat, capacite, description, numEspace);
+
+            Espace e = new Espace(name, etat, capacite, description, numEspace );
             e.setIdEspace(idEspace);
             espaces.add(e);
         }

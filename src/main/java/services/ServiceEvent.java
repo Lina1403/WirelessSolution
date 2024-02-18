@@ -1,4 +1,5 @@
 package services;
+import entities.Espace;
 import utils.DataSource;
 import entities.Event;
 import java.sql.*;
@@ -10,16 +11,15 @@ public class ServiceEvent implements IService<Event> {
 
     @Override
     public void ajouter(Event event) {
-        String req = "INSERT INTO `event` (`name`, `email`, `title`, `date`, `nbrPersonne`, `statutEvent`, `description`, `numEspace`) " +
+        String req = "INSERT INTO `event` (`name`, `email`, `title`, `date`, `nbrPersonne`, `description`, `numEspace`) " +
                 "VALUES ('" +
                 event.getName() + "','" +
                 event.getEmail() + "','" +
                 event.getTitle() + "','" +
                 new java.sql.Date(event.getDate().getTime()) + "','" +
                 event.getNbrPersonne() + "','" +
-                event.getStatutEvent() + "','" +
                 event.getDescription() + "','" +
-                event.getNumEspace() + "')";
+                event.getEspace().getNumEspace() + "')";
 
         try {
             Statement st = cnx.createStatement();
@@ -34,6 +34,7 @@ public class ServiceEvent implements IService<Event> {
 
 
 
+    @Override
     public Set<Event> getAll() {
         Set<Event> events = new HashSet<>();
         String req = "SELECT * FROM `event`";
@@ -42,14 +43,13 @@ public class ServiceEvent implements IService<Event> {
             ResultSet rs = st.executeQuery(req);
             while (rs.next()) {
                 Event event = new Event();
+                event.setIdEvent(rs.getInt("idEvent"));
                 event.setName(rs.getString("name"));
                 event.setEmail(rs.getString("email"));
                 event.setTitle(rs.getString("title"));
                 event.setDate(rs.getDate("date"));
                 event.setNbrPersonne(rs.getInt("nbrPersonne"));
-                event.setStatutEvent(rs.getString("statutEvent"));
                 event.setDescription(rs.getString("description"));
-                event.setNumEspace(rs.getInt("numEspace")); // Ajout de numEspace
 
                 events.add(event);
             }
@@ -62,6 +62,8 @@ public class ServiceEvent implements IService<Event> {
 
 
 
+
+
     @Override
     public void modifier(Event event) {
         String req = "UPDATE `event` SET " +
@@ -70,9 +72,8 @@ public class ServiceEvent implements IService<Event> {
                 "`title`='" + event.getTitle() + "'," +
                 "`date`='" + new java.sql.Date(event.getDate().getTime()) + "'," + // Correction de l'ajout de la date
                 "`nbrPersonne`='" + event.getNbrPersonne() + "'," +
-                "`statutEvent`='" + event.getStatutEvent() + "'," +
                 "`description`='" + event.getDescription() + "'," +
-                "`numEspace`='" + event.getNumEspace() + "' " +
+                "`numEspace`='" + event.getEspace().getNumEspace() + "' " +
                 "WHERE `idEvent`=" + event.getIdEvent();
         try {
             Statement st = cnx.createStatement();
@@ -111,10 +112,9 @@ public class ServiceEvent implements IService<Event> {
             eventById.setTitle(res.getString("title"));
             eventById.setDate(res.getDate("date"));
             eventById.setNbrPersonne(res.getInt("nbrPersonne"));
-            eventById.setStatutEvent(res.getString("statutEvent"));
             eventById.setDescription(res.getString("description"));
             // Assurez-vous d'ajouter l'attribut numEspace si vous le souhaitez
-            eventById.setNumEspace(res.getInt("numEspace"));
+            eventById.getEspace().setNumEspace(res.getInt("numEspace"));
         }
 
         return eventById;
