@@ -11,24 +11,29 @@ public class ServiceEvent implements IService<Event> {
 
     @Override
     public void ajouter(Event event) {
+        int numEspace = (event.getEspace() != null) ? event.getEspace().getNumEspace() : 0;
+
         String req = "INSERT INTO `event` (`name`, `email`, `title`, `date`, `nbrPersonne`, `description`, `numEspace`) " +
-                "VALUES ('" +
-                event.getName() + "','" +
-                event.getEmail() + "','" +
-                event.getTitle() + "','" +
-                new java.sql.Date(event.getDate().getTime()) + "','" +
-                event.getNbrPersonne() + "','" +
-                event.getDescription() + "','" +
-                event.getEspace().getNumEspace() + "')";
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
-            Statement st = cnx.createStatement();
-            st.executeUpdate(req);
+            PreparedStatement pstmt = cnx.prepareStatement(req);
+            pstmt.setString(1, event.getName());
+            pstmt.setString(2, event.getEmail());
+            pstmt.setString(3, event.getTitle());
+            pstmt.setDate(4, new java.sql.Date(event.getDate().getTime()));
+            pstmt.setInt(5, event.getNbrPersonne());
+            pstmt.setString(6, event.getDescription());
+            pstmt.setInt(7, numEspace);
+
+            pstmt.executeUpdate();
             System.out.println("Event added !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
+
 
 
 
