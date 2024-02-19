@@ -1,31 +1,26 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-
 public class Parking {
-
-    private int id_parking;
+    private int idParking;
     private String place;
-    private int nbr_place;
-    private int capacite_parking;
-    List<Voiture> voitures = new ArrayList<>();
+    private int numPlace;
+    private int capacite;
 
-    public Parking(int id_parking, String place, int nbr_place, int capacite_parking) {
-        this.id_parking = id_parking;
+    public Parking(String place, int numPlace, int capacite) {
         this.place = place;
-        this.nbr_place = nbr_place;
-        this.capacite_parking = capacite_parking;
+        this.numPlace = numPlace;
+        this.capacite = capacite;
     }
 
-    public int getId_parking() {
-        return id_parking;
+    public Parking() {
     }
 
-    public void setId_parking(int id_parking) {
-        this.id_parking = id_parking;
+    public int getIdParking() {
+        return idParking;
+    }
+
+    public void setIdParking(int idParking) {
+        this.idParking = idParking;
     }
 
     public String getPlace() {
@@ -36,40 +31,40 @@ public class Parking {
         this.place = place;
     }
 
-    public int getNbr_place() {
-        return nbr_place;
+    public int getNumPlace() {
+        return numPlace;
     }
 
-    public void setNbr_place(int nbr_place) {
-        this.nbr_place = nbr_place;
+    public void setNumPlace(int numPlace) {
+        this.numPlace = numPlace;
     }
 
-    public int getCapacite_parking() {
-        return capacite_parking;
+    public int getCapacite() {
+        return capacite;
     }
 
-    public void setCapacite_parking(int capacite_parking) {
-        this.capacite_parking = capacite_parking;
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
     }
 
     @Override
     public String toString() {
-        return "parking{" +
-                "id_parking=" + id_parking +
+        return "Parking{" +
+
                 ", place='" + place + '\'' +
-                ", nbr_place=" + nbr_place +
-                ", capacite_parking=" + capacite_parking +
+                ", numPlace=" + numPlace +
+                ", capacite=" + capacite +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Parking)) return false;
         Parking parking = (Parking) o;
-        return id_parking == parking.id_parking &&
-                nbr_place == parking.nbr_place &&
-                capacite_parking == parking.capacite_parking &&
-                Objects.equals(place, parking.place);
+        return idParking == parking.idParking &&
+                numPlace == parking.numPlace &&
+                capacite == parking.capacite &&
+                place.equals(parking.place);
     }
 }

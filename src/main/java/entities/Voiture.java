@@ -3,25 +3,17 @@ package entities;
 import java.util.Objects;
 
 public class Voiture {
-
-    private int id_voiture;
+    private int id_voiture; // Change from int to Integer
     private String nom;
     private String email;
     private String num_serie;
     private String marque;
     private String couleur;
-
+    Parking parking ;
     public Voiture() {
     }
 
-    public Voiture(String nom, String email , String num_serie, String marque, String couleur){
-        this.nom = nom;
-        this.email = email;
-        this.num_serie = num_serie;
-        this.marque = marque;
-        this.couleur = couleur;
-    }
-    public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur) {
+    public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur, Parking parking ) {
         this.id_voiture = id_voiture;
         this.nom = nom;
         this.email = email;
@@ -30,13 +22,19 @@ public class Voiture {
         this.couleur = couleur;
     }
 
-    public int getId_voiture() {
-        return id_voiture;
+    public Voiture(  String nom, String email, String num_serie, String marque, String couleur, Parking parking) {
+        this.nom = nom;
+        this.email = email;
+        this.num_serie = num_serie;
+        this.marque = marque;
+        this.couleur = couleur;
+        this.parking =parking;
     }
 
-    public void setId_voiture(int id_voiture) {
-        this.id_voiture = id_voiture;
-    }
+
+
+
+
 
     public String getNom() {
         return nom;
@@ -54,12 +52,22 @@ public class Voiture {
         this.email = email;
     }
 
+
+
     public String getNum_serie() {
         return num_serie;
     }
 
     public void setNum_serie(String num_serie) {
         this.num_serie = num_serie;
+    }
+
+    public Parking getParking() {
+        return parking;
+    }
+
+    public void setParking(Parking parking) {
+        this.parking = parking;
     }
 
     public String getMarque() {
@@ -78,28 +86,44 @@ public class Voiture {
         this.couleur = couleur;
     }
 
+
+    // Other attributes and methods
+
+    public int getId_voiture() {
+        return id_voiture;
+    }
+
+    public void setId_voiture(int id_voiture) {
+        this.id_voiture = id_voiture;
+    }
+
     @Override
     public String toString() {
-        return "Car{" +
-                "id_voiture=" + id_voiture +
-                ", nom='" + nom + '\'' +
+        return "Voiture{" +
+                "nom='" + nom + '\'' +
                 ", email='" + email + '\'' +
                 ", num_serie='" + num_serie + '\'' +
                 ", marque='" + marque + '\'' +
                 ", couleur='" + couleur + '\'' +
+                ", parking=" + parking +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Voiture)) return false;
         Voiture voiture = (Voiture) o;
-        return id_voiture == voiture.id_voiture &&
+        return
                 Objects.equals(nom, voiture.nom) &&
                 Objects.equals(email, voiture.email) &&
                 Objects.equals(num_serie, voiture.num_serie) &&
                 Objects.equals(marque, voiture.marque) &&
                 Objects.equals(couleur, voiture.couleur);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nom, email, num_serie, marque, couleur);
     }
 }

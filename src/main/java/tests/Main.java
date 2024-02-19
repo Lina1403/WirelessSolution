@@ -1,122 +1,105 @@
-
 package tests;
 
 import entities.Parking;
 import entities.Voiture;
 import services.ServiceParking;
 import services.ServiceVoiture;
-
+import java.sql.SQLException;
 import java.util.Set;
 
 public class Main {
-    public static void main(String[] args) {
-// Create a new instance of ServiceVoiture
-        ServiceVoiture serviceVoiture = new ServiceVoiture();
 
-// Create a new instance of the Car class with test values
-        String nom = "lina";
-        String email = "ademm@mail.com";
-        String num_serie = "123456789";
-        String marque = "TestMarque";
-        String couleur = "Noir";
+            public static void main(String[] args) throws SQLException {
+            /*    ServiceVoiture serviceVoiture = new ServiceVoiture();
+                try {
+                    // Test de la méthode getOneById(int id)
+                    int idToSearch = 166; // Remplacez 1 par l'ID de la voiture que vous souhaitez récupérer
+                    Voiture voitureById = serviceVoiture.getOneById(idToSearch);
+                    System.out.println("Voiture trouvée par ID : " + voitureById);
 
-        Voiture newVoiture = new Voiture(nom, email, num_serie, marque, couleur);
-
-// Add the car to the database
-        serviceVoiture.ajouter(newVoiture);
-
-// Print the details of the added car
-        System.out.println("Voiture ajoutée : " + newVoiture.toString());
-
-// Print the details of the added car
-        System.out.println("Voiture ajoutée : " + newVoiture);
+                    // Test de la méthode getAll()
+                    Set<Voiture> toutesLesVoitures = serviceVoiture.getAll();
+                    System.out.println("Liste de toutes les voitures : ");
+                    for (Voiture voiture : toutesLesVoitures) {
+                        System.out.println(voiture);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Une erreur s'est produite lors de l'accès à la base de données : " + e.getMessage());
+                }
 
 
-        // Modify the car with id 1 with new values
-        String newNom = "adem";
-        String newEmail = "zitouni@mail.com";
-        String newNum_serie = "000000000";
-        String newMarque = "bmw";
-        String newCouleur = "Blanc";
+                   // Tester la méthode ajouter
+                serviceVoiture.ajouter(voiture);
+                System.out.println("Voiture ajoutée : " + voiture);
 
-        Voiture voitureModif = new Voiture(1, newNom, newEmail, newNum_serie, newMarque, newCouleur);
+                // Tester la méthode modifier
+                // Créer un objet Voiture avec les valeurs à mettre à jour
+                Voiture voiture = new Voiture();
+                voiture.setId_voiture(167); // Remplacez 1 par l'ID de la voiture que vous souhaitez mettre à jour
+                voiture.setNom("Nouveau nom");
+                voiture.setEmail("nouveau@email.com");
+                voiture.setNum_serie("Nouveau numéro de série");
+                voiture.setMarque("Nouvelle marque");
+                voiture.setCouleur("Nouvelle couleur");
 
-        //modifier voiture
-        serviceVoiture.modifier(voitureModif);
+// Assurez-vous que la voiture a un objet Parking associé si nécessaire
+                Parking parking = new Parking();
+                parking.setNumPlace(10); // Remplacez 10 par le numéro de place du parking que vous souhaitez associer
+                voiture.setParking(parking);
 
-        // Retrieve the modified car using the getCarById method
-        Voiture voitureRecup = serviceVoiture.getvoitureById(1);
-        if (voitureRecup != null) {
-            // Verify if the car has been modified successfully
-            System.out.println(voitureRecup.getId_voiture() + ", "
-                    + voitureRecup.getNom() + ", "
-                    + voitureRecup.getEmail() + ", "
-                    + voitureRecup.getNum_serie() + ", "
-                    + voitureRecup.getMarque() + ", "
-                    + voitureRecup.getCouleur());
-        } else {
-            System.out.println("Car with ID 1 not found");
-        }
+// Appelez la méthode modifier avec cet objet Voiture
+                try {
+                    serviceVoiture.modifier(voiture); // Remplacez votreObjetService par l'objet de votre service
+                    System.out.println("Modification de la voiture réussie !");
+                } catch (SQLException e) {
+                    System.out.println("Erreur lors de la modification de la voiture : " + e.getMessage());
+                }
 
+               // Tester la méthode getOneById
+                Voiture voitureFromDb = serviceVoiture.getOneById(voiture.getId_voiture());
+                System.out.println("Voiture récupérée de la base de données : " + voitureFromDb);
 
+                // Tester la méthode getAll
+                Set<Voiture> allVoitures = serviceVoiture.getAll();
+                System.out.println("Toutes les voitures : " + allVoitures);
 
+                // Tester la méthode supprimer
+                serviceVoiture.supprimer(voiture.getId_voiture());
+                System.out.println("Voiture supprimée.");
 
+                serviceVoiture.supprimer(167);
+                */
 
-        //ajout parking
+                //Ajouter Parking
+                ServiceParking SP = new ServiceParking();
+                Parking p = new Parking();
+                p.setIdParking(2);
+                p.setNumPlace(10000);
+                p.setPlace("ALI");
+                p.setCapacite(1000);
+                SP.modifier(p);
+                System.out.println(p);
 
-        // Create a new instance of ServiceParking
-        ServiceParking serviceParking = new ServiceParking();
+                try {
+                    // Test de la méthode getOneById(int id)
+                    int idToSearch = 2; // Remplacez 1 par l'ID de la voiture que vous souhaitez récupérer
+                    Parking p1 = SP.getOneById(idToSearch);
+                    System.out.println("Parking trouvée par ID : " + p1);
 
-        // Create a new instance of the parking class with test values
-        int id_parking = 4;
-        String place = "Test Parking";
-        int nbr_place = 50;
-        int capacite_parking = 200;
+                    // Test de la méthode getAll()
+                    Set<Parking> listParking = SP.getAll();
+                    System.out.println("Liste de toutes les voitures : ");
+                    for (Parking p2 : listParking) {
+                        System.out.println(p2);
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Une erreur s'est produite lors de l'accès à la base de données : " + e.getMessage());
+                }
+                SP.supprimer(2);
 
-        Parking newParking = new Parking(id_parking, place, nbr_place, capacite_parking);
-
-        // Add the parking to the database
-        serviceParking.ajouter(newParking);
-
-        /// Modify the parking with id 1 with new values
-        int idModif = 2 ;
-        String newPlace = "New Parking";
-        int newNbr_place = 60;
-        int newCapacite_parking = 200;
-
-        // Create an instance of ServiceParking
-        ServiceParking ServiceParking = new ServiceParking();
-
-        // Create a modified parking object
-        Parking  ParkingModif = new Parking (idModif, newPlace, newNbr_place, newCapacite_parking );
-
-        // Call the modifier method
-        serviceParking .modifier(ParkingModif);
-
-        // Retrieve the modified Parking  using the getParking ById method
-        Parking  ParkingRecup = serviceParking .getParkingById(1);
-        if (ParkingRecup != null) {
-            // Verify if the Parking  has been modified successfully
-            System.out.println(ParkingRecup.getId_parking () + ", "
-                    + ParkingRecup.getPlace() + ", "
-                    + ParkingRecup.getNbr_place() + ", "
-                    + ParkingRecup.getCapacite_parking ());
-        } else {
-            System.out.println("Parking with ID 1 not found");
-        }
-
-        // Afficher tous les parkings
-
-        Set<Parking> parkings = serviceParking.getAll();
-        for (Parking p : parkings) {
-            System.out.println(p);
-        }
-
-        // Supprimer un parking
-        int id = 1;
-        serviceParking.supprimer(id);
-*/
     }
-
-
 }
+
+
+
+
