@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterParking">
+    <children>
+        <TextField fx:id="PlaceId" layoutX="225.0" layoutY="120.0" promptText="Place" />
+        <TextField fx:id="NumPlaceId" layoutX="225.0" layoutY="176.0" promptText="Numéro de place" />
+        <TextField fx:id="CapaciteId" layoutX="225.0" layoutY="232.0" promptText="Capacité" />
+        <Button layoutX="465.0" layoutY="316.0" mnemonicParsing="false" onAction="#ajouterParking" text="Ajouter" />
+        <Label layoutX="187.0" layoutY="124.0" text="Place" />
+        <Label layoutX="152.0" layoutY="180.0" text="Numéro de place" />
+        <Label layoutX="185.0" layoutY="236.0" text="Capacité" />
+    </children>
+</AnchorPane>
