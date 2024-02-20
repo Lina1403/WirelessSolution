@@ -8,11 +8,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import services.IService;
 import services.ServiceParking;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Set;
 
 public class AfficherParking {
@@ -30,10 +30,24 @@ public class AfficherParking {
     private TableColumn<Parking, Integer> colCapacite;
 
     @FXML
-    private TableColumn<Parking, Void> colAction;
+    private TableColumn<Parking, Void> colDelete;
 
     @FXML
-    private TableColumn<Parking, Void> colDelete;
+    private TableColumn<Parking, Void> colEdit;
+
+    @FXML
+    private TextField txtPlace;
+
+    @FXML
+    private TextField txtNumPlace;
+
+    @FXML
+    private TextField txtCapacite;
+
+    @FXML
+    private Button btnSave;
+
+    private Parking parking;
 
     private final IService<Parking> serviceParking = new ServiceParking();
 
@@ -69,8 +83,31 @@ public class AfficherParking {
                         tableParking.getItems().remove(parking);
                     });
 
-
                     setGraphic(deleteButton);
+                }
+            }
+        });
+
+        // Ajout de la colonne de modification
+        colEdit.setCellFactory(param -> new TableCell<>() {
+            private final Button editButton = new Button("Modifier");
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    editButton.setOnAction(event -> {
+                        parking = getTableView().getItems().get(getIndex());
+                        // Charger les détails du parking dans les champs de texte
+                        txtPlace.setText(parking.getPlace());
+                        txtNumPlace.setText(String.valueOf(parking.getNumPlace()));
+                        txtCapacite.setText(String.valueOf(parking.getCapacite()));
+                    });
+
+                    setGraphic(editButton);
                 }
             }
         });
@@ -78,4 +115,21 @@ public class AfficherParking {
         tableParking.setItems(parkingList);
     }
 
+    @FXML
+    void saveChanges() {
+        // Mettre à jour l'objet parking avec les nouvelles valeurs
+        parking.setPlace(txtPlace.getText());
+        parking.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
+        parking.setCapacite(Integer.parseInt(txtCapacite.getText()));
+
+        // Mettre à jour l'objet parking dans la base de données
+        try {
+            serviceParking.modifier(parking);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Rafraîchir le tableau
+        tableParking.refresh();
+    }
 }
