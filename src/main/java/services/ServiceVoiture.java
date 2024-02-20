@@ -21,7 +21,7 @@ public class ServiceVoiture implements IService<Voiture>{
         st.setString(3, v.getNum_serie());
         st.setString(4, v.getMarque());
         st.setString(5, v.getCouleur());
-        st.setInt(6, v.getParking().getNumPlace()); // Assuming numPlace is an integer
+        st.setInt(6, v.getNumPlace()); // Assuming numPlace is an integer
 
         st.executeUpdate();
         System.out.println("Voiture added !");
@@ -37,7 +37,7 @@ public class ServiceVoiture implements IService<Voiture>{
                 "num_serie='" + v.getNum_serie() + "', " +
                 "marque='" + v.getMarque() + "', " +
                 "couleur='" + v.getCouleur() + "', " +
-                "numPlace='" + v.getParking().getNumPlace() + "' " +
+                "numPlace='" + v.getNumPlace() + "' " +
                 "WHERE id_voiture=" + v.getId_voiture();
 
         Statement st = cnx.createStatement();
@@ -99,7 +99,6 @@ public class ServiceVoiture implements IService<Voiture>{
                 if (!rs.wasNull()) {
                     Parking parking = new Parking();
                     parking.setNumPlace(numPlace);
-                    voiture.setParking(parking);
                 }
             }
         } catch (SQLException e) {
@@ -131,7 +130,6 @@ public class ServiceVoiture implements IService<Voiture>{
             if (rs.getInt("id_voiture") != 0) {
                 Parking parking = new Parking();
                 parking.setNumPlace(rs.getInt("numPlace"));
-                voiture.setParking(parking);
             }
             voitures.add(voiture);
         }

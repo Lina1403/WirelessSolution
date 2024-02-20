@@ -9,32 +9,29 @@ public class Voiture {
     private String num_serie;
     private String marque;
     private String couleur;
-    Parking parking ;
+    private int numPlace; // Newly added attribute
+
     public Voiture() {
     }
 
-    public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur, Parking parking ) {
+    public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur, int numPlace) {
         this.id_voiture = id_voiture;
         this.nom = nom;
         this.email = email;
         this.num_serie = num_serie;
         this.marque = marque;
         this.couleur = couleur;
+        this.numPlace = numPlace;
     }
 
-    public Voiture(  String nom, String email, String num_serie, String marque, String couleur, Parking parking) {
+    public Voiture(String nom, String email, String num_serie, String marque, String couleur, int numPlace) {
         this.nom = nom;
         this.email = email;
         this.num_serie = num_serie;
         this.marque = marque;
         this.couleur = couleur;
-        this.parking =parking;
+        this.numPlace = numPlace;
     }
-
-
-
-
-
 
     public String getNom() {
         return nom;
@@ -52,8 +49,6 @@ public class Voiture {
         this.email = email;
     }
 
-
-
     public String getNum_serie() {
         return num_serie;
     }
@@ -62,12 +57,12 @@ public class Voiture {
         this.num_serie = num_serie;
     }
 
-    public Parking getParking() {
-        return parking;
+    public int getNumPlace() {
+        return numPlace;
     }
 
-    public void setParking(Parking parking) {
-        this.parking = parking;
+    public void setNumPlace(int numPlace) {
+        this.numPlace = numPlace;
     }
 
     public String getMarque() {
@@ -86,9 +81,6 @@ public class Voiture {
         this.couleur = couleur;
     }
 
-
-    // Other attributes and methods
-
     public int getId_voiture() {
         return id_voiture;
     }
@@ -105,7 +97,7 @@ public class Voiture {
                 ", num_serie='" + num_serie + '\'' +
                 ", marque='" + marque + '\'' +
                 ", couleur='" + couleur + '\'' +
-                ", parking=" + parking +
+                ", numPlace=" + numPlace +
                 '}';
     }
 
@@ -114,7 +106,8 @@ public class Voiture {
         if (this == o) return true;
         if (!(o instanceof Voiture)) return false;
         Voiture voiture = (Voiture) o;
-        return
+        return id_voiture == voiture.id_voiture &&
+                numPlace == voiture.numPlace &&
                 Objects.equals(nom, voiture.nom) &&
                 Objects.equals(email, voiture.email) &&
                 Objects.equals(num_serie, voiture.num_serie) &&
@@ -124,6 +117,6 @@ public class Voiture {
 
     @Override
     public int hashCode() {
-        return Objects.hash(nom, email, num_serie, marque, couleur);
+        return Objects.hash(id_voiture, nom, email, num_serie, marque, couleur, numPlace);
     }
 }
