@@ -15,10 +15,9 @@
       </Text>
       <TableView fx:id="table" layoutX="43.0" layoutY="73.0" prefHeight="329.0" prefWidth="540.0">
         <columns>
-          <TableColumn fx:id="titre" prefWidth="164.0" text="Titre" />
-          <TableColumn fx:id="createur" prefWidth="133.0" text="Createur" />
-            <TableColumn fx:id="dateCreation" prefWidth="162.0" text="Date de Creation" />
-            <TableColumn fx:id="action" text="Action" />
+          <TableColumn fx:id="titre" prefWidth="217.0" text="Titre" />
+          <TableColumn fx:id="createur" prefWidth="173.0" text="Createur" />
+            <TableColumn fx:id="dateCreation" prefWidth="149.0" text="Date de Creation" />
         </columns>
       </TableView>
    </children>
