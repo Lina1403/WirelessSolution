@@ -10,6 +10,8 @@
                 <TableColumn fx:id="colPlace" prefWidth="150.0" text="Place" />
                 <TableColumn fx:id="colNumPlace" prefWidth="150.0" text="Numéro de place" />
                 <TableColumn fx:id="colCapacite" prefWidth="150.0" text="Capacité" />
+                <TableColumn fx:id="colDelete" prefWidth="150.0" text="Supprimer" />
+
             </columns>
         </TableView>
     </children>
