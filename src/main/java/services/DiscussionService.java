@@ -65,23 +65,22 @@ public class DiscussionService implements IService<Discussion> {
     @Override
     public List<Discussion> afficher() throws SQLException {
         List<Discussion> discussions  = new ArrayList<>();
-        String req = "select * from discussion";
-        try {
-            Statement stm = connexion.createStatement();
+        String req = "SELECT d.id,d.titre, d.date_creation, u.nom , u.id " +
+                "FROM discussion d " +
+                "JOIN user u ON u.id = d.createur_id;";
 
+
+            Statement stm = connexion.createStatement();
             ResultSet rst = stm.executeQuery(req);
 
             while (rst.next()) {
-                Discussion discussion = new Discussion(
-                        rst.getInt("id"),
-                        rst.getString("titre"),
-                        rst.getTimestamp(3)
-                );
-                discussions.add(discussion);
+              int id =  rst.getInt(1);
+              String title =  rst.getString(2);
+              Timestamp date = rst.getTimestamp(3);
+              User user1 = new User(rst.getInt(5),rst.getString(4));
+            Discussion discussion = new Discussion(id,title,date,user1);
+            discussions.add(discussion);
             }
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
         return discussions;
     }
 }

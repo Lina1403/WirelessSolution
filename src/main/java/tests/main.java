@@ -38,12 +38,12 @@ public class main {
     }*/
 
         /// afficher tout ldes discussions
-       /* try{
-            discussionService.afficher();
+        try{
+            System.out.println(discussionService.afficher());
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
-        */
+
 /*
         try {
             // Insert the message into the database

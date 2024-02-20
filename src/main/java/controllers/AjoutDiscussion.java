@@ -16,7 +16,7 @@ public class AjoutDiscussion {
         @FXML
         private TextField titre ;
 
-        User user1 = new User(3,"oussema");
+        User user1 = new User(2,"oussema");
         @FXML
         void ajouterEvent(ActionEvent event) {
                 String title = titre.getText();
