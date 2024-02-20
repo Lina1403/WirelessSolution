@@ -47,6 +47,10 @@ public class AfficherParking {
     @FXML
     private Button btnSave;
 
+    @FXML
+    private Button btnAdd;
+
+
     private Parking parking;
 
     private final IService<Parking> serviceParking = new ServiceParking();
@@ -132,4 +136,27 @@ public class AfficherParking {
         // Rafraîchir le tableau
         tableParking.refresh();
     }
+
+    @FXML
+    void ajouterParking() {
+        // Créer un nouvel objet Parking avec les valeurs des champs de texte
+        Parking newParking = new Parking();
+        newParking.setPlace(txtPlace.getText());
+        newParking.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
+        newParking.setCapacite(Integer.parseInt(txtCapacite.getText()));
+
+        // Ajouter le nouvel objet Parking à la base de données
+        try {
+            serviceParking.ajouter(newParking);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Ajouter le nouvel objet Parking au tableau
+        tableParking.getItems().add(newParking);
+
+        // Rafraîchir le tableau
+        tableParking.refresh();
+    }
+
 }

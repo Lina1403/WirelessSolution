@@ -9,6 +9,7 @@
     <TextField fx:id="txtPlace" promptText="Place" />
     <TextField fx:id="txtNumPlace" promptText="Numéro de place" />
     <TextField fx:id="txtCapacite" promptText="Capacité" />
+    <Button fx:id="btnAdd" text="Ajouter un parking" onAction="#ajouterParking" />
     <Button fx:id="btnSave" text="Enregistrer les modifications" onAction="#saveChanges" />
     <TableView fx:id="tableParking" layoutX="50.0" layoutY="50.0" prefHeight="300.0" prefWidth="500.0">
         <columns>
