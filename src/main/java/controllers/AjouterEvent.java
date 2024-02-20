@@ -1,61 +1,100 @@
 package controllers;
 
+import entities.Event;
+import entities.Espace;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import entities.Event;
 import services.ServiceEvent;
+import java.sql.Date;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class AjouterEvent {
 
     @FXML
-    private TextField NameField;
+    private DatePicker datePicker;
 
     @FXML
-    private TextField EmailField;
+    private TextField descriptionField;
 
     @FXML
-    private TextField titleFieldField;
+    private TextField nbrPersonneField;
 
     @FXML
-    private TextField dateField;
-
-    @FXML
-    private TextField NombrePersonne;
-
-    @FXML
-    private TextField Description;
+    private TextField nameField;
 
     @FXML
     private Text title;
 
+   @FXML
+ private ComboBox<String> espaceComboBox;
+
     @FXML
-    void ajouterEvent() {
-        String name = NameField.getText();
-        String email = EmailField.getText();
-        String title = titleFieldField.getText();
-        String dateString = dateField.getText();
-        int numPeople = Integer.parseInt(NombrePersonne.getText());
-        String description = Description.getText();
+    private TextField emailField;
 
-        // Convertir la chaîne de date en un objet Date
-        Date date = null;
+    @FXML
+    private TextField titleField;
+
+    private final ServiceEvent serviceEvent = new ServiceEvent();
+
+    @FXML
+    void ajouterEvent(ActionEvent event) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); // Spécifiez le format de la date
-            date = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace(); // Gérer l'exception de format de date invalide ici
+            LocalDate date = datePicker.getValue();
+            if (date == null) {
+                throw new IllegalArgumentException("Please select a date.");
+            }
+
+            // Vérifier que les autres champs sont remplis
+            if (nameField.getText().isEmpty()) {
+                throw new IllegalArgumentException("Nom is null or empty");
+            }
+            if (emailField.getText().isEmpty()) {
+                throw new IllegalArgumentException("Email is null or empty");
+            }
+            if (titleField.getText().isEmpty()) {
+                throw new IllegalArgumentException("Titre is null or empty");
+            }
+            int nbrPersonne = Integer.parseInt(nbrPersonneField.getText());
+            String description = descriptionField.getText();
+            String espaceString = espaceComboBox.getValue();
+        // Event.Espace espace = Event.Espace.valueOf(espaceString);
+
+            // Créer l'objet Event
+            Event Event = new Event(nameField.getText(), emailField.getText(), titleField.getText(), java.sql.Date.valueOf(date), nbrPersonne, description, null);
+
+            // Appeler la méthode pour ajouter l'événement
+            serviceEvent.ajouter(Event);
+
+            // Afficher une confirmation à l'utilisateur
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Validation");
+            alert.setContentText("Événement ajouté avec succès");
+            alert.showAndWait();
+        } catch (NumberFormatException e) {
+            // Gérer l'erreur pour le format de numéro invalide
+            afficherAlerteErreurEvent("Format Error", "Please enter a valid number of people.");
+        } catch (IllegalArgumentException e) {
+            // Gérer l'erreur pour la date ou le nom nulle
+            afficherAlerteErreurEvent("Input Error", e.getMessage());
+        } catch (Exception e) {
+            // Gérer les autres exceptions
+            afficherAlerteErreurEvent("Error", e.getMessage());
         }
-
-        // Créez un nouvel événement avec les informations saisies
-        Event event = new Event(name, email, title, date, numPeople, description, null); // Vous devez gérer l'espace
-
-        // Ajoutez l'événement à la base de données
-        ServiceEvent serviceEvent = new ServiceEvent();
-        serviceEvent.ajouter(event);
     }
+
+    private void afficherAlerteErreurEvent(String error, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(error);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 }
