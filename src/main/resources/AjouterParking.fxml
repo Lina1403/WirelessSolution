@@ -6,9 +6,9 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterParking">
     <children>
-        <TextField fx:id="PlaceId" layoutX="225.0" layoutY="120.0" promptText="Place" />
-        <TextField fx:id="NumPlaceId" layoutX="225.0" layoutY="176.0" promptText="Numéro de place" />
-        <TextField fx:id="CapaciteId" layoutX="225.0" layoutY="232.0" promptText="Capacité" />
+        <TextField fx:id="PlaceId" layoutX="250.0" layoutY="120.0" promptText="Place" />
+        <TextField fx:id="NumPlaceId" layoutX="250.0" layoutY="176.0" promptText="Numéro de place" />
+        <TextField fx:id="CapaciteId" layoutX="250.0" layoutY="232.0" promptText="Capacité" />
         <Button layoutX="465.0" layoutY="316.0" mnemonicParsing="false" onAction="#ajouterParking" text="Ajouter" />
         <Label layoutX="187.0" layoutY="124.0" text="Place" />
         <Label layoutX="152.0" layoutY="180.0" text="Numéro de place" />
