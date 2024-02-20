@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherEvent">
+    <children>
+        <TableView fx:id="tableEvent" layoutX="50.0" layoutY="50.0" prefHeight="300.0" prefWidth="500.0">
+            <columns>
+                <TableColumn fx:id="colName" prefWidth="100.0" text="Nom" />
+                <TableColumn fx:id="colEmail" prefWidth="100.0" text="Email" />
+                <TableColumn fx:id="colTitle" prefWidth="100.0" text="Titre" />
+                <TableColumn fx:id="colDate" prefWidth="100.0" text="Date" />
+                <TableColumn fx:id="colNbrPersonne" prefWidth="100.0" text="Nombre de personnes" />
+                <TableColumn fx:id="colDescription" prefWidth="100.0" text="Description" />
+                <TableColumn fx:id="colEspace" prefWidth="100.0" text="Espace" />
+            </columns>
+        </TableView>
+    </children>
+</AnchorPane>
