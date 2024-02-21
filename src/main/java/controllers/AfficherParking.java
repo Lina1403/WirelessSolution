@@ -179,23 +179,25 @@ public class AfficherParking {
 
         // Valider le champ Numéro de place
         String numPlace = txtNumPlace.getText().trim();
-        if (numPlace.isEmpty() || !numPlace.matches("\\d+") || Integer.parseInt(numPlace) <= 0) {
+        if (numPlace.isEmpty() || !numPlace.matches("\\d+") || Integer.parseInt(numPlace) <= 0 || Integer.parseInt(numPlace) > 50) {
             // Afficher un message d'erreur
-            lblNumPlaceError.setText("Le numéro de place doit être un entier positif.");
+            lblNumPlaceError.setText("Le numéro de place doit être un entier positif et ne doit pas dépasser 50.");
             return false;
         } else {
             lblNumPlaceError.setText(""); // Effacer le message d'erreur précédent
         }
 
+
         // Valider le champ Capacité
         String capacite = txtCapacite.getText().trim();
-        if (capacite.isEmpty() || !capacite.matches("\\d+") || Integer.parseInt(capacite) <= 0) {
+        if (capacite.isEmpty() || !capacite.matches("\\d+") || Integer.parseInt(capacite) <= 0 || Integer.parseInt(capacite) > 50) {
             // Afficher un message d'erreur
-            lblCapaciteError.setText("La capacité doit être un entier positif.");
+            lblCapaciteError.setText("La capacité doit être un entier positif et ne doit pas dépasser 50.");
             return false;
         } else {
             lblCapaciteError.setText(""); // Effacer le message d'erreur précédent
         }
+
 
         return true;
     }
