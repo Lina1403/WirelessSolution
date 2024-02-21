@@ -3,17 +3,18 @@ import entities.Discussion;
 import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import services.DiscussionService;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 public class AjoutDiscussion {
@@ -23,11 +24,11 @@ public class AjoutDiscussion {
 
         User user1 = new User(2,"oussema");
         @FXML
-        void ajouterEvent(ActionEvent event) {
+        void ajouterEvent() throws SQLException {
                 String title = titre.getText();
                 Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
                 Discussion discussion = new Discussion(title,currentTimestamp,user1);
-                if(titreValide(title)){
+                if(titreValide(title) && !titreExist(title) ){
                         try {
                                 DiscussionService ds = new DiscussionService();
                                 ds.ajouter(discussion);
@@ -36,25 +37,35 @@ public class AjoutDiscussion {
                                 alert.setContentText("Discussion added successfully!");
 
                                 alert.showAndWait();
-                        }catch(SQLException e ){
+                                changeScene();
+                        }catch(Exception e){
                                 System.out.println(e.getMessage());
                         }
                 }else{
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("error");
-                        alert.setContentText("cant add discussion title innapropriate");
+                        alert.setContentText("check title validations");
                         alert.showAndWait();
                 }
 
 
         }
-        public static boolean titreValide(String titre) {
+        public void changeScene() {
+                try {
+                        // Chargez le fichier FXML pour la nouvelle scène
+                        Parent root = FXMLLoader.load(getClass().getResource("/ListeDiscussion.fxml"));
+                        titre.getScene().setRoot(root);
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
+        public boolean titreValide(String titre) {
                 List<String> motsInterdits = null;
                 try {
                         motsInterdits = Files.readAllLines(Paths.get("src/main/java/utils/motsinap.txt"));
                 } catch (IOException e) {
                         System.out.println("Erreur lors de la lecture du fichier de mots inappropriés");
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
                 }
                 if (motsInterdits == null) {
                         return true;
@@ -70,8 +81,17 @@ public class AjoutDiscussion {
                         }
                 }
 
-                // Si aucun mot interdit n'est trouvé, le titre est valide
                 return true;
+        }
+        public static boolean titreExist(String titre) throws SQLException {
+                DiscussionService ds = new DiscussionService();
+                List<Discussion> discussions = ds.afficher();
+                for(Discussion discussion:discussions){
+                        if(discussion.getTitre().equalsIgnoreCase(titre))
+                                return true ;
+                }
+                return false;
+
         }
 
 }

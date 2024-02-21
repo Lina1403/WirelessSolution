@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="621.0" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.MessageController">
+    <ListView fx:id="messageList" VBox.vgrow="ALWAYS">
+        <!-- Les messages seront ajoutés ici -->
+    </ListView>
+    <HBox spacing="10">
+        <Button fx:id="attachButton" text="📎" />
+        <TextField fx:id="messageField" HBox.hgrow="ALWAYS" />
+        <Button fx:id="sendButton" text="Envoyer"  />
+    </HBox>
+</VBox>

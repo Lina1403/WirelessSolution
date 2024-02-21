@@ -1,37 +1,42 @@
 package entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Arrays;
 
 public class Message {
     private int id ;
     private String contenu;
-    private Date date_envoi;
+    private Timestamp TimeStamp_envoi;
     private User emetteur ;
     private Discussion discussion;
     private byte[] image;
     public Message(){}
 
-    public Message(int id, String contenu, Date date_envoi, User emetteur, Discussion discussion, byte[] image) {
+    public Message(int id, String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion, byte[] image) {
         this.id = id;
         this.contenu = contenu;
-        this.date_envoi = date_envoi;
+        this.TimeStamp_envoi = TimeStamp_envoi;
         this.emetteur = emetteur;
         this.discussion = discussion;
         this.image = image;
     }
-    public Message(String contenu, Date date_envoi, User emetteur, Discussion discussion, byte[] image) {
+    public Message(String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion, byte[] image) {
         this.contenu = contenu;
-        this.date_envoi = date_envoi;
+        this.TimeStamp_envoi = TimeStamp_envoi;
         this.emetteur = emetteur;
         this.discussion = discussion;
         this.image = image;
     }
-    public Message(String contenu, Date date_envoi, User emetteur, Discussion discussion) {
+    public Message(String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion) {
         this.contenu = contenu;
-        this.date_envoi = date_envoi;
+        this.TimeStamp_envoi = TimeStamp_envoi;
         this.emetteur = emetteur;
         this.discussion = discussion;
+    }
+    public Message(String contenu, Timestamp TimeStamp_envoi, User emetteur) {
+        this.contenu = contenu;
+        this.TimeStamp_envoi = TimeStamp_envoi;
+        this.emetteur = emetteur;
     }
 
     public int getId() {
@@ -50,12 +55,12 @@ public class Message {
         this.contenu = contenu;
     }
 
-    public Date getDate_envoi() {
-        return date_envoi;
+    public Timestamp getTimeStamp_envoi() {
+        return TimeStamp_envoi;
     }
 
-    public void setDate_envoi(Date date_envoi) {
-        this.date_envoi = date_envoi;
+    public void setTimeStamp_envoi(Timestamp TimeStamp_envoi) {
+        this.TimeStamp_envoi = TimeStamp_envoi;
     }
 
     public User getEmetteur() {
@@ -87,7 +92,7 @@ public class Message {
         return "Message{" +
                 "id=" + id +
                 ", contenu='" + contenu + '\'' +
-                ", date_envoi=" + date_envoi +
+                ", TimeStamp_envoi=" + TimeStamp_envoi +
                 ", emetteur=" + emetteur +
                 ", discussion=" + discussion +
                 ", image=" + Arrays.toString(image) +

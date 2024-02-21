@@ -1,6 +1,7 @@
 package tests;
 
 import controllers.AjoutDiscussion;
+import controllers.ListeDiscussion;
 import entities.*;
 import services.DiscussionService;
 import services.MessageService;
@@ -22,7 +23,7 @@ public class main {
         MessageService messageService = new MessageService();
         DiscussionService discussionService = new DiscussionService();
         Discussion discussion = new Discussion("hello discussion", currentTimestamp, User1);
-        Message message = new Message("how are you",new Date(System.currentTimeMillis()),User2,discussion);
+        Message message = new Message("how are you",currentTimestamp,User2,discussion);
         // ajouter discussion
        /* try {
             // Insert the discussion into the database
@@ -65,8 +66,11 @@ public class main {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }*/
-        System.out.println(AjoutDiscussion.titreValide("you"));
-
+        try{
+            System.out.println(messageService.afficherByDiscussionId(14));
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }

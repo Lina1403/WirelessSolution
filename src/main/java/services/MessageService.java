@@ -1,12 +1,12 @@
 package services;
 
+import entities.Discussion;
 import entities.Message;
+import entities.User;
 import utils.DataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageService implements IService<Message>{
@@ -42,7 +42,8 @@ public class MessageService implements IService<Message>{
         try{
             PreparedStatement pst = connexion.prepareStatement(req);
             pst.setString(1, message.getContenu());
-            pst.setDate(2,new java.sql.Date(message.getDate_envoi().getTime()));
+            Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
+            pst.setTimestamp(2, currentTimestamp);
             pst.setInt(3,message.getEmetteur().getId());
             pst.setInt(4,14);
             pst.executeUpdate();
@@ -78,6 +79,45 @@ public class MessageService implements IService<Message>{
 
     @Override
     public List<Message> afficher() throws SQLException {
-        return null;
+        List<Message> messages  = new ArrayList<>();
+        String req = "SELECT message.contenu, message.date_envoi, user.nom AS emetteur  " +
+                "FROM message" +
+                " JOIN user ON message.emetteur_id = user.id " +
+                "JOIN discussion ON message.discussion_id = discussion.id;";
+
+
+        Statement stm = connexion.createStatement();
+        ResultSet rst = stm.executeQuery(req);
+
+        while (rst.next()) {
+            String contenu =  rst.getString(1);
+            Timestamp date = rst.getTimestamp(2);
+            User user1 = new User(rst.getString(3));
+
+            Message message = new Message(contenu,date,user1);
+            messages.add(message);
+        }
+        return messages;
+    }
+    public List<Message> afficherByDiscussionId(int id) throws SQLException {
+        List<Message> messages  = new ArrayList<>();
+        String req = "SELECT message.contenu, message.date_envoi, user.nom AS emetteur  " +
+                "FROM message" +
+                " JOIN user ON message.emetteur_id = user.id " +
+                "Where message.discussion_id = ?;";
+        PreparedStatement pre = connexion.prepareStatement(req);
+        pre.setInt(1, id);
+        ResultSet rst = pre.executeQuery();
+
+        while(rst.next()) {
+            String contenu =  rst.getString(1);
+            Timestamp date = rst.getTimestamp(2);
+            User user1 = new User(rst.getString(3));
+            Message message = new Message(contenu,date,user1);
+            messages.add(message);
+        }
+
+        return messages;
+
     }
 }

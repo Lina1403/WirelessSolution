@@ -5,11 +5,14 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import services.DiscussionService;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -46,16 +49,21 @@ public class ListeDiscussion {
                     Discussion clickedRow = row.getItem();
                     // Récupérez l'ID de la discussion
                     int discussionId = clickedRow.getId();
+                    MessageController.discuId = discussionId;
+                    changeScene();
 
-
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setContentText("Discussion added successfully!"+ discussionId);
-
-                    alert.showAndWait();
                 }
             });
             return row ;
         });
+    }
+    public void changeScene() {
+        try {
+            // Chargez le fichier FXML pour la nouvelle scène
+            Parent root = FXMLLoader.load(getClass().getResource("/Message.fxml"));
+            table.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
