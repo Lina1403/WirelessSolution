@@ -98,7 +98,7 @@ public class ServiceVoiture implements IService<Voiture>{
                 int numPlace = rs.getInt("numPlace");
                 if (!rs.wasNull()) {
                     Parking parking = new Parking();
-                    parking.setNumPlace(numPlace);
+                    parking.setType(numPlace);
                 }
             }
         } catch (SQLException e) {
@@ -129,7 +129,7 @@ public class ServiceVoiture implements IService<Voiture>{
             voiture.setCouleur(rs.getString("couleur"));
             if (rs.getInt("id_voiture") != 0) {
                 Parking parking = new Parking();
-                parking.setNumPlace(rs.getInt("numPlace"));
+                parking.setType(rs.getInt("numPlace"));
             }
             voitures.add(voiture);
         }

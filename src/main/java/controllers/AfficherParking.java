@@ -23,7 +23,7 @@ public class AfficherParking {
     private TableColumn<Parking, String> colNom;
 
     @FXML
-    private TableColumn<Parking, Integer> colNumPlace;
+    private TableColumn<Parking, Integer> colType;
 
     @FXML
     private TableColumn<Parking, Integer> colCapacite;
@@ -38,7 +38,7 @@ public class AfficherParking {
     private TextField txtNom;
 
     @FXML
-    private TextField txtNumPlace;
+    private TextField txtType;
 
     @FXML
     private TextField txtCapacite;
@@ -50,7 +50,7 @@ public class AfficherParking {
     private Button btnAdd;
 
     @FXML
-    private Label lblNomError, lblNumPlaceError, lblCapaciteError;
+    private Label lblNomError, lblTypeError, lblCapaciteError;
 
 
 
@@ -65,7 +65,7 @@ public class AfficherParking {
         ObservableList<Parking> parkingList = FXCollections.observableArrayList(parkings);
 
         colNom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
-        colNumPlace.setCellValueFactory(new PropertyValueFactory<>("numPlace"));
+        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
         colCapacite.setCellValueFactory(new PropertyValueFactory<>("capacite"));
 
         // Ajout de la colonne de suppression
@@ -110,7 +110,7 @@ public class AfficherParking {
                         parking = getTableView().getItems().get(getIndex());
                         // Charger les détails du parking dans les champs de texte
                         txtNom.setText(parking.getNom());
-                        txtNumPlace.setText(String.valueOf(parking.getNumPlace()));
+                        txtType.setText(String.valueOf(parking.getType()));
                         txtCapacite.setText(String.valueOf(parking.getCapacite()));
                     });
 
@@ -127,7 +127,7 @@ public class AfficherParking {
         if (validateInputs()) {
             // Mettre à jour l'objet parking avec les nouvelles valeurs
             parking.setNom(txtNom.getText());
-            parking.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
+            parking.setType(Integer.parseInt(txtType.getText()));
             parking.setCapacite(Integer.parseInt(txtCapacite.getText()));
 
             // Mettre à jour l'objet parking dans la base de données
@@ -149,7 +149,7 @@ public class AfficherParking {
             // Créer un nouvel objet Parking avec les valeurs des champs de texte
             Parking newParking = new Parking();
             newParking.setNom(txtNom.getText());
-            newParking.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
+            newParking.setType(Integer.parseInt(txtType.getText()));
             newParking.setCapacite(Integer.parseInt(txtCapacite.getText()));
 
             // Ajouter le nouvel objet Parking à la base de données
@@ -178,13 +178,13 @@ public class AfficherParking {
         }
 
         // Valider le champ Numéro de place
-        String numPlace = txtNumPlace.getText().trim();
-        if (numPlace.isEmpty() || !numPlace.matches("\\d+") || Integer.parseInt(numPlace) <= 0 || Integer.parseInt(numPlace) > 50) {
+        String type = txtType.getText().trim();
+        if (type.isEmpty() || !type.matches("\\d+") || Integer.parseInt(type) <= 0 || Integer.parseInt(type) > 50) {
             // Afficher un message d'erreur
-            lblNumPlaceError.setText("Le numéro de place doit être un entier positif et ne doit pas dépasser 50.");
+            lblTypeError.setText("Le numéro de place doit être un entier positif et ne doit pas dépasser 50.");
             return false;
         } else {
-            lblNumPlaceError.setText(""); // Effacer le message d'erreur précédent
+            lblTypeError.setText(""); // Effacer le message d'erreur précédent
         }
 
 

@@ -11,7 +11,7 @@
         <TableView fx:id="tableParking" layoutX="26.0" layoutY="42.0" prefHeight="518.0" prefWidth="750.0">
             <columns>
                 <TableColumn fx:id="colNom" prefWidth="75.0" text="Nom" />
-                <TableColumn fx:id="colNumPlace" prefWidth="75.0" text="Numéro de place" />
+                <TableColumn fx:id="colType" prefWidth="75.0" text="type" />
                 <TableColumn fx:id="colCapacite" prefWidth="75.0" text="Capacité" />
                 <TableColumn fx:id="colDelete" prefWidth="75.0" text="Supprimer" />
                 <TableColumn fx:id="colEdit" prefWidth="75.0" text="Modifier" />
@@ -19,14 +19,14 @@
         </TableView>
 
         <TextField fx:id="txtNom" layoutX="107.0" layoutY="578.0" promptText="Nom" />
-        <TextField fx:id="txtNumPlace" layoutX="200.0" layoutY="578.0" promptText="Numéro de place" />
+        <TextField fx:id="txtType" layoutX="200.0" layoutY="578.0" promptText="type" />
         <TextField fx:id="txtCapacite" layoutX="293.0" layoutY="578.0" promptText="Capacité" />
         <Button fx:id="btnSave" layoutX="35.0" layoutY="578.0" mnemonicParsing="false" onAction="#saveChanges" text="Enregistrer" />
         <Button fx:id="btnAdd" layoutX="703.0" layoutY="578.0" mnemonicParsing="false" onAction="#ajouterParking" text="Ajouter" />
 
         <!-- Labels pour afficher les messages d'erreur -->
         <Label fx:id="lblNomError" layoutX="107.0" layoutY="605.0" style="-fx-text-fill: red;" />
-        <Label fx:id="lblNumPlaceError" layoutX="200.0" layoutY="605.0" style="-fx-text-fill: red;" />
+        <Label fx:id="lblTypeError" layoutX="200.0" layoutY="605.0" style="-fx-text-fill: red;" />
         <Label fx:id="lblCapaciteError" layoutX="293.0" layoutY="605.0" style="-fx-text-fill: red;" />
     </children>
 </AnchorPane>

@@ -3,12 +3,12 @@ package entities;
 public class Parking {
     private int idParking;
     private String nom;
-    private int numPlace;
+    private int type;
     private int capacite;
 
-    public Parking(String nom, int numPlace, int capacite) {
+    public Parking(String nom, int type, int capacite) {
         this.nom = nom;
-        this.numPlace = numPlace;
+        this.type = type;
         this.capacite = capacite;
     }
 
@@ -31,12 +31,12 @@ public class Parking {
         this.nom = nom;
     }
 
-    public int getNumPlace() {
-        return numPlace;
+    public int getType() {
+        return type;
     }
 
-    public void setNumPlace(int numPlace) {
-        this.numPlace = numPlace;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public int getCapacite() {
@@ -52,7 +52,7 @@ public class Parking {
         return "Parking{" +
 
                 ", nom='" + nom + '\'' +
-                ", numPlace=" + numPlace +
+                ", type=" + type +
                 ", capacite=" + capacite +
                 '}';
     }
@@ -63,7 +63,7 @@ public class Parking {
         if (!(o instanceof Parking)) return false;
         Parking parking = (Parking) o;
         return idParking == parking.idParking &&
-                numPlace == parking.numPlace &&
+                type == parking.type &&
                 capacite == parking.capacite &&
                 nom.equals(parking.nom);
     }

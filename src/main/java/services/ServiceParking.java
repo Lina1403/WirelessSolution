@@ -12,11 +12,11 @@ public class ServiceParking implements IService<Parking> {
 
     @Override
     public void ajouter(Parking p) throws SQLException {
-        String req = "INSERT INTO parking (nom, numPlace, capacite) VALUES (?, ?, ?)";
+        String req = "INSERT INTO parking (nom, type, capacite) VALUES (?, ?, ?)";
 
         PreparedStatement st = cnx.prepareStatement(req);
         st.setString(1, p.getNom());
-        st.setInt(2, p.getNumPlace());
+        st.setInt(2, p.getType());
         st.setInt(3, p.getCapacite());
 
         st.executeUpdate();
@@ -27,7 +27,7 @@ public class ServiceParking implements IService<Parking> {
     public void modifier(Parking p) throws SQLException {
         String req = "UPDATE parking SET " +
                 "Nom='" + p.getNom() + "', " +
-                "numPlace='" + p.getNumPlace() + "', " +
+                "type='" + p.getType() + "', " +
                 "capacite='" + p.getCapacite() + "' " +
                 "WHERE idParking=" + p.getIdParking();
 
@@ -58,7 +58,7 @@ public class ServiceParking implements IService<Parking> {
 
                 parking.setIdParking(rs.getInt("idParking"));
                 parking.setNom(rs.getString("Nom"));
-                parking.setNumPlace(rs.getInt("numPlace"));
+                parking.setType(rs.getInt("type"));
                 parking.setCapacite(rs.getInt("capacite"));
             }
         } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class ServiceParking implements IService<Parking> {
 
             parking.setIdParking(rs.getInt("idParking"));
             parking.setNom(rs.getString("Nom"));
-            parking.setNumPlace(rs.getInt("numPlace"));
+            parking.setType(rs.getInt("type"));
             parking.setCapacite(rs.getInt("capacite"));
 
             parkings.add(parking);
