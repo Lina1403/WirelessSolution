@@ -37,7 +37,18 @@ public class DiscussionService implements IService<Discussion> {
 
     @Override
     public void modifier(Discussion p) throws SQLException {
+        String req = "UPDATE discussion" +
+                " SET titre = ? " +
+                "WHERE id = ?";
+        try{
+            PreparedStatement ps = connexion.prepareStatement(req);
+            ps.setString(1,p.getTitre());
+            ps.setInt(2,p.getId());
+            ps.executeUpdate();
 
+        }catch(SQLException e ){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -57,7 +68,20 @@ public class DiscussionService implements IService<Discussion> {
 
     @Override
     public Discussion getOneById(int id) throws SQLException {
-        return null;
+        String req = "Select discussion.titre,discussion.date_creation " +
+                "                from discussion" +
+                "               where discussion.id = ?";
+        PreparedStatement pst = connexion.prepareStatement(req);
+        pst.setInt(1,id);
+        ResultSet rst = pst.executeQuery();
+        if(rst.next()){
+            String titre = rst.getString(1);
+            Timestamp date = rst.getTimestamp(2);
+            Discussion discussion = new Discussion(titre,date);
+            return discussion;
+
+        }
+        return null ;
     }
 
 

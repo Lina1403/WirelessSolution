@@ -50,20 +50,23 @@ public class ListeDiscussion {
                     // Récupérez l'ID de la discussion
                     int discussionId = clickedRow.getId();
                     MessageController.discuId = discussionId;
-                    changeScene();
+                    changeScene("/Message.fxml");
 
                 }
             });
             return row ;
         });
     }
-    public void changeScene() {
+    public void changeScene(String s) {
         try {
             // Chargez le fichier FXML pour la nouvelle scène
-            Parent root = FXMLLoader.load(getClass().getResource("/Message.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource(s));
             table.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void redirectToAjout(){
+        changeScene("/AjouterDiscussion.fxml");
     }
 }

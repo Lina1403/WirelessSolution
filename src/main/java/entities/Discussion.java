@@ -27,6 +27,16 @@ public class Discussion {
         this.TimeStampCreation = TimeStampCreation;
 
     }
+    public Discussion(String titre, Timestamp TimeStampCreation) {
+        this.titre = titre;
+        this.TimeStampCreation = TimeStampCreation;
+
+    }
+    public Discussion(int id,String titre) {
+        this.id = id;
+        this.titre = titre;
+
+    }
 
     public int getId() {
         return id;

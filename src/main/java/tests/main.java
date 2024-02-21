@@ -22,7 +22,7 @@ public class main {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         MessageService messageService = new MessageService();
         DiscussionService discussionService = new DiscussionService();
-        Discussion discussion = new Discussion("hello discussion", currentTimestamp, User1);
+        Discussion discussion = new Discussion(18,"update discussion", currentTimestamp, User1);
         Message message = new Message("how are you",currentTimestamp,User2,discussion);
         // ajouter discussion
        /* try {
@@ -67,7 +67,7 @@ public class main {
             System.out.println(e.getMessage());
         }*/
         try{
-            System.out.println(messageService.afficherByDiscussionId(14));
+            discussionService.modifier(discussion);
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }

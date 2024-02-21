@@ -62,16 +62,16 @@ public class MessageController {
               alert1.setTitle("success ");
               alert1.setContentText("discussion deleted successfully");
               alert1.showAndWait();
-              changeScene();
+              changeScene("/ListeDiscussion.fxml");
           }
       }catch(SQLException e){
           System.out.println(e.getMessage());
       }
     }
-    public void changeScene() {
+    public void changeScene(String s) {
         try {
             // Chargez le fichier FXML pour la nouvelle scène
-            Parent root = FXMLLoader.load(getClass().getResource("/ListeDiscussion.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource(s));
             messageList.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,6 +90,9 @@ public class MessageController {
 
         // Clear the messageField
         messageField.clear();
+    }
+    public void modifierTitre(){
+        changeScene("/ModifierTitre.fxml");
     }
 
 }
