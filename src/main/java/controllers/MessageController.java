@@ -1,5 +1,6 @@
 package controllers;
 import entities.Message;
+import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import utils.MessageCell;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 public class MessageController {
@@ -28,6 +30,7 @@ public class MessageController {
     private Button sendButton;
 
     public static int discuId ;
+    User user1 = new User(2,"chiheb");
     MessageService ms = new MessageService();
     DiscussionService ds = new DiscussionService();
 
@@ -35,6 +38,16 @@ public class MessageController {
         ObservableList<Message> messages = FXCollections.observableList(ms.afficherByDiscussionId(discuId));
         messageList.setItems(messages);
         messageList.setCellFactory(param -> new MessageCell());
+
+        sendButton.setOnAction(e -> {
+            try {
+                sendMessage();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+
     }
     public void supprimerDiscussion()  {
       try {
@@ -63,6 +76,20 @@ public class MessageController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void sendMessage() throws SQLException {
+        // Get the text from the messageField
+        String text = messageField.getText();
+        Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
+        // Create a new Message object
+        Message message = new Message(text,currentTimestamp,user1);
+        // add message to the database
+        ms.ajouter(message);
+        // Add the message to the messageList
+        messageList.getItems().add(message);
+
+        // Clear the messageField
+        messageField.clear();
     }
 
 }

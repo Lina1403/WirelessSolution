@@ -1,5 +1,6 @@
 package services;
 
+import controllers.MessageController;
 import entities.Discussion;
 import entities.Message;
 import entities.User;
@@ -42,10 +43,9 @@ public class MessageService implements IService<Message>{
         try{
             PreparedStatement pst = connexion.prepareStatement(req);
             pst.setString(1, message.getContenu());
-            Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
-            pst.setTimestamp(2, currentTimestamp);
+            pst.setTimestamp(2, message.getTimeStamp_envoi());
             pst.setInt(3,message.getEmetteur().getId());
-            pst.setInt(4,14);
+            pst.setInt(4, MessageController.discuId);
             pst.executeUpdate();
         }catch(SQLException e){
             System.out.println(e.getMessage());

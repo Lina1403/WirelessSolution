@@ -22,7 +22,7 @@ public class AjoutDiscussion {
         @FXML
         private TextField titre ;
 
-        User user1 = new User(2,"oussema");
+        User user1 = new User(2,"koussay");
         @FXML
         void ajouterEvent() throws SQLException {
                 String title = titre.getText();
