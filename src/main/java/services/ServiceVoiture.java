@@ -13,12 +13,12 @@ public class ServiceVoiture implements IService<Voiture>{
 
     @Override
     public void ajouter(Voiture v) throws SQLException {
-        String req = "INSERT INTO voiture (nom, email, num_serie, marque, couleur, numPlace) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO voiture (nom, email, numSerie, marque, couleur, numPlace) VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement st = cnx.prepareStatement(req);
         st.setString(1, v.getNom());
         st.setString(2, v.getEmail());
-        st.setString(3, v.getNum_serie());
+        st.setString(3, v.getNumSerie());
         st.setString(4, v.getMarque());
         st.setString(5, v.getCouleur());
         st.setInt(6, v.getNumPlace()); // Assuming numPlace is an integer
@@ -34,7 +34,7 @@ public class ServiceVoiture implements IService<Voiture>{
                 "id_voiture='" + v.getId_voiture() + "', " +
                 "nom='" + v.getNom() + "', " +
                 "email='" + v.getEmail() + "', " +
-                "num_serie='" + v.getNum_serie() + "', " +
+                "numSerie='" + v.getNumSerie() + "', " +
                 "marque='" + v.getMarque() + "', " +
                 "couleur='" + v.getCouleur() + "', " +
                 "numPlace='" + v.getNumPlace() + "' " +
@@ -80,9 +80,9 @@ public class ServiceVoiture implements IService<Voiture>{
                     voiture.setEmail(email);
                 }
 
-                String num_serie = rs.getString("num_serie");
-                if (num_serie != null) {
-                    voiture.setNum_serie(num_serie);
+                String numSerie = rs.getString("numSerie");
+                if (numSerie != null) {
+                    voiture.setNumSerie(numSerie);
                 }
 
                 String marque = rs.getString("marque");
@@ -124,7 +124,7 @@ public class ServiceVoiture implements IService<Voiture>{
             voiture.setId_voiture(rs.getInt("id_voiture"));
             voiture.setNom(rs.getString("nom"));
             voiture.setEmail(rs.getString("email"));
-            voiture.setNum_serie(rs.getString("num_serie"));
+            voiture.setNumSerie(rs.getString("numSerie"));
             voiture.setMarque(rs.getString("marque"));
             voiture.setCouleur(rs.getString("couleur"));
             if (rs.getInt("id_voiture") != 0) {

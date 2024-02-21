@@ -16,7 +16,7 @@ public class Main {
             Voiture nouvelleVoiture = new Voiture();
             nouvelleVoiture.setNom("lina Test");
             nouvelleVoiture.setEmail("test@test.com");
-            nouvelleVoiture.setNum_serie("12345");
+            nouvelleVoiture.setNumSerie("12345");
             nouvelleVoiture.setMarque("Test");
             nouvelleVoiture.setCouleur("Rouge");
             nouvelleVoiture.setNumPlace(4);

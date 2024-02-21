@@ -79,7 +79,7 @@ public class AfficherVoiture {
 
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colNumSerie.setCellValueFactory(new PropertyValueFactory<>("numSerie"));
+        colNumSerie.setCellValueFactory(new PropertyValueFactory<>("num_serie"));
         colMarque.setCellValueFactory(new PropertyValueFactory<>("marque"));
         colCouleur.setCellValueFactory(new PropertyValueFactory<>("couleur"));
         colNumPlace.setCellValueFactory(new PropertyValueFactory<>("numPlace"));
@@ -127,7 +127,7 @@ public class AfficherVoiture {
                         // Charger les détails de la voiture dans les champs de texte
                         txtNom.setText(voiture.getNom());
                         txtEmail.setText(voiture.getEmail());
-                        txtNumSerie.setText(voiture.getNum_serie());
+                        txtNumSerie.setText(voiture.getNumSerie());
                         txtMarque.setText(voiture.getMarque());
                         txtCouleur.setText(voiture.getCouleur());
                         txtNumPlace.setText(String.valueOf(voiture.getNumPlace()));
@@ -146,7 +146,7 @@ public class AfficherVoiture {
         // Mettre à jour l'objet voiture avec les nouvelles valeurs
         voiture.setNom(txtNom.getText());
         voiture.setEmail(txtEmail.getText());
-        voiture.setNum_serie(txtNumSerie.getText());
+        voiture.setNumSerie(txtNumSerie.getText());
         voiture.setMarque(txtMarque.getText());
         voiture.setCouleur(txtCouleur.getText());
         voiture.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
@@ -168,7 +168,7 @@ public class AfficherVoiture {
         Voiture newVoiture = new Voiture();
         newVoiture.setNom(txtNom.getText());
         newVoiture.setEmail(txtEmail.getText());
-        newVoiture.setNum_serie(txtNumSerie.getText());
+        newVoiture.setNumSerie(txtNumSerie.getText());
         newVoiture.setMarque(txtMarque.getText());
         newVoiture.setCouleur(txtCouleur.getText());
         newVoiture.setNumPlace(Integer.parseInt(txtNumPlace.getText()));

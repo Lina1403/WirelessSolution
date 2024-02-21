@@ -2,12 +2,12 @@ package entities;
 
 public class Parking {
     private int idParking;
-    private String place;
+    private String nom;
     private int numPlace;
     private int capacite;
 
-    public Parking(String place, int numPlace, int capacite) {
-        this.place = place;
+    public Parking(String nom, int numPlace, int capacite) {
+        this.nom = nom;
         this.numPlace = numPlace;
         this.capacite = capacite;
     }
@@ -23,12 +23,12 @@ public class Parking {
         this.idParking = idParking;
     }
 
-    public String getPlace() {
-        return place;
+    public String getNom() {
+        return nom;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public int getNumPlace() {
@@ -51,7 +51,7 @@ public class Parking {
     public String toString() {
         return "Parking{" +
 
-                ", place='" + place + '\'' +
+                ", nom='" + nom + '\'' +
                 ", numPlace=" + numPlace +
                 ", capacite=" + capacite +
                 '}';
@@ -65,6 +65,6 @@ public class Parking {
         return idParking == parking.idParking &&
                 numPlace == parking.numPlace &&
                 capacite == parking.capacite &&
-                place.equals(parking.place);
+                nom.equals(parking.nom);
     }
 }

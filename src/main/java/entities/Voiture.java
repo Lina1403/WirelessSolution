@@ -6,7 +6,7 @@ public class Voiture {
     private int id_voiture; // Change from int to Integer
     private String nom;
     private String email;
-    private String num_serie;
+    private String numSerie;
     private String marque;
     private String couleur;
     private int numPlace; // Newly added attribute
@@ -14,20 +14,20 @@ public class Voiture {
     public Voiture() {
     }
 
-    public Voiture(int id_voiture, String nom, String email, String num_serie, String marque, String couleur, int numPlace) {
+    public Voiture(int id_voiture, String nom, String email, String numSerie, String marque, String couleur, int numPlace) {
         this.id_voiture = id_voiture;
         this.nom = nom;
         this.email = email;
-        this.num_serie = num_serie;
+        this.numSerie = numSerie;
         this.marque = marque;
         this.couleur = couleur;
         this.numPlace = numPlace;
     }
 
-    public Voiture(String nom, String email, String num_serie, String marque, String couleur, int numPlace) {
+    public Voiture(String nom, String email, String numSerie, String marque, String couleur, int numPlace) {
         this.nom = nom;
         this.email = email;
-        this.num_serie = num_serie;
+        this.numSerie = numSerie;
         this.marque = marque;
         this.couleur = couleur;
         this.numPlace = numPlace;
@@ -49,12 +49,12 @@ public class Voiture {
         this.email = email;
     }
 
-    public String getNum_serie() {
-        return num_serie;
+    public String getNumSerie() {
+        return numSerie;
     }
 
-    public void setNum_serie(String num_serie) {
-        this.num_serie = num_serie;
+    public void setNumSerie(String numSerie) {
+        this.numSerie = numSerie;
     }
 
     public int getNumPlace() {
@@ -94,7 +94,7 @@ public class Voiture {
         return "Voiture{" +
                 "nom='" + nom + '\'' +
                 ", email='" + email + '\'' +
-                ", num_serie='" + num_serie + '\'' +
+                ", numSerie='" + numSerie + '\'' +
                 ", marque='" + marque + '\'' +
                 ", couleur='" + couleur + '\'' +
                 ", numPlace=" + numPlace +
@@ -110,13 +110,13 @@ public class Voiture {
                 numPlace == voiture.numPlace &&
                 Objects.equals(nom, voiture.nom) &&
                 Objects.equals(email, voiture.email) &&
-                Objects.equals(num_serie, voiture.num_serie) &&
+                Objects.equals(numSerie, voiture.numSerie) &&
                 Objects.equals(marque, voiture.marque) &&
                 Objects.equals(couleur, voiture.couleur);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_voiture, nom, email, num_serie, marque, couleur, numPlace);
+        return Objects.hash(id_voiture, nom, email, numSerie, marque, couleur, numPlace);
     }
 }

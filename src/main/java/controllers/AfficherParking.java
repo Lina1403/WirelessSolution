@@ -21,7 +21,7 @@ public class AfficherParking {
     private TableView<Parking> tableParking;
 
     @FXML
-    private TableColumn<Parking, String> colPlace;
+    private TableColumn<Parking, String> colNom;
 
     @FXML
     private TableColumn<Parking, Integer> colNumPlace;
@@ -36,7 +36,7 @@ public class AfficherParking {
     private TableColumn<Parking, Void> colEdit;
 
     @FXML
-    private TextField txtPlace;
+    private TextField txtNom;
 
     @FXML
     private TextField txtNumPlace;
@@ -61,7 +61,7 @@ public class AfficherParking {
         Set<Parking> parkings = serviceParking.getAll();
         ObservableList<Parking> parkingList = FXCollections.observableArrayList(parkings);
 
-        colPlace.setCellValueFactory(new PropertyValueFactory<>("place"));
+        colNom.setCellValueFactory(new PropertyValueFactory<>("Nom"));
         colNumPlace.setCellValueFactory(new PropertyValueFactory<>("numPlace"));
         colCapacite.setCellValueFactory(new PropertyValueFactory<>("capacite"));
 
@@ -106,7 +106,7 @@ public class AfficherParking {
                     editButton.setOnAction(event -> {
                         parking = getTableView().getItems().get(getIndex());
                         // Charger les détails du parking dans les champs de texte
-                        txtPlace.setText(parking.getPlace());
+                        txtNom.setText(parking.getNom());
                         txtNumPlace.setText(String.valueOf(parking.getNumPlace()));
                         txtCapacite.setText(String.valueOf(parking.getCapacite()));
                     });
@@ -122,7 +122,7 @@ public class AfficherParking {
     @FXML
     void saveChanges() {
         // Mettre à jour l'objet parking avec les nouvelles valeurs
-        parking.setPlace(txtPlace.getText());
+        parking.setNom(txtNom.getText());
         parking.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
         parking.setCapacite(Integer.parseInt(txtCapacite.getText()));
 
@@ -141,7 +141,7 @@ public class AfficherParking {
     void ajouterParking() {
         // Créer un nouvel objet Parking avec les valeurs des champs de texte
         Parking newParking = new Parking();
-        newParking.setPlace(txtPlace.getText());
+        newParking.setNom(txtNom.getText());
         newParking.setNumPlace(Integer.parseInt(txtNumPlace.getText()));
         newParking.setCapacite(Integer.parseInt(txtCapacite.getText()));
 
