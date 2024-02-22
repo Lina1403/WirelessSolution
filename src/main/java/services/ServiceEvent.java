@@ -11,10 +11,9 @@ public class ServiceEvent implements IService<Event> {
 
     @Override
     public void ajouter(Event event) {
-        int numEspace = (event.getEspace() != null) ? event.getEspace().getNumEspace() : 0;
 
-        String req = "INSERT INTO `event` (`name`, `email`, `title`, `date`, `nbrPersonne`, `description`, `numEspace`) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO `event` (`name`, `email`, `title`, `date`, `nbrPersonne`, `description`) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pstmt = cnx.prepareStatement(req);
@@ -24,7 +23,7 @@ public class ServiceEvent implements IService<Event> {
             pstmt.setDate(4, new java.sql.Date(event.getDate().getTime()));
             pstmt.setInt(5, event.getNbrPersonne());
             pstmt.setString(6, event.getDescription());
-            pstmt.setInt(7, numEspace);
+
 
             pstmt.executeUpdate();
             System.out.println("Event added !");
@@ -78,7 +77,6 @@ public class ServiceEvent implements IService<Event> {
                 "`date`='" + new java.sql.Date(event.getDate().getTime()) + "'," + // Correction de l'ajout de la date
                 "`nbrPersonne`='" + event.getNbrPersonne() + "'," +
                 "`description`='" + event.getDescription() + "'," +
-                "`numEspace`='" + event.getEspace().getNumEspace() + "' " +
                 "WHERE `idEvent`=" + event.getIdEvent();
         try {
             Statement st = cnx.createStatement();
@@ -91,15 +89,21 @@ public class ServiceEvent implements IService<Event> {
 
 
     public void supprimer(int idEvent) {
-        String req = "DELETE FROM `event` WHERE `idEvent`=" ;
+        String req = "DELETE FROM event WHERE idEvent = ?";
         try {
-            Statement st = cnx.createStatement();
-            st.executeUpdate(req);
-            System.out.println("Event deleted !");
+            PreparedStatement st = cnx.prepareStatement(req);
+            st.setInt(1, idEvent);
+            int rowsAffected = st.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Event deleted !");
+            } else {
+                System.out.println("No event found with ID: " + idEvent);
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Override
     public Event getOneById(int id) throws SQLException {
@@ -119,7 +123,6 @@ public class ServiceEvent implements IService<Event> {
             eventById.setNbrPersonne(res.getInt("nbrPersonne"));
             eventById.setDescription(res.getString("description"));
             // Assurez-vous d'ajouter l'attribut numEspace si vous le souhaitez
-            eventById.getEspace().setNumEspace(res.getInt("numEspace"));
         }
 
         return eventById;

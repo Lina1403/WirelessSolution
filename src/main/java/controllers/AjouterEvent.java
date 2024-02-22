@@ -18,6 +18,8 @@ import java.time.LocalDate;
 
 public class AjouterEvent {
 
+    private final ServiceEvent serviceEvent = new ServiceEvent();
+
     @FXML
     private DatePicker datePicker;
 
@@ -42,7 +44,6 @@ public class AjouterEvent {
     @FXML
     private TextField titleField;
 
-    private final ServiceEvent serviceEvent = new ServiceEvent();
 
     @FXML
     void ajouterEvent(ActionEvent event) {

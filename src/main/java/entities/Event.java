@@ -11,7 +11,7 @@ public class Event {
     private Date date;
     private int nbrPersonne;
     private String description;
-    Espace espace ;
+     private Espace espace ;
     public Event() {
     }
 

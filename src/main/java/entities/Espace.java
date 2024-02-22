@@ -1,29 +1,34 @@
 package entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class Espace {
+    public enum Etat {
+        RESERVE, LIBRE
+    }
     private int idEspace;
     private String name;
-    private String etat;
+    private Etat etat;
     private int capacite;
     private String description;
-    private int numEspace; // Ajout de l'attribut numEspace
 
 
-    public Espace(String name, String etat, int capacite, String description, int numEspace) {
+
+    public Espace() {}
+
+    public Espace(int idEspace, String name, Etat etat, int capacite, String description) {
+        this.idEspace = idEspace;
         this.name = name;
         this.etat = etat;
         this.capacite = capacite;
         this.description = description;
-        this.numEspace = numEspace;
     }
-
-    public Espace() {
+    public Espace( String name, Etat etat, int capacite, String description) {
+        this.name = name;
+        this.etat = etat;
+        this.capacite = capacite;
+        this.description = description;
     }
-
-
 
     public int getIdEspace() {
         return idEspace;
@@ -41,11 +46,11 @@ public class Espace {
         this.name = name;
     }
 
-    public String getEtat() {
+    public Etat getEtat() {
         return etat;
     }
 
-    public void setEtat(String etat) {
+    public void setEtat(Etat etat) {
         this.etat = etat;
     }
 
@@ -57,52 +62,32 @@ public class Espace {
         this.capacite = capacite;
     }
 
-
-
-
     public String getDescription() {
         return description;
-    }
-
-    public Espace(int numEspace) {
-        this.numEspace = numEspace;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    // Ajout des méthodes getter et setter pour numEspace
-    public int getNumEspace() {
-        return numEspace;
-    }
-
-    public void setNumEspace(int numEspace) {
-        this.numEspace = numEspace;
-    }
-
     @Override
     public String toString() {
         return "Espace{" +
-
+                "idEspace=" + idEspace +
                 ", name='" + name + '\'' +
-                ", etat='" + etat + '\'' +
-                ", capacite=" + capacite +
-                ", description='" + description + '\'' +
-                ", numEspace=" + numEspace +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Espace)) return false;
-        Espace e = (Espace) o;
-        return e.getName().equals(name) &&
-                e.getEtat().equals(etat) &&
-                e.getCapacite() == capacite &&
-                e.getDescription().equals(description) &&
-                e.getNumEspace() == numEspace;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Espace espace = (Espace) o;
+        return idEspace == espace.idEspace;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(idEspace);
     }
 }

@@ -1,8 +1,7 @@
 package services;
 
-import entities.Event;
-import utils.DataSource;
 import entities.Espace;
+import utils.DataSource;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -13,15 +12,14 @@ public class ServiceEspace implements IService<Espace> {
 
     @Override
     public void ajouter(Espace espace) {
-        String req = "INSERT INTO `espace` (`name`, `etat`, `capacite`, `description`, `numEspace`) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String req = "INSERT INTO `espace` (`name`, `etat`, `capacite`, `description`) " +
+                "VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, espace.getName());
-            st.setString(2, espace.getEtat());
+            st.setString(2, espace.getEtat().name()); // Utiliser le nom de l'état de l'énumération
             st.setInt(3, espace.getCapacite());
             st.setString(4, espace.getDescription());
-            st.setInt(5, espace.getNumEspace());
             st.executeUpdate();
 
             // Récupérer l'ID généré automatiquement
@@ -31,12 +29,11 @@ public class ServiceEspace implements IService<Espace> {
                 espace.setIdEspace(idEspace);
             }
 
-            System.out.println("Espace added !");
+            System.out.println("Espace ajouté !");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-
 
     public Set<Espace> getAll() throws SQLException {
         Set<Espace> espaces = new HashSet<>();
@@ -51,9 +48,8 @@ public class ServiceEspace implements IService<Espace> {
             String etat = res.getString("etat");
             int capacite = res.getInt("capacite");
             String description = res.getString("description");
-            int numEspace = res.getInt("numEspace");
 
-            Espace e = new Espace(name, etat, capacite, description, numEspace );
+            Espace e = new Espace(name, Espace.Etat.valueOf(etat), capacite, description); // Convertir le nom de l'état en enum
             e.setIdEspace(idEspace);
             espaces.add(e);
         }
@@ -67,24 +63,21 @@ public class ServiceEspace implements IService<Espace> {
                 "`name`=?," +
                 "`etat`=?," +
                 "`capacite`=?," +
-                "`description`=?," +
-                "`numEspace`=?" +
+                "`description`=?" +
                 " WHERE `idEspace`=?";
         try {
             PreparedStatement st = cnx.prepareStatement(req);
             st.setString(1, e.getName());
-            st.setString(2, e.getEtat());
+            st.setString(2, e.getEtat().name()); // Utiliser le nom de l'état de l'énumération
             st.setInt(3, e.getCapacite());
             st.setString(4, e.getDescription());
-            st.setInt(5, e.getNumEspace());
-            st.setInt(6, e.getIdEspace());
+            st.setInt(5, e.getIdEspace());
             st.executeUpdate();
-            System.out.println("Espace updated !");
+            System.out.println("Espace mis à jour !");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
-
 
     public Espace getOneById(int id) throws SQLException {
         Espace espaceById = null;
@@ -95,11 +88,10 @@ public class ServiceEspace implements IService<Espace> {
 
         if (res.next()) {
             String name = res.getString("name");
-            String EtatEspace = res.getString("etat");
+            String etat = res.getString("etat");
             int capacite = res.getInt("capacite");
             String description = res.getString("description");
-            int numEspace = res.getInt("numEspace");
-            espaceById = new Espace(name, EtatEspace, capacite, description, numEspace);
+            espaceById = new Espace(name, Espace.Etat.valueOf(etat), capacite, description); // Convertir le nom de l'état en enum
             espaceById.setIdEspace(id);
         }
 
@@ -111,6 +103,6 @@ public class ServiceEspace implements IService<Espace> {
         PreparedStatement PS = cnx.prepareStatement("DELETE FROM espace WHERE idEspace=?");
         PS.setInt(1, idEspace);
         PS.executeUpdate();
-        System.out.println("Espace supprimé");
+        System.out.println("Espace supprimé !");
     }
 }
