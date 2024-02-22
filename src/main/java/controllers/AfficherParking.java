@@ -1,4 +1,5 @@
-package controllers;
+/* package controllers;
+
 
 import entities.Parking;
 import javafx.collections.FXCollections;
@@ -9,10 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import services.IService;
 import services.ServiceParking;
 import java.sql.SQLException;
-import java.text.BreakIterator;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AfficherParking {
 
@@ -179,9 +177,9 @@ public class AfficherParking {
 
         // Valider le champ Numéro de place
         String type = txtType.getText().trim();
-        if (type.isEmpty() || !type.matches("\\d+") || Integer.parseInt(type) <= 0 || Integer.parseInt(type) > 50) {
+        if (type.isEmpty() || !type.matches("\\d+") || Integer.parseInt(type) <= 0 || Integer.parseInt(type) > 3) {
             // Afficher un message d'erreur
-            lblTypeError.setText("Le numéro de place doit être un entier positif et ne doit pas dépasser 50.");
+            lblTypeError.setText("Le type doit être un entier positif et ne doit pas dépasser 3.");
             return false;
         } else {
             lblTypeError.setText(""); // Effacer le message d'erreur précédent
@@ -204,3 +202,5 @@ public class AfficherParking {
 
 
 }
+
+ */

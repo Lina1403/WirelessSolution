@@ -1,68 +1,43 @@
+/*
 package entities;
 
 import java.util.Objects;
 
 public class Voiture {
-    private int id_voiture; // Change from int to Integer
-    private String nom;
-    private String email;
-    private String numSerie;
+    private int idVoiture;
+    private int idResident; // Assuming this is the foreign key referring to the resident
     private String marque;
+    private String model;
     private String couleur;
-    private int numPlace; // Newly added attribute
+    private String matricule;
+    private String nomParking;
 
     public Voiture() {
     }
 
-    public Voiture(int id_voiture, String nom, String email, String numSerie, String marque, String couleur, int numPlace) {
-        this.id_voiture = id_voiture;
-        this.nom = nom;
-        this.email = email;
-        this.numSerie = numSerie;
+    public Voiture(int idResident, String marque, String model, String couleur, String matricule, String nomParking) {
+        this.idResident = idResident;
         this.marque = marque;
+        this.model = model;
         this.couleur = couleur;
-        this.numPlace = numPlace;
+        this.matricule = matricule;
+        this.nomParking = nomParking;
     }
 
-    public Voiture(String nom, String email, String numSerie, String marque, String couleur, int numPlace) {
-        this.nom = nom;
-        this.email = email;
-        this.numSerie = numSerie;
-        this.marque = marque;
-        this.couleur = couleur;
-        this.numPlace = numPlace;
+    public int getIdVoiture() {
+        return idVoiture;
     }
 
-    public String getNom() {
-        return nom;
+    public void setIdVoiture(int idVoiture) {
+        this.idVoiture = idVoiture;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public int getIdResident() {
+        return idResident;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getNumSerie() {
-        return numSerie;
-    }
-
-    public void setNumSerie(String numSerie) {
-        this.numSerie = numSerie;
-    }
-
-    public int getNumPlace() {
-        return numPlace;
-    }
-
-    public void setNumPlace(int numPlace) {
-        this.numPlace = numPlace;
+    public void setIdResident(int idResident) {
+        this.idResident = idResident;
     }
 
     public String getMarque() {
@@ -73,6 +48,14 @@ public class Voiture {
         this.marque = marque;
     }
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     public String getCouleur() {
         return couleur;
     }
@@ -81,23 +64,32 @@ public class Voiture {
         this.couleur = couleur;
     }
 
-    public int getId_voiture() {
-        return id_voiture;
+    public String getMatricule() {
+        return matricule;
     }
 
-    public void setId_voiture(int id_voiture) {
-        this.id_voiture = id_voiture;
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public String getNomParking() {
+        return nomParking;
+    }
+
+    public void setNomParking(String nomParking) {
+        this.nomParking = nomParking;
     }
 
     @Override
     public String toString() {
         return "Voiture{" +
-                "nom='" + nom + '\'' +
-                ", email='" + email + '\'' +
-                ", numSerie='" + numSerie + '\'' +
+                "idVoiture=" + idVoiture +
+                ", idResident=" + idResident +
                 ", marque='" + marque + '\'' +
+                ", model='" + model + '\'' +
                 ", couleur='" + couleur + '\'' +
-                ", numPlace=" + numPlace +
+                ", matricule='" + matricule + '\'' +
+                ", nomParking='" + nomParking + '\'' +
                 '}';
     }
 
@@ -106,17 +98,19 @@ public class Voiture {
         if (this == o) return true;
         if (!(o instanceof Voiture)) return false;
         Voiture voiture = (Voiture) o;
-        return id_voiture == voiture.id_voiture &&
-                numPlace == voiture.numPlace &&
-                Objects.equals(nom, voiture.nom) &&
-                Objects.equals(email, voiture.email) &&
-                Objects.equals(numSerie, voiture.numSerie) &&
+        return idVoiture == voiture.idVoiture &&
+                idResident == voiture.idResident &&
                 Objects.equals(marque, voiture.marque) &&
-                Objects.equals(couleur, voiture.couleur);
+                Objects.equals(model, voiture.model) &&
+                Objects.equals(couleur, voiture.couleur) &&
+                Objects.equals(matricule, voiture.matricule) &&
+                Objects.equals(nomParking, voiture.nomParking);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_voiture, nom, email, numSerie, marque, couleur, numPlace);
+        return Objects.hash(idVoiture, idResident, marque, model, couleur, matricule, nomParking);
     }
 }
+
+ */

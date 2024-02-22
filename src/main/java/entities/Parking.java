@@ -3,16 +3,18 @@ package entities;
 public class Parking {
     private int idParking;
     private String nom;
-    private int type;
     private int capacite;
-
-    public Parking(String nom, int type, int capacite) {
-        this.nom = nom;
-        this.type = type;
-        this.capacite = capacite;
-    }
+    private String type;
+    private int nombreActuelles;
 
     public Parking() {
+    }
+
+    public Parking(String nom, int capacite, String type, int nombreActuelles) {
+        this.nom = nom;
+        this.capacite = capacite;
+        this.type = type;
+        this.nombreActuelles = nombreActuelles;
     }
 
     public int getIdParking() {
@@ -31,14 +33,6 @@ public class Parking {
         this.nom = nom;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public int getCapacite() {
         return capacite;
     }
@@ -47,24 +41,54 @@ public class Parking {
         this.capacite = capacite;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getNombreActuelles() {
+        return nombreActuelles;
+    }
+
+    public void setNombreActuelles(int nombreActuelles) {
+        this.nombreActuelles = nombreActuelles;
+    }
+
     @Override
     public String toString() {
         return "Parking{" +
-
+                "idParking=" + idParking +
                 ", nom='" + nom + '\'' +
-                ", type=" + type +
                 ", capacite=" + capacite +
+                ", type='" + type + '\'' +
+                ", nombreActuelles=" + nombreActuelles +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Parking)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         Parking parking = (Parking) o;
-        return idParking == parking.idParking &&
-                type == parking.type &&
-                capacite == parking.capacite &&
-                nom.equals(parking.nom);
+
+        if (idParking != parking.idParking) return false;
+        if (capacite != parking.capacite) return false;
+        if (nombreActuelles != parking.nombreActuelles) return false;
+        if (nom != null ? !nom.equals(parking.nom) : parking.nom != null) return false;
+        return type != null ? type.equals(parking.type) : parking.type == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idParking;
+        result = 31 * result + (nom != null ? nom.hashCode() : 0);
+        result = 31 * result + capacite;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + nombreActuelles;
+        return result;
     }
 }

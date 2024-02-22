@@ -1,3 +1,4 @@
+/*
 package controllers;
 
 import entities.Voiture;
@@ -11,7 +12,6 @@ import services.ServiceVoiture;
 import java.sql.SQLException;
 import java.text.BreakIterator;
 import java.util.Set;
-import javafx.scene.input.KeyEvent;
 
 
 public class AfficherVoiture {
@@ -148,6 +148,7 @@ public class AfficherVoiture {
         tableVoiture.setItems(voitureList);
     }
 
+
     @FXML
     void saveChanges() {
         if (validateInputs()) {
@@ -270,3 +271,5 @@ public class AfficherVoiture {
         return true;
     }
 }
+
+ */
