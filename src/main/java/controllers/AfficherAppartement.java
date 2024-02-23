@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import services.ServiceAppartemment;
+import services.ServiceFacture;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -45,30 +46,13 @@ public class AfficherAppartement {
     private TableColumn<Appartement, Appartement.statutAppartement> statutAppartementColumn;
 
     @FXML
-    private TableView<Appartement> tableAppartements;
-
+    public TableView<Appartement> tableAppartements;
+    // Déclarez un champ pour stocker une référence au contrôleur AfficherAppartement
+    private AfficherAppartement afficherAppartementController;
     private final ServiceAppartemment serviceAppartemment = new ServiceAppartemment();
 
-
-    @FXML
-    void supprimerAppartement() {
-        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
-        if (appartementSelectionne != null) {
-            try {
-                System.out.println("ID de l'appartement à supprimer : " + appartementSelectionne.getNumAppartement());
-                serviceAppartemment.supprimer(appartementSelectionne.getIdAppartement());
-                System.out.println("Appartement supprimé avec succès !");
-
-                // Supprimer l'appartement de la liste affichée dans la table
-                tableAppartements.getItems().remove(appartementSelectionne);
-            } catch (SQLException e) {
-                e.printStackTrace(); // Handle SQLException appropriately
-            }
-        } else {
-            System.out.println("Veuillez sélectionner un appartement à supprimer.");
-        }
-    }
-
+   private final ServiceFacture serviceFacture  = new ServiceFacture();
+ AjouterFacture controler ;
 
 
 
@@ -148,15 +132,15 @@ public class AfficherAppartement {
     void gererFacture() {
         Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
         if (appartementSelectionne != null) {
-            // Vous pouvez ouvrir une nouvelle fenêtre pour afficher les factures associées à cet appartement
-            // Vous pouvez également utiliser un dialogue modal ou une autre méthode de votre choix pour afficher les factures.
-            // Par exemple :
+            // Charger le bon fichier FXML pour afficher les factures associées à l'appartement sélectionné
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
             Parent root;
             try {
                 root = loader.load();
+                // Passer les données de l'appartement sélectionné au contrôleur approprié
                 AfficherFacture controller = loader.getController();
                 controller.initData(appartementSelectionne);
+                // Afficher la nouvelle scène contenant les factures associées à l'appartement
                 Stage stage = new Stage();
                 stage.setTitle("Liste des Factures");
                 stage.setScene(new Scene(root));
@@ -169,5 +153,62 @@ public class AfficherAppartement {
         }
     }
 
-}
+    @FXML
+    void supprimerAppartement() {
+        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
+        if (appartementSelectionne != null) {
+            try {
+                System.out.println("ID de l'appartement à supprimer : " + appartementSelectionne.getNumAppartement());
+                serviceAppartemment.supprimer(appartementSelectionne.getIdAppartement());
+                System.out.println("Appartement supprimé avec succès !");
+
+                // Supprimer l'appartement de la liste affichée dans la table
+                tableAppartements.getItems().remove(appartementSelectionne);
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle SQLException appropriately
+            }
+        } else {
+            System.out.println("Veuillez sélectionner un appartement à supprimer.");
+        }
+    }
+
+
+    @FXML
+    public void ajouterFacture(ActionEvent actionEvent) {
+        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
+        if (appartementSelectionne != null) {
+            System.out.println("Appartement selected: " + appartementSelectionne);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
+                Parent root = loader.load();
+
+                // Get the controller and pass the selected Appartement
+                AjouterFacture controller = loader.getController();
+                controller.setAppartementSelectionne(appartementSelectionne);
+
+                // Create a new stage
+                Stage stage = new Stage();
+                stage.setTitle("Ajouter Facture");
+                stage.setScene(new Scene(root));
+
+                // Show the new stage
+                System.out.println("Showing new stage...");
+                stage.show();
+                System.out.println("New stage should be visible now.");
+            } catch (IOException e) {
+                System.out.println("IOException occurred:");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No Appartement selected.");
+        }
+    }
+
+
+    public void initData(Appartement appartement, AjouterFacture ajouterFactureController) {
+        this.controler = ajouterFactureController;
+        ajouterFactureController.setAppartementSelectionne(appartement);
+    }
+    }
+
 

@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class AfficherFacture {
@@ -59,29 +60,55 @@ public class AfficherFacture {
     // Méthode pour initialiser les données
     public void initData(Appartement appartement) {
         this.appartementSelectionne = appartement;
-        // Vous pouvez utiliser les données de l'appartement sélectionné pour charger et afficher les factures associées
-        // Par exemple, vous pouvez appeler une méthode pour charger les factures de l'appartement à partir de la base de données ici
-        // Ensuite, mettez à jour l'affichage avec les factures chargées
+
+        if (appartementSelectionne != null) {
+            try {
+                // Récupérez l'identifiant de l'appartement sélectionné
+                int idAppartement = appartementSelectionne.getIdAppartement();
+
+                // Récupérez toutes les factures
+                Set<Facture> toutesLesFactures = serviceFacture.getAll();
+
+                // Filtrer les factures pour ne garder que celles associées à l'appartement spécifié
+                Set<Facture> facturesAppartementSpecifique = filterFacturesByAppartement(toutesLesFactures, idAppartement);
+
+                ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(facturesAppartementSpecifique));
+                tableFactures.setItems(observableList);
+            } catch (SQLException e) {
+                e.printStackTrace(); // Gérer l'exception de manière appropriée
+            }
+        }
     }
 
 
     @FXML
-    void initialize() {
-        try {
-            Set<Facture> factures = serviceFacture.getAll();
-            ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
-            tableFactures.setItems(observableList);
-        } catch (SQLException e) {
-            e.printStackTrace(); // Gérer l'exception de manière appropriée
-        }
-
+    void initialize() throws IOException {
         // Assurez-vous que les colonnes sont correctement initialisées
         numFactureColumn.setCellValueFactory(new PropertyValueFactory<>("numFacture"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionFacture"));
+
+        // Appelez la méthode initData() de ce contrôleur avec l'appartement sélectionné
+        initData(appartementSelectionne);
     }
+
+
+
+
+
+    // Méthode pour filtrer les factures par appartement
+    private Set<Facture> filterFacturesByAppartement(Set<Facture> toutesLesFactures, int idAppartement) {
+        Set<Facture> facturesFiltrees = new HashSet<>();
+        for (Facture facture : toutesLesFactures) {
+            if (facture.getAppartement().getIdAppartement() == idAppartement) {
+                facturesFiltrees.add(facture);
+            }
+        }
+        return facturesFiltrees;
+    }
+
     @FXML
     public void ajouterFacture(ActionEvent actionEvent) {
 

@@ -40,6 +40,10 @@ public class AjouterFacture {
     ServiceAppartemment serviceAppartemment = new ServiceAppartemment();
 
     private final ServiceFacture PS = new ServiceFacture();
+    private Appartement appartementSelectionne;
+    public void setAppartementSelectionne(Appartement appartement) {
+        this.appartementSelectionne = appartement;
+    }
     @FXML
     void Ajouter(ActionEvent event ) {
         try {
@@ -66,16 +70,15 @@ public class AjouterFacture {
             if (montant <= 0) {
                 throw new IllegalArgumentException("Montant doit être un nombre décimal positif.");
             }
-            Appartement appartement = new Appartement(2);
             // Récupérer l'idAppartement correspondant au numAppartement de la facture
-            int idAppartement = getIdAppartementByNumAppartement(appartement.getNumAppartement(), serviceAppartemment.getAll());
 
-            if (idAppartement == -1) {
-                throw new IllegalArgumentException("Appartement with numAppartement " + appartement.getNumAppartement() + " does not exist.");
+
+
+            if (appartementSelectionne == null) {
+                throw new IllegalArgumentException("No apartment selected.");
             }
-
             // Créer l'objet Facture
-            Facture facture = new Facture(Numfact, Date.valueOf(date), type, montant, description,appartement);
+            Facture facture = new Facture(Numfact, Date.valueOf(date), type, montant, description,appartementSelectionne);
 
             // Appeler la méthode pour ajouter la facture
             PS.ajouter(facture);

@@ -50,7 +50,8 @@
         </TableView>
         <Button text="Supprimer" onAction="#supprimerAppartement"/>
         <Button text="Ajouter" onAction="#ajouterAppartement"/>
-        <Button text="Gérer Facture" onAction="#gererFacture"/>
+       <Button text="Gérer Facture" onAction="#gererFacture"/>
+        <Button onAction="#ajouterFacture" text="Ajouter Facture" />
 
     </VBox>
 
