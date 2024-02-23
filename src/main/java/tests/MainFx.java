@@ -14,8 +14,8 @@ public class MainFx extends Application {
         public void start(Stage stage) throws IOException {
               // FXMLLoader loader= new FXMLLoader(getClass().getResource("/AjouterAppartement.fxml"));
                // FXMLLoader loader= new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
-            FXMLLoader loader= new FXMLLoader(getClass().getResource("/AfficherAppartement.fxml"));
-         // FXMLLoader loader= new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
+          //  FXMLLoader loader= new FXMLLoader(getClass().getResource("/AfficherAppartement.fxml"));
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
               //  FXMLLoader loader= new FXMLLoader(getClass().getResource("/ModifierFacture.fxml"));
            //   FXMLLoader loader= new FXMLLoader(getClass().getResource("/ModifierApapartment.fxml"));
 
