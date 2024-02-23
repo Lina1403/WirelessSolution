@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AfficherAppartement"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox spacing="10.0" layoutX="50.0" layoutY="50.0">
+        <TextField fx:id="searchNumField" promptText="Numéro d'appartement"/>
+        <TextField fx:id="searchNomResidentField" promptText="Nom du résident"/>
+        <Button onAction="#rechercherAppartements" text="Rechercher"/>
+
+        <TableView fx:id="tableAppartements">
+            <columns>
+                <TableColumn fx:id="numAppartementColumn" text="Numéro de l'appartement">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="numAppartement"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="nomResidentColumn" text="Nom du résident">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="nomResident"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="tailleColumn" text="Taille">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="taille"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="nbrEtageColumn" text="Nombre d'étage">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="nbrEtage"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="statutAppartementColumn" text="Statut Appartement">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="statutAppartement"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <Button text="Supprimer" onAction="#supprimerAppartement"/>
+        <Button text="Ajouter" onAction="#ajouterAppartement"/>
+        <Button text="Gérer Facture" onAction="#gererFacture"/>
+
+    </VBox>
+
+</AnchorPane>

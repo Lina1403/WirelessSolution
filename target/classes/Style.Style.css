@@ -1,0 +1,45 @@
+/* Apply styles to the TableView */
+#tableFactures {
+    -fx-pref-width: 100%; /* Corrected to fit the container */
+    -fx-max-height: 500px;
+}
+
+/* Apply styles to the TableColumn headers */
+.table-view .column-header-background {
+    -fx-background-color: #6495ED;
+}
+
+.table-view .column-header {
+    -fx-text-fill: white;
+    -fx-font-size: 14px; /* Corrected for better readability */
+    -fx-padding: 2px; /* Corrected for a cleaner look */
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+/* Apply styles to the TableView rows */
+.table-row-cell {
+    -fx-background-color: #F0F8FF;
+    -fx-border-color: lightgrey;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #E6E6FA;
+}
+
+/* Apply styles to the Buttons */
+.button {
+    -fx-font-size: 14px;
+    -fx-pref-width: auto;
+    -fx-pref-height: 30px;
+    -fx-background-color: #87CEFA; /* Changed to a lighter color - LightSkyBlue */
+    -fx-text-fill: white;
+    -fx-border-color: #3454B4;
+    -fx-border-width: 2px;
+}
+
+.button:hover {
+    -fx-background-color: #3454B4;
+    -fx-text-fill: #F0F8FF;
+    -fx-border-color: #4169E1;
+}

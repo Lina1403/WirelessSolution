@@ -1,0 +1,15 @@
+services\IService.class
+controllers\AjouterAppartement.class
+services\ServiceFacture.class
+controllers\AjouterFacture.class
+entities\Facture.class
+controllers\AfficherFacture.class
+entities\Appartement.class
+controllers\AfficherAppartement.class
+tests\main.class
+services\ServiceAppartemment.class
+tests\MainFx.class
+controllers\ModifierFacture.class
+entities\Appartement$statutAppartement.class
+entities\Facture$Type.class
+utils\DataSource.class
