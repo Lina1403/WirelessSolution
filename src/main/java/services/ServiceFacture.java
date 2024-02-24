@@ -250,6 +250,48 @@ public class ServiceFacture implements IService<Facture>{
 
         return factures;
     }
+    public Set<Facture> getAllForAppartement(Appartement appartement) throws SQLException {
+        Set<Facture> factures = new HashSet<>();
+        // Assurez-vous que l'objet appartement n'est pas null avant de l'utiliser
+        if (appartement == null) {
+            System.out.println("Appartement is null.");
+            return factures; // ou lancez une exception appropriée selon vos besoins
+        }
+
+        String req = "SELECT f.*, a.numAppartement " +
+                "FROM facture f " +
+                "JOIN appartement a ON f.idAppartement = a.idAppartement " +
+                "WHERE a.idAppartement = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, appartement.getIdAppartement());
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Facture facture = new Facture();
+                    facture.setNumFacture(rs.getInt("numFacture"));
+                    facture.setDate(rs.getDate("date"));
+                    Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
+                    facture.setType(typeFacture);
+                    facture.setMontant(rs.getFloat("montant"));
+                    facture.setDescriptionFacture(rs.getString("descriptionFacture"));
+
+                    Appartement appartementFacture = new Appartement();
+                    appartementFacture.setNumAppartement(rs.getInt("numAppartement"));
+
+                    facture.setAppartement(appartementFacture);
+                    factures.add(facture);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace(); // Ajoutez cette ligne pour afficher les erreurs SQL
+            }
+        }
+
+        return factures;
+    }
+
+
+
 }
 
 

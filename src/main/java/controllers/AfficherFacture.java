@@ -47,6 +47,7 @@ public class AfficherFacture {
     private final ServiceFacture serviceFacture = new ServiceFacture();
     @FXML
     private TextField searchNumField;
+    AfficherAppartement afficherAppartement ;
 
 
 
@@ -55,10 +56,45 @@ public class AfficherFacture {
 
     @FXML
     private Button modifierButton;
-    Appartement appartementSelectionne;
+    private Appartement appartementSelectionne;
+
+    public void initData(Appartement appartementSelectionne) {
+        this.appartementSelectionne = appartementSelectionne;
+    }
+
+    @FXML
+    void initialize() throws IOException {
+        numFactureColumn.setCellValueFactory(new PropertyValueFactory<>("numFacture"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+        montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionFacture"));
+
+        // Affichez les factures pour l'appartement sélectionné
+        try {
+            System.out.println("Selected Appartement: " + appartementSelectionne);
+
+            // Assurez-vous que l'objet appartementSelectionne n'est pas null avant de l'utiliser
+            if (appartementSelectionne != null) {
+                afficherFactures(appartementSelectionne);
+            } else {
+                System.out.println("Appartement is null.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQLException appropriately
+        }
+    }
+
+    void afficherFactures(Appartement appartement) throws SQLException {
+        Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
+        // Utilisez factures pour afficher les données dans votre interface graphique
+        // ...
+    }
+
+
 
     // Méthode pour initialiser les données
-    public void initData(Appartement appartement) {
+   /* public void initData(Appartement appartement) {
         this.appartementSelectionne = appartement;
 
         if (appartementSelectionne != null) {
@@ -94,7 +130,7 @@ public class AfficherFacture {
         initData(appartementSelectionne);
     }
 
-
+*/
 
 
 

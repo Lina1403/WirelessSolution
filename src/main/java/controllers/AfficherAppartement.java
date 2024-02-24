@@ -56,6 +56,7 @@ public class AfficherAppartement {
 
 
 
+
     private void afficherAppartements() throws SQLException {
         Set<Appartement> appartements = serviceAppartemment.getAll();
         List<Appartement> appartementList = new ArrayList<>(appartements);
@@ -128,30 +129,6 @@ public class AfficherAppartement {
         }
     }
 
-    @FXML
-    void gererFacture() {
-        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
-        if (appartementSelectionne != null) {
-            // Charger le bon fichier FXML pour afficher les factures associées à l'appartement sélectionné
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
-            Parent root;
-            try {
-                root = loader.load();
-                // Passer les données de l'appartement sélectionné au contrôleur approprié
-                AfficherFacture controller = loader.getController();
-                controller.initData(appartementSelectionne);
-                // Afficher la nouvelle scène contenant les factures associées à l'appartement
-                Stage stage = new Stage();
-                stage.setTitle("Liste des Factures");
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace(); // Gérer l'exception de manière appropriée
-            }
-        } else {
-            System.out.println("Veuillez sélectionner un appartement pour gérer les factures.");
-        }
-    }
 
     @FXML
     void supprimerAppartement() {
@@ -203,12 +180,39 @@ public class AfficherAppartement {
             System.out.println("No Appartement selected.");
         }
     }
+    @FXML
+    public void gererFacture(ActionEvent actionEvent) {
+        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
+        if (appartementSelectionne != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
+                Parent root = loader.load();
+
+                // Get the controller and pass the selected Appartement
+                AfficherFacture controller = loader.getController();
+                controller.initData(appartementSelectionne);
+
+                // Create a new stage
+                Stage stage = new Stage();
+                stage.setTitle("Liste des Factures");
+                stage.setScene(new Scene(root));
+
+                // Show the new stage
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No Appartement selected.");
+        }
+    }
 
 
-    public void initData(Appartement appartement, AjouterFacture ajouterFactureController) {
-        this.controler = ajouterFactureController;
-        ajouterFactureController.setAppartementSelectionne(appartement);
-    }
-    }
+
+
+
+
+
+}
 
 

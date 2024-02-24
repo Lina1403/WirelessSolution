@@ -151,5 +151,42 @@ public class ServiceAppartemment implements IService<Appartement> {
 
         return appartements;
     }
+    public Set<Facture> getAllForAppartement(Appartement appartement) throws SQLException {
+        Set<Facture> factures = new HashSet<>();
+        String req = "SELECT f.*, a.numAppartement " +
+                "FROM facture f " +
+                "JOIN appartement a ON f.idAppartement = a.idAppartement " +
+                "WHERE a.idAppartement = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, appartement.getIdAppartement()); // Assurez-vous que getIdAppartement() retourne l'identifiant de l'appartement
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Créez une instance de Facture pour chaque ligne de résultat
+                    Facture facture = new Facture();
+                    facture.setNumFacture(rs.getInt("numFacture"));
+                    facture.setDate(rs.getDate("date"));
+                    Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
+                    facture.setType(typeFacture);
+                    facture.setMontant(rs.getFloat("montant"));
+                    facture.setDescriptionFacture(rs.getString("descriptionFacture"));
+
+                    // Créez une instance d'Appartement et définissez son numéro d'appartement
+                    Appartement appartementFacture = new Appartement();
+                    appartementFacture.setNumAppartement(rs.getInt("numAppartement"));
+
+                    // Associez l'appartement à la facture
+                    facture.setAppartement(appartementFacture);
+
+                    // Ajoutez la facture à l'ensemble factures
+                    factures.add(facture);
+                }
+            }
+        }
+
+        return factures;
+    }
+
 
 }
