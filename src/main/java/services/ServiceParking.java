@@ -12,12 +12,12 @@ public class ServiceParking implements IService<Parking> {
 
     @Override
     public void ajouter(Parking p) throws SQLException {
-        String req = "INSERT INTO parking (nom, type, capacite, nombreActuelles) VALUES (?, ?, ?, ?)";
+        String req = "INSERT INTO parking (nom,capacite , type, nombreActuelles) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, p.getNom());
-            st.setString(2, p.getType());
-            st.setInt(3, p.getCapacite());
+            st.setInt(2, p.getCapacite());
+            st.setString(3, p.getType());
             st.setInt(4, p.getNombreActuelles());
 
             int rowsAffected = st.executeUpdate();
@@ -35,12 +35,12 @@ public class ServiceParking implements IService<Parking> {
 
     @Override
     public void modifier(Parking p) throws SQLException {
-        String req = "UPDATE parking SET nom=?, type=?, capacite=?, nombreActuelles=? WHERE idParking=?";
+        String req = "UPDATE parking SET nom = ?, capacite = ?, type = ?, nombreActuelles = ? WHERE idParking = ?";
 
         try (PreparedStatement st = cnx.prepareStatement(req)) {
             st.setString(1, p.getNom());
-            st.setString(2, p.getType());
-            st.setInt(3, p.getCapacite());
+            st.setInt(2, p.getCapacite());
+            st.setString(3, p.getType());
             st.setInt(4, p.getNombreActuelles());
             st.setInt(5, p.getIdParking());
 
@@ -114,5 +114,18 @@ public class ServiceParking implements IService<Parking> {
         }
 
         return parkings;
+    }
+
+    public boolean existeNomParking(String nom) throws SQLException {
+        String req = "SELECT COUNT(*) FROM parking WHERE nom = ?";
+        try (PreparedStatement st = cnx.prepareStatement(req)) {
+            st.setString(1, nom);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        }
+        return false;
     }
 }

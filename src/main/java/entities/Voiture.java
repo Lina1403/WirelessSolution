@@ -1,4 +1,3 @@
-/*
 package entities;
 
 import java.util.Objects;
@@ -10,18 +9,18 @@ public class Voiture {
     private String model;
     private String couleur;
     private String matricule;
-    private String nomParking;
+    private Parking parking; // Changed type from String to Parking
 
     public Voiture() {
     }
 
-    public Voiture(int idResident, String marque, String model, String couleur, String matricule, String nomParking) {
+    public Voiture(int idResident, String marque, String model, String couleur, String matricule, Parking parking) {
         this.idResident = idResident;
         this.marque = marque;
         this.model = model;
         this.couleur = couleur;
         this.matricule = matricule;
-        this.nomParking = nomParking;
+        this.parking = parking;
     }
 
     public int getIdVoiture() {
@@ -72,12 +71,12 @@ public class Voiture {
         this.matricule = matricule;
     }
 
-    public String getNomParking() {
-        return nomParking;
+    public Parking getParking() {
+        return parking;
     }
 
-    public void setNomParking(String nomParking) {
-        this.nomParking = nomParking;
+    public void setParking(Parking parking) {
+        this.parking = parking;
     }
 
     @Override
@@ -89,14 +88,14 @@ public class Voiture {
                 ", model='" + model + '\'' +
                 ", couleur='" + couleur + '\'' +
                 ", matricule='" + matricule + '\'' +
-                ", nomParking='" + nomParking + '\'' +
+                ", parking=" + parking +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Voiture)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Voiture voiture = (Voiture) o;
         return idVoiture == voiture.idVoiture &&
                 idResident == voiture.idResident &&
@@ -104,13 +103,11 @@ public class Voiture {
                 Objects.equals(model, voiture.model) &&
                 Objects.equals(couleur, voiture.couleur) &&
                 Objects.equals(matricule, voiture.matricule) &&
-                Objects.equals(nomParking, voiture.nomParking);
+                Objects.equals(parking, voiture.parking);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idVoiture, idResident, marque, model, couleur, matricule, nomParking);
+        return Objects.hash(idVoiture, idResident, marque, model, couleur, matricule, parking);
     }
 }
-
- */

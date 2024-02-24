@@ -1,121 +1,139 @@
-/*
-package tests;
-
-import entities.Voiture;
-import services.ServiceVoiture;
-
-import java.sql.SQLException;
-import java.util.Set;
-
-public class Main {
-
-    public static void main(String[] args) {
-        ServiceVoiture serviceVoiture = new ServiceVoiture();
-
-        try {
-            // Création d'une nouvelle voiture
-            Voiture nouvelleVoiture = new Voiture();
-            nouvelleVoiture.setMarque("Test");
-            nouvelleVoiture.setCouleur("Rouge");
-            nouvelleVoiture.setMatricule("12345");
-            nouvelleVoiture.setNomParking("Test Parking");
-
-            // Ajout de la voiture à la base de données
-            serviceVoiture.ajouter(nouvelleVoiture);
-            System.out.println("Voiture ajoutée : " + nouvelleVoiture);
-
-            // Modification de la voiture
-            nouvelleVoiture.setMarque("Nouvelle marque");
-            serviceVoiture.modifier(nouvelleVoiture);
-            System.out.println("Voiture modifiée : " + nouvelleVoiture);
-
-            // Récupération de la voiture par son identifiant
-            Voiture voitureRecuperee = serviceVoiture.getOneById(nouvelleVoiture.getIdVoiture());
-            System.out.println("Voiture récupérée : " + voitureRecuperee);
-
-            // Suppression de la voiture
-            serviceVoiture.supprimer(nouvelleVoiture.getIdVoiture());
-            System.out.println("Voiture supprimée : " + nouvelleVoiture);
-
-            // Affichage de toutes les voitures
-            Set<Voiture> voitures = serviceVoiture.getAll();
-            for (Voiture v : voitures) {
-                System.out.println(v);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
- */
 package tests;
 
 import entities.Parking;
+import entities.Voiture;
 import services.ServiceParking;
-
+import services.ServiceVoiture;
 import java.sql.SQLException;
 import java.util.Set;
 
 public class Main {
 
+
     public static void main(String[] args) {
-        ServiceParking serviceParking = new ServiceParking();
+      ServiceParking serviceParking = new ServiceParking();
+
+        ServiceVoiture sv=new ServiceVoiture();
 
         try {
 
             // Création d'un nouveau parking
-            Parking nouveauParking = new Parking();
-            nouveauParking.setNom(" Parking 3");
-            nouveauParking.setCapacite(100);
-            nouveauParking.setType("pleine air");
-            nouveauParking.setNombreActuelles(0);
-
-            // Ajout du parking à la base de données
+            Parking nouveauParking = new Parking("PARKING adem", 2, "sous-sol", 1);
             serviceParking.ajouter(nouveauParking);
-            System.out.println("Parking ajouté : " + nouveauParking);
 
+          //  System.out.println("Parking ajouté : " + nouveauParking);
+/*
+                 // Modification du parking ajouté
+            nouveauParking.setNom("PARKING ");
+            nouveauParking.setCapacite(200);
+            nouveauParking.setType("couverte");
+            nouveauParking.setNombreActuelles(30);
 
-    /*
-            // Modification du parking
+            serviceParking.modifier(nouveauParking);
+            System.out.println("Parking modifié !");
 
-            Parking parkingModifie = serviceParking.getOneById(parking.getIdParking());
-            parkingModifie.setNom("Nouveau Parking");
-            parkingModifie.setCapacite(100);
-            parkingModifie.setType("pleine air");
-            parkingModifie.setNombreActuelles(30);
-            serviceParking.modifier(parkingModifie);
-            System.out.println("Parking modifié : " + parkingModifie);
+            // Récupération du parking modifié pour vérification
+            Parking parkingModifie = serviceParking.getOneById(nouveauParking.getIdParking());
+            System.out.println("Parking après modification : " + parkingModifie);
 
-            // Récupération du parking par son identifiant pour vérifier la modification
-            Parking parkingApresModification = serviceParking.getOneById(parking.getIdParking());
-            System.out.println("Parking après modification : " + parkingApresModification);
-       */
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        /*    // Récupération du parking par son identifiant
-            Parking parkingRecupere = serviceParking.getOneById(nouveauParking.getIdParking());
-            System.out.println("Parking récupéré : " + parkingRecupere);
-
-            // Suppression du parking
-            serviceParking.supprimer(nouveauParking.getIdParking());
-            System.out.println("Parking supprimé : " + nouveauParking);
+             // SUPPRIMER PARKING
+            int idParkingASupprimer = nouveauParking.getIdParking();
+            serviceParking.supprimer(8);
+            System.out.println("Parking supprimé !");
 */
-            // Affichage de tous les parkings
-        Set<Parking> parkings = null;
-        try {
-            parkings = serviceParking.getAll();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-        for (Parking p : parkings) {
+            // AFFICHER LISTE PARKING
+            Set<Parking> parkings = serviceParking.getAll();
+            System.out.println("Liste des parkings :");
+            for (Parking p : parkings) {
                 System.out.println(p);
             }
 
+
+
+
+        // Création d'un nouveau parking pour associer une voiture
+        //Parking nouveauParking = new Parking("PARKING adem", 2, "sous-sol", 10);
+      // serviceParking.ajouter(nouveauParking);
+
+
+ /*
+     //AJOUTER VOITURE
+
+        // Vérifiez si le parking existe déjà
+        Parking parking = serviceParking.getOneById(10); // Remplacez idParking par l'identifiant du parking
+        if (parking == null) {
+            System.out.println("Le parking n'existe pas"); }
+        // Création d'une nouvelle voiture associée à un parking existant
+        Voiture nouvelleVoiture = new Voiture(20,
+                "lina",
+                "adem",
+                "adem",
+                "ABC123",
+                parking);
+        serviceVoiture.ajouter(nouvelleVoiture);
+        System.out.println("Voiture ajoutée : " + nouvelleVoiture);
+*/
+
+/*
+     //  MODIFIER VOITURE
+
+        // Obtention d'une voiture existante par son identifiant
+        int idVoitureAModifier = 7; // Remplacez ceci par l'identifiant de la voiture que vous souhaitez modifier
+        Voiture voitureAModifier = serviceVoiture.getOneById(idVoitureAModifier);
+
+        // Vérification si la voiture existe
+        if (voitureAModifier != null) {
+            // Affichage de la voiture avant modification
+            System.out.println("Voiture avant modification : " + voitureAModifier);
+
+            // Modification de la voiture
+            voitureAModifier.setMarque("mercedes");
+            voitureAModifier.setModel("classe g");
+            voitureAModifier.setCouleur("noir");
+            voitureAModifier.setMatricule("g1");
+
+
+            // Appel de la méthode modifier pour mettre à jour la voiture dans la base de données
+            serviceVoiture.modifier(voitureAModifier);
+            System.out.println("Voiture modifiée : " + voitureAModifier);
+        } else {
+            System.out.println("La voiture avec l'identifiant " + idVoitureAModifier + " n'existe pas.");
         }
+*/
+/*
+   // SUPPRIMER VOITURE
+
+        // Obtention d'une voiture existante par son identifiant
+        int idVoitureASupprimer = 6; // Remplacez ceci par l'identifiant de la voiture que vous souhaitez supprimer
+        Voiture voitureASupprimer = serviceVoiture.getOneById(idVoitureASupprimer);
+
+        // Vérification si la voiture existe
+        if (voitureASupprimer != null) {
+
+
+            // Appel de la méthode supprimer pour supprimer la voiture de la base de données
+            serviceVoiture.supprimer(idVoitureASupprimer);
+            System.out.println("Voiture supprimée avec succès.");
+        } else {
+            System.out.println("La voiture avec l'identifiant " + idVoitureASupprimer + " n'existe pas.");
+        }
+
+*/
+/*
+        // AFFICHER LISTE VOITURE
+        // Obtention de toutes les voitures
+        Set<Voiture> voitures = serviceVoiture.getAll();
+
+        // Affichage de toutes les voitures
+        System.out.println("Liste des voitures :");
+        for (Voiture v : voitures) {
+            System.out.println(v);
+        }
+*/
+    } catch (SQLException e) {
+        System.out.println("Erreur lors de l'opération sur les voitures : " + e.getMessage());
     }
+}
 
-
+}
 

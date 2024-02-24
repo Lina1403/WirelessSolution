@@ -1,11 +1,15 @@
 package entities;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Parking {
     private int idParking;
     private String nom;
     private int capacite;
     private String type;
     private int nombreActuelles;
+    private List<Voiture> voitures; // Added list of Voitures
 
     public Parking() {
     }
@@ -57,6 +61,14 @@ public class Parking {
         this.nombreActuelles = nombreActuelles;
     }
 
+    public List<Voiture> getVoitures() {
+        return voitures;
+    }
+
+    public void setVoitures(List<Voiture> voitures) {
+        this.voitures = voitures;
+    }
+
     @Override
     public String toString() {
         return "Parking{" +
@@ -65,30 +77,25 @@ public class Parking {
                 ", capacite=" + capacite +
                 ", type='" + type + '\'' +
                 ", nombreActuelles=" + nombreActuelles +
+                ", voitures=" + voitures +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Parking)) return false;
         Parking parking = (Parking) o;
-
-        if (idParking != parking.idParking) return false;
-        if (capacite != parking.capacite) return false;
-        if (nombreActuelles != parking.nombreActuelles) return false;
-        if (nom != null ? !nom.equals(parking.nom) : parking.nom != null) return false;
-        return type != null ? type.equals(parking.type) : parking.type == null;
+        return idParking == parking.idParking &&
+                capacite == parking.capacite &&
+                nombreActuelles == parking.nombreActuelles &&
+                Objects.equals(nom, parking.nom) &&
+                Objects.equals(type, parking.type) &&
+                Objects.equals(voitures, parking.voitures);
     }
 
     @Override
     public int hashCode() {
-        int result = idParking;
-        result = 31 * result + (nom != null ? nom.hashCode() : 0);
-        result = 31 * result + capacite;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + nombreActuelles;
-        return result;
+        return Objects.hash(idParking, nom, capacite, type, nombreActuelles, voitures);
     }
 }
