@@ -12,10 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherFacture">
     <VBox layoutX="50.0" layoutY="50.0" spacing="10.0">
-        <HBox spacing="10.0">
-            <TextField fx:id="searchNumField" promptText="Numéro de Facture" />
-            <Button onAction="#rechercherFactures" text="Rechercher" />
-        </HBox>
+
         <TableView fx:id="tableFactures">
             <columns>
                 <TableColumn fx:id="numFactureColumn" text="Numéro de Facture">
@@ -45,8 +42,5 @@
                 </TableColumn>
             </columns>
         </TableView>
-        <Button onAction="#ajouterFacture" text="Ajouter" />
-        <Button onAction="#supprimerFacture" text="Supprimer" />
-        <Button onAction="#modifierFacture" text="Modifier" />
     </VBox>
 </AnchorPane>

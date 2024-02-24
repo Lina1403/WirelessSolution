@@ -181,16 +181,17 @@ public class AfficherAppartement {
         }
     }
     @FXML
-    public void gererFacture(ActionEvent actionEvent) {
+    void gererFacture(ActionEvent actionEvent) {
         Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
+        System.out.println("Appartement sélectionné pour afficher les factures : " + appartementSelectionne); // Ajoutez ce message
+
         if (appartementSelectionne != null) {
             try {
+               // Pass the selected Appartement
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
                 Parent root = loader.load();
-
-                // Get the controller and pass the selected Appartement
                 AfficherFacture controller = loader.getController();
-                controller.initData(appartementSelectionne);
+                controller.initData(appartementSelectionne); // Pass the data to the controller
 
                 // Create a new stage
                 Stage stage = new Stage();
@@ -201,11 +202,14 @@ public class AfficherAppartement {
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         } else {
-            System.out.println("No Appartement selected.");
+            System.out.println("Aucun appartement sélectionné."); // Ajoutez ce message
         }
     }
+
 
 
 

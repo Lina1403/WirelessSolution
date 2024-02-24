@@ -96,8 +96,5 @@ public class ModifierFacture {
         }
     } */
 
-    public void initData(Facture selectedFacture) {
-        this.selectedFacture = selectedFacture;
-    }
 
     }

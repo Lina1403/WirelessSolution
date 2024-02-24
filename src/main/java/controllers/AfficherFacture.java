@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AfficherFacture {
+public class AfficherFacture  {
 
     @FXML
     private TableColumn<Facture, Integer> numFactureColumn;
@@ -58,78 +58,54 @@ public class AfficherFacture {
     private Button modifierButton;
     private Appartement appartementSelectionne;
 
+    public void initData(Appartement appartement) throws SQLException, IOException {
+        this.appartementSelectionne = appartement;
+        System.out.println(appartementSelectionne);
+        try {
+            afficherFactures(appartementSelectionne);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gérer l'exception de manière appropriée
+        }
+        initialize(); // Déplacer l'appel à initialize ici
+    }
 
+
+    void afficherFactures(Appartement appartement) throws SQLException {
+        Set<Facture> factures = serviceFacture.getAllForAppartement(appartementSelectionne);
+        System.out.println(factures);
+
+    }
 
     @FXML
-    void initialize() throws IOException {
+    void initialize() throws IOException, SQLException {
+        if (appartementSelectionne != null) {
+            System.out.println("Appartement sélectionné : " + appartementSelectionne); // Ajoutez ce message
 
+            afficherFactures(appartementSelectionne);
+        } else {
+            System.out.println("Appartement is null.");
+            System.out.println(afficherAppartement);
+        }
         numFactureColumn.setCellValueFactory(new PropertyValueFactory<>("numFacture"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionFacture"));
 
-        // Affichez les factures pour l'appartement sélectionné
+
+    }
+    private void actualiserTableFactures() {
         try {
-            System.out.println("Selected Appartement: " + appartementSelectionne);
-
-            // Assurez-vous que l'objet appartementSelectionne n'est pas null avant de l'utiliser
-            if (appartementSelectionne != null) {
-                afficherFactures(appartementSelectionne);
-            } else {
-                System.out.println("Appartement is null.");
-            }
+            Set<Facture> factures = serviceFacture.getAll();
+            ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
+            tableFactures.setItems(observableList);
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle SQLException appropriately
+            e.printStackTrace();
         }
     }
+}
 
-    void afficherFactures(Appartement appartement) throws SQLException {
-        Set<Facture> factures = serviceFacture.getAll();
-        // Utilisez factures pour afficher les données dans votre interface graphique
-        // ...
-    }
-
-
-
-    // Méthode pour initialiser les données
-    public void initData(Appartement appartement) {
-        this.appartementSelectionne = appartement;
-
-        if (appartementSelectionne != null) {
-            try {
-                // Récupérez l'identifiant de l'appartement sélectionné
-                int idAppartement = appartementSelectionne.getIdAppartement();
-
-                // Récupérez toutes les factures
-                Set<Facture> toutesLesFactures = serviceFacture.getAll();
-
-                // Filtrer les factures pour ne garder que celles associées à l'appartement spécifié
-                Set<Facture> facturesAppartementSpecifique = filterFacturesByAppartement(toutesLesFactures, idAppartement);
-
-                ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(facturesAppartementSpecifique));
-                tableFactures.setItems(observableList);
-            } catch (SQLException e) {
-                e.printStackTrace(); // Gérer l'exception de manière appropriée
-            }
-        }
-    }
-
-
-
-
-
-
-    // Méthode pour filtrer les factures par appartement
-    private Set<Facture> filterFacturesByAppartement(Set<Facture> toutesLesFactures, int idAppartement) {
-        Set<Facture> facturesFiltrees = new HashSet<>();
-        for (Facture facture : toutesLesFactures) {
-            if (facture.getAppartement().getIdAppartement() == idAppartement) {
-                facturesFiltrees.add(facture);
-            }
-        }
-        return facturesFiltrees;
-    }
+  /*
 
     @FXML
     public void ajouterFacture(ActionEvent actionEvent) {
@@ -189,7 +165,7 @@ public class AfficherFacture {
                 throw new RuntimeException(e);
             }
         }
-    } */
+    }
    @FXML
    void rechercherFactures() {
        try {
@@ -232,14 +208,5 @@ public class AfficherFacture {
             System.out.println("Veuillez sélectionner une facture à modifier.");
         }
     }
+           */
 
-    private void actualiserTableFactures() {
-        try {
-            Set<Facture> factures = serviceFacture.getAll();
-            ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
-            tableFactures.setItems(observableList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}
