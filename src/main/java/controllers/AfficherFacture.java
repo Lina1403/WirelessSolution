@@ -59,6 +59,7 @@ public class AfficherFacture  {
     private Appartement appartementSelectionne;
 
     public void initData(Appartement appartement) throws SQLException, IOException {
+        System.out.println(appartement);
         this.appartementSelectionne = appartement;
         System.out.println(appartementSelectionne);
         try {
@@ -70,8 +71,9 @@ public class AfficherFacture  {
     }
 
 
+
     void afficherFactures(Appartement appartement) throws SQLException {
-        Set<Facture> factures = serviceFacture.getAllForAppartement(appartementSelectionne);
+        Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
         System.out.println(factures);
 
     }
@@ -94,15 +96,8 @@ public class AfficherFacture  {
 
 
     }
-    private void actualiserTableFactures() {
-        try {
-            Set<Facture> factures = serviceFacture.getAll();
-            ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
-            tableFactures.setItems(observableList);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
+
 }
 
   /*

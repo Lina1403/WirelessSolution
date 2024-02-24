@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class MainCrudFacture {
     public static void main(String[] args) {
-        ServiceFacture serviceFacture = new ServiceFacture();
+      /*  ServiceFacture serviceFacture = new ServiceFacture();
         Facture factureExistante = new Facture();
         factureExistante.setIdFacture(28); // ID de la facture existante
         factureExistante.setNumFacture(123456);
@@ -78,7 +78,7 @@ public class MainCrudFacture {
             // Gérer l'exception, par exemple en affichant un message d'erreur
             System.err.println("Erreur lors de la récupération des factures depuis la base de données.");
         }
-           */
+
         try {
             Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
 
@@ -92,7 +92,7 @@ public class MainCrudFacture {
             }
         } catch (SQLException e) {
             System.out.println("Une erreur s'est produite lors de la récupération des factures : " + e.getMessage());
-        }
+        } */
     }
 
 

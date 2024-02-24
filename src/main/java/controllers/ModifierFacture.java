@@ -27,7 +27,6 @@ public class ModifierFacture {
     private TextField id_description_modifier;
 
     private final ServiceFacture serviceFacture = new ServiceFacture();
-    private Facture selectedFacture;
     @FXML
     void modifierFacture(ActionEvent event) {
         try {
