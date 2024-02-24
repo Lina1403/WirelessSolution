@@ -105,7 +105,6 @@ public class ServiceAppartemment implements IService<Appartement> {
         while (rs.next()) {
             Appartement appartement = new Appartement();
             appartement.setIdAppartement(rs.getInt("idAppartement"));
-
             appartement.setNumAppartement(rs.getInt("numAppartement"));
             appartement.setNomResident(rs.getString("nomResident"));
             appartement.setTaille(rs.getString("taille"));

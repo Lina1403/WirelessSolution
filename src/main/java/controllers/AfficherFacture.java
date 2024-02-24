@@ -73,7 +73,7 @@ public class AfficherFacture  {
 
 
     void afficherFactures(Appartement appartement) throws SQLException {
-        Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
+        Set<Facture> factures = serviceFacture.getAllForAppartement(appartementSelectionne);
         System.out.println(factures);
 
     }

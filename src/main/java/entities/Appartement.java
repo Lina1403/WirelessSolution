@@ -16,9 +16,9 @@ public class Appartement {
         Occupee , Libre
     }
     public Appartement(){}
-    public Appartement(int numAppartement){
+    /*public Appartement(int numAppartement){
         this.numAppartement = numAppartement;
-    }
+    } */
 
     public Appartement(int idAppartement, int numAppartement, String nomResident, String taille, int nbrEtage, Appartement.statutAppartement statutAppartement, List<Facture> factures) {
         this.idAppartement = idAppartement;
@@ -107,6 +107,10 @@ public class Appartement {
     public String toString() {
         return "Appartement{" +
                 "numAppartement=" + numAppartement +
+                ", nomResident='" + nomResident + '\'' +
+                ", taille='" + taille + '\'' +
+                ", nbrEtage=" + nbrEtage +
+                ", statutAppartement=" + statutAppartement +
                 '}';
     }
 

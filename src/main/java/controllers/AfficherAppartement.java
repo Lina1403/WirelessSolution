@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -25,44 +26,23 @@ import java.util.Set;
 
 public class AfficherAppartement {
 
-    @FXML
-    private TableColumn<Appartement, Integer> numAppartementColumn;
-
-    @FXML
-    private TableColumn<Appartement, String> nomResidentColumn;
-
-    @FXML
-    private TableColumn<Appartement, String> tailleColumn;
-
-    @FXML
-    private TableColumn<Appartement, Integer> nbrEtageColumn;
-    @FXML
-    private TextField searchNumField;
-
-    @FXML
-    private TextField searchNomResidentField;
-
-    @FXML
-    private TableColumn<Appartement, Appartement.statutAppartement> statutAppartementColumn;
-
-    @FXML
-    public TableView<Appartement> tableAppartements;
-    // Déclarez un champ pour stocker une référence au contrôleur AfficherAppartement
     private AfficherAppartement afficherAppartementController;
     private final ServiceAppartemment serviceAppartemment = new ServiceAppartemment();
 
-   private final ServiceFacture serviceFacture  = new ServiceFacture();
- AjouterFacture controler ;
+    private final ServiceFacture serviceFacture = new ServiceFacture();
+    AjouterFacture controler;
 
 
-
+    @FXML
+    public ListView<Appartement> listView;
 
     private void afficherAppartements() throws SQLException {
         Set<Appartement> appartements = serviceAppartemment.getAll();
         List<Appartement> appartementList = new ArrayList<>(appartements);
         ObservableList<Appartement> observableList = FXCollections.observableList(appartementList);
-        tableAppartements.setItems(observableList);
+        listView.setItems(observableList);
     }
+
     @FXML
     void initialize() {
         try {
@@ -70,14 +50,8 @@ public class AfficherAppartement {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQLException appropriately
         }
-
-        // Assurez-vous que les colonnes sont correctement initialisées
-        numAppartementColumn.setCellValueFactory(new PropertyValueFactory<>("numAppartement"));
-        nomResidentColumn.setCellValueFactory(new PropertyValueFactory<>("nomResident"));
-        tailleColumn.setCellValueFactory(new PropertyValueFactory<>("taille"));
-        nbrEtageColumn.setCellValueFactory(new PropertyValueFactory<>("nbrEtage"));
-        statutAppartementColumn.setCellValueFactory(new PropertyValueFactory<>("statutAppartement"));
     }
+
     @FXML
     void actualiserBaseDeDonnees() {
         try {
@@ -86,29 +60,90 @@ public class AfficherAppartement {
             e.printStackTrace(); // Handle SQLException appropriately
         }
     }
+
+
     @FXML
     public void ajouterAppartement(ActionEvent actionEvent) {
 
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterAppartement.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter Appartement");
+            stage.setScene(new Scene(root));
+
+            // Show the new stage
+            stage.show();
+
+            // Close the current stage (optional)
+            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exception appropriately
+        }
+    }
+
+    @FXML
+    public void ajouterFacture(ActionEvent actionEvent) {
+        Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
+        if (appartementSelectionne != null) {
+            System.out.println("Appartement selected: " + appartementSelectionne);
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterAppartement.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
                 Parent root = loader.load();
+
+                // Get the controller and pass the selected Appartement
+                AjouterFacture controller = loader.getController();
+                controller.setAppartementSelectionne(appartementSelectionne);
 
                 // Create a new stage
                 Stage stage = new Stage();
-                stage.setTitle("Ajouter Appartement");
+                stage.setTitle("Ajouter Facture");
+                stage.setScene(new Scene(root));
+
+                // Show the new stage
+                System.out.println("Showing new stage...");
+                stage.show();
+                System.out.println("New stage should be visible now.");
+            } catch (IOException e) {
+                System.out.println("IOException occurred:");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No Appartement selected.");
+        }
+    }
+    @FXML
+    void gererFacture(ActionEvent actionEvent) {
+        Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
+        System.out.println("Appartement sélectionné pour afficher les factures : " + appartementSelectionne); // Ajoutez ce message
+
+        if (appartementSelectionne != null) {
+            try {
+                // Pass the selected Appartement
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
+                Parent root = loader.load();
+                AfficherFacture controller = loader.getController();
+                controller.initData(appartementSelectionne); // Pass the data to the controller
+
+                // Create a new stage
+                Stage stage = new Stage();
+                stage.setTitle("Liste des Factures");
                 stage.setScene(new Scene(root));
 
                 // Show the new stage
                 stage.show();
-
-                // Close the current stage (optional)
-                ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
             } catch (IOException e) {
-                e.printStackTrace(); // Handle exception appropriately
+                e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+        } else {
+            System.out.println("Aucun appartement sélectionné."); // Ajoutez ce message
         }
-
+    }/*
     @FXML
     void rechercherAppartements() {
         try {
@@ -180,43 +215,15 @@ public class AfficherAppartement {
             System.out.println("No Appartement selected.");
         }
     }
-    @FXML
-    void gererFacture(ActionEvent actionEvent) {
-        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
-        System.out.println("Appartement sélectionné pour afficher les factures : " + appartementSelectionne); // Ajoutez ce message
-
-        if (appartementSelectionne != null) {
-            try {
-               // Pass the selected Appartement
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
-                Parent root = loader.load();
-                AfficherFacture controller = loader.getController();
-                controller.initData(appartementSelectionne); // Pass the data to the controller
-
-                // Create a new stage
-                Stage stage = new Stage();
-                stage.setTitle("Liste des Factures");
-                stage.setScene(new Scene(root));
-
-                // Show the new stage
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            System.out.println("Aucun appartement sélectionné."); // Ajoutez ce message
-        }
-    }
 
 
-
-
-
-
-
-
+  */
 }
+
+
+
+
+
+
 
 
