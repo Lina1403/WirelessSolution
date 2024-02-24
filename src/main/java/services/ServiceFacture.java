@@ -183,36 +183,7 @@ public class ServiceFacture implements IService<Facture>{
     }
 
 
-   /* @Override
-    public Facture getOneById(int id) throws SQLException {
-        Facture facture = null;
-        String req = "SELECT * FROM `facture` WHERE `idFacture`=?";
 
-        try (PreparedStatement statement = cnx.prepareStatement(req)) {
-            statement.setInt(1, id);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    // Créez une instance de Facture en utilisant les données récupérées de la base de données
-                    facture = new Facture();
-
-                    facture.setIdFacture(id); // Set the ID
-                    facture.setNumFacture(rs.getInt("numFacture"));
-                    facture.setDate(rs.getDate("date"));
-                    Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
-                    facture.setType(typeFacture);
-                    facture.setMontant(rs.getFloat("montant"));
-                    facture.setDescriptionFacture(rs.getString("descriptionFacture"));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error in getOneById: " + e.getMessage());
-            throw e; // Rethrow the exception for the calling method to handle
-        }
-
-        System.out.println("Retrieved Facture: " + facture);
-        return facture;
-    } */
 
 
 
@@ -227,8 +198,8 @@ public class ServiceFacture implements IService<Facture>{
         try (Statement st = cnx.createStatement();
              ResultSet rs = st.executeQuery(req)) {
             while (rs.next()) {
-                // Créez une instance de Facture pour chaque ligne de résultat
                 Facture facture = new Facture();
+                facture.setIdFacture(rs.getInt("idFacture"));
                 facture.setNumFacture(rs.getInt("numFacture"));
                 facture.setDate(rs.getDate("date"));
                 Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
@@ -236,20 +207,18 @@ public class ServiceFacture implements IService<Facture>{
                 facture.setMontant(rs.getFloat("montant"));
                 facture.setDescriptionFacture(rs.getString("descriptionFacture"));
 
-                // Créez une instance d'Appartement et définissez son numéro d'appartement
                 Appartement appartement = new Appartement();
                 appartement.setNumAppartement(rs.getInt("numAppartement"));
 
-                // Associez l'appartement à la facture
                 facture.setAppartement(appartement);
 
-                // Ajoutez la facture à l'ensemble factures
                 factures.add(facture);
             }
         }
 
         return factures;
     }
+
     public Set<Facture> rechercherFactures(int numFacture) throws SQLException {
         Set<Facture> factures = new HashSet<>();
         String req = "SELECT * FROM `facture` WHERE `numFacture` = ? ";

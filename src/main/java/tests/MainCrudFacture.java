@@ -79,6 +79,20 @@ public class MainCrudFacture {
             System.err.println("Erreur lors de la récupération des factures depuis la base de données.");
         }
            */
+        try {
+            Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
+
+            if (factures.isEmpty()) {
+                System.out.println("Aucune facture n'a été trouvée.");
+            } else {
+                System.out.println("Liste des factures :");
+                for (Facture facture : factures) {
+                    System.out.println(facture);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Une erreur s'est produite lors de la récupération des factures : " + e.getMessage());
+        }
     }
 
 
