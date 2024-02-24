@@ -6,25 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
 import services.IService;
 import services.ServiceEspace;
 import services.ServiceEvent;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.util.Callback;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
-import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.layout.HBox;
-
 
 public class AfficherEvent {
 
@@ -32,7 +23,7 @@ public class AfficherEvent {
     private ComboBox<Espace> comboBoxEspace;
 
     @FXML
-    private TableView<Event> tableEvent;
+    private ListView <Event> tableEvent;
 
     @FXML
     private TableColumn<Event, String> colName;
@@ -87,7 +78,7 @@ public class AfficherEvent {
         comboBoxEspace.setItems(espaceList);
 
         // Configurer la manière dont les espaces sont affichés dans le ComboBox
-        comboBoxEspace.setConverter(new StringConverter<>() {
+        comboBoxEspace.setConverter(new StringConverter<Espace>() {
             @Override
             public String toString(Espace espace) {
                 if (espace != null) {
@@ -104,96 +95,16 @@ public class AfficherEvent {
             }
         });
 
-
         // Initialiser la table des événements
         initializeEventTable();
     }
 
-
-// ...
-
     private void initializeEventTable() {
-        // Configurer les colonnes de la table
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        colDate.setCellValueFactory(new PropertyValueFactory<>("date")); // Assurez-vous que votre classe Event a une méthode getDate() qui retourne un java.util.Date
         colNbrPersonne.setCellValueFactory(new PropertyValueFactory<>("nbrPersonne"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         colEspace.setCellValueFactory(new PropertyValueFactory<>("espace"));
-
-        // Ajouter une colonne pour le bouton "Supprimer"
-        TableColumn<Event, Void> colDelete = new TableColumn<>("Supprimer");
-        // Ajouter une colonne pour le bouton "Modifier"
-        TableColumn<Event, Void> colEdit = new TableColumn<>("Modifier");
-
-        // Créer une cellule personnalisée pour le bouton "Supprimer"
-        colDelete.setCellFactory(param -> new TableCell<>() {
-            private final Button btnDelete = new Button("Supprimer");
-
-            {
-                btnDelete.setOnAction(event -> {
-                    Event eventToDelete = getTableView().getItems().get(getIndex());
-                    try {
-                        serviceEvent.supprimer(eventToDelete.getIdEvent());
-                        loadEvents(); // Actualiser la table après la suppression
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        // Gérer l'erreur
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnDelete);
-                }
-            }
-        });
-
-        // Créer une cellule personnalisée pour le bouton "Modifier"
-        colEdit.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEdit = new Button("Modifier");
-
-            {
-                btnEdit.setOnAction(event -> {
-                    Event eventToEdit = getTableView().getItems().get(getIndex());
-                    // Ajoutez votre logique de modification ici
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(btnEdit);
-                }
-            }
-        });
-
-        // Ajouter les colonnes à la table
-        tableEvent.getColumns().addAll(colDelete, colEdit);
-
-        // Charger les données dans la table
-        loadEvents();
-    }
-
-
-
-
-    private void loadEvents() {
-        try {
-            Set<Event> events = serviceEvent.getAll();
-            tableEvent.setItems(FXCollections.observableArrayList(events));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Gérer l'erreur
-        }
     }
 
     @FXML
@@ -202,7 +113,6 @@ public class AfficherEvent {
             Event event = tableEvent.getSelectionModel().getSelectedItem();
             if (event != null) {
                 // Mettre à jour l'objet event avec les nouvelles valeurs
-                event.setName(event.getName());
                 event.setTitle(event.getTitle());
                 event.setDate(event.getDate());
                 event.setNbrPersonne(event.getNbrPersonne());
@@ -225,7 +135,6 @@ public class AfficherEvent {
     void ajouterEvent() {
         if (validateInputs()) {
             Event newEvent = new Event();
-            newEvent.setName(""); // Remplacer par la valeur appropriée
             newEvent.setTitle(""); // Remplacer par la valeur appropriée
             LocalDate date = datePicker.getValue();
             if (date == null) {
@@ -247,8 +156,51 @@ public class AfficherEvent {
     }
 
     private boolean validateInputs() {
-        // Ajoutez votre logique de validation ici
-        return true;
+        boolean isValid = true;
+
+        // Validation du titre
+        if (lblTitleError.getText().isEmpty()) {
+            lblTitleError.setText("Le titre est requis");
+            isValid = false;
+        } else {
+            lblTitleError.setText("");
+        }
+
+        // Validation de la date
+        if (datePicker.getValue() == null) {
+            lblDateError.setText("La date est requise");
+            isValid = false;
+        } else {
+            lblDateError.setText("");
+        }
+
+        // Validation du nombre de personnes
+        if (lblNbrPersonneError.getText().isEmpty() || !lblNbrPersonneError.getText().matches("\\d+")) {
+            lblNbrPersonneError.setText("Nombre de personnes invalide");
+            isValid = false;
+        } else {
+            lblNbrPersonneError.setText("");
+        }
+
+        // Validation de la description
+        if (lblDescriptionError.getText().isEmpty()) {
+            lblDescriptionError.setText("La description est requise");
+            isValid = false;
+        } else {
+            lblDescriptionError.setText("");
+        }
+
+        return isValid;
+    }
+
+
+    private void loadEvents() {
+        try {
+            Set<Event> events = serviceEvent.getAll();
+            tableEvent.setItems(FXCollections.observableArrayList(events));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gérer l'erreur
+        }
     }
 }
-

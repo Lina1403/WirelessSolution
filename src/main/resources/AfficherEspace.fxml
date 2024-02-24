@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherEspace">
+
     <children>
-        <TableView fx:id="tableEspace" layoutX="26.0" layoutY="42.0" prefHeight="518.0" prefWidth="750.0">
-            <columns>
-                <TableColumn fx:id="colNom" prefWidth="75.0" text="Nom" />
-                <TableColumn fx:id="colEtat" prefWidth="75.0" text="État" />
-                <TableColumn fx:id="colCapacite" prefWidth="75.0" text="Capacité" />
-                <TableColumn fx:id="colDescription" prefWidth="75.0" text="Description" />
-                <TableColumn fx:id="colDelete" prefWidth="75.0" text="Supprimer" />
-                <TableColumn fx:id="colEdit" prefWidth="75.0" text="Modifier" />
-            </columns>
-        </TableView>
+        <ImageView fitWidth="800.0" fitHeight="600.0">
+            <image>
+                <Image url="@/image/AffichageEspace.png" />
+            </image>
+        </ImageView>
 
-        <TextField fx:id="txtNom" layoutX="107.0" layoutY="578.0" promptText="Nom" />
-        <ComboBox fx:id="cbEtat" layoutX="200.0" layoutY="578.0" promptText="État" />
-        <TextField fx:id="txtCapacite" layoutX="293.0" layoutY="578.0" promptText="Capacité" />
-        <TextField fx:id="txtDescription" layoutX="386.0" layoutY="578.0" promptText="Description" />
-        <Button fx:id="btnSave" layoutX="35.0" layoutY="578.0" mnemonicParsing="false" onAction="#saveChanges" text="Enregistrer" />
-        <Button fx:id="btnAdd" layoutX="703.0" layoutY="578.0" mnemonicParsing="false" onAction="#ajouterEspace" text="Ajouter" />
+        <VBox layoutX="63.0" layoutY="95.0" prefHeight="457.0" prefWidth="673.0" spacing="10.0">
 
-        <!-- Labels pour afficher les messages d'erreur -->
-        <Label fx:id="lblNomError" layoutX="107.0" layoutY="605.0" style="-fx-text-fill: red;" />
-        <Label fx:id="lblEtatError" layoutX="200.0" layoutY="605.0" style="-fx-text-fill: red;" />
-        <Label fx:id="lblCapaciteError" layoutX="293.0" layoutY="605.0" style="-fx-text-fill: red;" />
-        <Label fx:id="lblDescriptionError" layoutX="386.0" layoutY="605.0" style="-fx-text-fill: red;" />
+            <ListView fx:id="listEspace" prefHeight="260.0" prefWidth="674.0" />
+
+            <TextField fx:id="txtNom" promptText="Nom" />
+            <!-- Remplacez le champ d'état par une ComboBox -->
+            <ComboBox fx:id="comboEtat" promptText="État">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="LIBRE" />
+                        <String fx:value="RESERVE" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+            <TextField fx:id="txtCapacite" promptText="Capacité" />
+            <TextField fx:id="txtDescription" promptText="Description" />
+            <HBox prefHeight="58.0" prefWidth="673.0" spacing="10.0">
+                <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="104.0" text="Modifier" />
+                <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="104.0" text="Supprimer" />
+            </HBox>
+        </VBox>
     </children>
 </AnchorPane>

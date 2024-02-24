@@ -3,46 +3,55 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.cell.ComboBoxTableCell?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Spinner?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import java.lang.String?>
+
+
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.TextField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherEvent">
+
     <children>
-        <TableView fx:id="tableEvent" layoutX="26.0" layoutY="84.0" prefHeight="460.0" prefWidth="748.0">
-            <columns>
+        <VBox layoutX="63.0" layoutY="95.0" prefHeight="457.0" prefWidth="673.0" spacing="10.0">
 
-                <TableColumn fx:id="colName" prefWidth="150.0" text="Nom" />
-                <TableColumn fx:id="colTitle" prefWidth="150.0" text="Titre" />
-                <TableColumn fx:id="colDate" prefWidth="150.0" text="Date" />
-                <TableColumn fx:id="colNbrPersonne" prefWidth="100.0" text="Nbr Personne" />
-                <TableColumn fx:id="colEspace" prefWidth="150.0" text="Espace"></TableColumn>
-                <TableColumn fx:id="colDescription" prefWidth="150.0" text="Description" />
-            </columns>
-        </TableView>
+            <ListView fx:id="Event" prefHeight="260.0" prefWidth="674.0" />
+
+            <ComboBox fx:id="comboBoxEspace" promptText="Espace">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <!-- Ajoutez les éléments de l'espace ici -->
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <TextField fx:id="txtName" promptText="Nom" />
+            <TextField fx:id="txtTitle" promptText="Titre" />
+            <DatePicker fx:id="datePicker" promptText="Date" />
+            <Spinner fx:id="spinnerHour">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="23" initialValue="0" />
+                </valueFactory>
+            </Spinner>
+
+            <Spinner fx:id="spinnerMinute">
+                <valueFactory>
+                    <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="59" initialValue="0" />
+                </valueFactory>
+            </Spinner>
 
 
+            <TextField fx:id="txtNbrPersonne" promptText="Nbr Personne" />
+            <TextField fx:id="txtDescription" promptText="Description"  />
 
-        <ComboBox fx:id="comboBoxEspace">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-
-                    <!-- Add other space values as needed -->
-                </FXCollections>
-            </items>
-        </ComboBox>
-
-
-        <Button fx:id="btnSave" layoutX="26.0" layoutY="586.0" mnemonicParsing="false" onAction="#saveChanges" text="Enregistrer" />
-        <TextField fx:id="txtName" layoutX="200.0" layoutY="586.0" promptText="Nom" />
-        <TextField fx:id="txtTitle" layoutX="354.0" layoutY="586.0" promptText="Titre" />
-        <DatePicker fx:id="datePicker" layoutX="508.0" layoutY="586.0" promptText="Date" />
-        <TextField fx:id="txtNbrPersonne" layoutX="662.0" layoutY="586.0" promptText="Nbr Personne" />
-        <TextField fx:id="txtDescription" layoutX="830.0" layoutY="586.0" promptText="Description"  />
+            <HBox prefHeight="58.0" prefWidth="673.0" spacing="10.0">
+                <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveChanges" prefHeight="26.0" prefWidth="104.0" text="Enregistrer" />
+                <Button fx:id="btnAdd" mnemonicParsing="false" onAction="#ajouterEvent" prefHeight="26.0" prefWidth="104.0" text="Ajouter" />
+            </HBox>
+        </VBox>
     </children>
 </AnchorPane>

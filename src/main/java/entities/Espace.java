@@ -72,11 +72,14 @@ public class Espace {
 
     @Override
     public String toString() {
-        return "Espace{" +
-                "idEspace=" + idEspace +
-                ", name='" + name + '\'' +
-                '}';
+        return "Espace: " +
+                "name='" + name + '\'' +
+                ", etat=" + etat +
+                ", capacite=" + capacite +
+                ", description='" + description + '\'' +
+                '.';
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -5,41 +5,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import services.IService;
 import services.ServiceEspace;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Set;
 
 public class AfficherEspace {
 
     @FXML
-    private TableView<Espace> tableEspace;
+    private ListView<Espace> listEspace;
 
     @FXML
-    private TableColumn<Espace, String> colNom;
+    private Button btnModifier;
 
     @FXML
-    private TableColumn<Espace, Espace.Etat> colEtat;
-
-    @FXML
-    private TableColumn<Espace, Integer> colCapacite;
-
-    @FXML
-    private TableColumn<Espace, String> colDescription;
-
-    @FXML
-    private TableColumn<Espace, Void> colDelete;
-
-    @FXML
-    private TableColumn<Espace, Void> colEdit;
+    private Button btnSupprimer;
 
     @FXML
     private TextField txtNom;
-
-    @FXML
-    private ComboBox<Espace.Etat> cbEtat;
 
     @FXML
     private TextField txtCapacite;
@@ -48,163 +33,159 @@ public class AfficherEspace {
     private TextField txtDescription;
 
     @FXML
-    private Button btnSave;
+    private ComboBox<String> comboEtat;
 
     @FXML
-    private Button btnAdd;
+    private Label lblTitleError;
 
     @FXML
-    private Label lblNomError, lblCapaciteError, lblDescriptionError;
+    private Label lblDateError;
 
-    private Espace espace;
+    @FXML
+    private Label lblNbrPersonneError;
+
+    @FXML
+    private Label lblDescriptionError;
 
     private final IService<Espace> serviceEspace = new ServiceEspace();
 
     @FXML
-    void initialize() throws SQLException {
+    void initialize() {
+        try {
+            chargerListeEspaces();
 
+            // Ajouter un écouteur d'événements pour la sélection dans la liste
+            listEspace.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    // Remplir le formulaire avec les valeurs de l'espace sélectionné
+                    remplirFormulaire(newValue);
+                }
+            });
+        } catch (SQLException e) {
+            afficherAlerteErreur("Erreur lors du chargement des espaces : " + e.getMessage());
+        }
+    }
+
+    private void remplirFormulaire(Espace espace) {
+        txtNom.setText(espace.getName());
+        comboEtat.setValue(espace.getEtat().toString());
+        txtCapacite.setText(String.valueOf(espace.getCapacite()));
+        txtDescription.setText(espace.getDescription());
+    }
+
+    @FXML
+    void modifier() {
+        Espace espace = listEspace.getSelectionModel().getSelectedItem();
+        if (espace != null) {
+            // Récupérer les valeurs modifiées dans le formulaire
+            String nom = txtNom.getText();
+            String etat = comboEtat.getValue();
+            int capacite = Integer.parseInt(txtCapacite.getText());
+            String description = txtDescription.getText();
+
+            // Mettre à jour les propriétés de l'espace avec les nouvelles valeurs
+            espace.setName(nom);
+            espace.setEtat(Espace.Etat.valueOf(etat));
+            espace.setCapacite(capacite);
+            espace.setDescription(description);
+
+            // Appeler la méthode pour mettre à jour l'espace dans la base de données
+            try {
+                serviceEspace.modifier(espace);
+                listEspace.refresh(); // Rafraîchir l'affichage de la liste
+                afficherConfirmation("Espace modifié avec succès !");
+            } catch (SQLException e) {
+                afficherAlerteErreur("Erreur lors de la modification de l'espace : " + e.getMessage());
+            }
+        } else {
+            afficherAlerteErreur("Veuillez sélectionner un espace à modifier.");
+        }
+    }
+
+    @FXML
+    void supprimer() {
+        Espace espace = listEspace.getSelectionModel().getSelectedItem();
+        if (espace != null) {
+            if (afficherConfirmation("Êtes-vous sûr de vouloir supprimer cet espace ?")) {
+                try {
+                    serviceEspace.supprimer(espace.getIdEspace());
+                    listEspace.getItems().remove(espace);
+                } catch (SQLException e) {
+                    afficherAlerteErreur("Erreur lors de la suppression de l'espace : " + e.getMessage());
+                }
+            }
+        } else {
+            afficherAlerteErreur("Veuillez sélectionner un espace à supprimer.");
+        }
+    }
+
+
+
+    private void chargerListeEspaces() throws SQLException {
         Set<Espace> espaces = serviceEspace.getAll();
         ObservableList<Espace> espaceList = FXCollections.observableArrayList(espaces);
 
-        colNom.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colEtat.setCellValueFactory(new PropertyValueFactory<>("etat"));
-        colCapacite.setCellValueFactory(new PropertyValueFactory<>("capacite"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        // Afficher la liste dans la ListView
+        listEspace.setItems(espaceList);
+    }
 
-        // Ajout de la colonne de suppression
-        colDelete.setCellFactory(param -> new TableCell<>() {
-            private final Button deleteButton = new Button("Supprimer");
+    private void afficherAlerteErreur(String message) {
+        showAlert(Alert.AlertType.ERROR, "Erreur", message);
+    }
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    deleteButton.setOnAction(event -> {
-                        Espace espace = getTableView().getItems().get(getIndex());
-                        // Supprimer l'élément
-                        try {
-                            serviceEspace.supprimer(espace.getIdEspace());
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                        tableEspace.getItems().remove(espace);
-                    });
-
-                    setGraphic(deleteButton);
-                }
-            }
-        });
-
-        // Ajout de la colonne de modification
-        colEdit.setCellFactory(param -> new TableCell<>() {
-            private final Button editButton = new Button("Modifier");
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    editButton.setOnAction(event -> {
-                        espace = getTableView().getItems().get(getIndex());
-                        // Charger les détails de l'espace dans les champs de texte
-                        txtNom.setText(espace.getName());
-                        cbEtat.setValue(espace.getEtat());
-                        txtCapacite.setText(String.valueOf(espace.getCapacite()));
-                        txtDescription.setText(espace.getDescription());
-                    });
-
-                    setGraphic(editButton);
-                }
-            }
-        });
-
-        tableEspace.setItems(espaceList);
-        cbEtat.getItems().addAll(Espace.Etat.values()); // Ajouter les valeurs de l'enum dans le ComboBox
+    private boolean afficherConfirmation(String message) {
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirmation");
+        confirmationAlert.setHeaderText(null);
+        confirmationAlert.setContentText(message);
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     @FXML
-    void saveChanges() {
-        if (validateInputs()) {
-            // Mettre à jour l'objet espace avec les nouvelles valeurs
-            espace.setName(txtNom.getText());
-            espace.setEtat(cbEtat.getValue());
-            espace.setCapacite(Integer.parseInt(txtCapacite.getText()));
-            espace.setDescription(txtDescription.getText());
-
-            // Mettre à jour l'objet espace dans la base de données
-            try {
-                serviceEspace.modifier(espace);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Rafraîchir le tableau
-            tableEspace.refresh();
-        }
-    }
-
-    @FXML
-    void ajouterEspace() {
-        if (validateInputs()) {
-
-            // Créer un nouvel objet Espace avec les valeurs des champs de texte
-            Espace newEspace = new Espace();
-            newEspace.setName(txtNom.getText());
-            newEspace.setEtat(cbEtat.getValue());
-            newEspace.setCapacite(Integer.parseInt(txtCapacite.getText()));
-            newEspace.setDescription(txtDescription.getText());
-
-            // Ajouter le nouvel objet Espace à la base de données
-            try {
-                serviceEspace.ajouter(newEspace);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Ajouter le nouvel objet Espace au tableau
-            tableEspace.getItems().add(newEspace);
-
-            // Rafraîchir le tableau
-            tableEspace.refresh();
-        }
-    }
-
     private boolean validateInputs() {
-        // Valider le champ Nom
-        String nom = txtNom.getText().trim();
-        if (nom.isEmpty() || !nom.matches("[a-zA-Z]{1,20}")) {
-            // Afficher un message d'erreur
-            lblNomError.setText("Le nom doit contenir uniquement des lettres et avoir une longueur maximale de 20 caractères.");
-            return false;
+        boolean isValid = true;
+
+        // Validation du titre
+        if (txtNom.getText().isEmpty()) {
+            lblTitleError.setText("Le titre est requis");
+            isValid = false;
         } else {
-            lblNomError.setText(""); // Effacer le message d'erreur précédent
+            lblTitleError.setText("");
         }
 
-        // Valider le champ Capacité
-        String capacite = txtCapacite.getText().trim();
-        if (capacite.isEmpty() || !capacite.matches("\\d+") || Integer.parseInt(capacite) <= 0 || Integer.parseInt(capacite) > 50) {
-            // Afficher un message d'erreur
-            lblCapaciteError.setText("La capacité doit être un entier positif et ne doit pas dépasser 50.");
-            return false;
+        // Validation de l'état
+        if (comboEtat.getValue() == null) {
+            lblDateError.setText("L'état est requis");
+            isValid = false;
         } else {
-            lblCapaciteError.setText(""); // Effacer le message d'erreur précédent
+            lblDateError.setText("");
         }
 
-        // Valider le champ Description
-        String description = txtDescription.getText().trim();
-        if (description.isEmpty() || description.length() > 100) {
-            // Afficher un message d'erreur
-            lblDescriptionError.setText("La description ne peut pas être vide et ne doit pas dépasser 100 caractères.");
-            return false;
+        // Validation de la capacité
+        if (txtCapacite.getText().isEmpty() || !txtCapacite.getText().matches("\\d+")) {
+            lblNbrPersonneError.setText("Capacité invalide");
+            isValid = false;
         } else {
-            lblDescriptionError.setText(""); // Effacer le message d'erreur précédent
+            lblNbrPersonneError.setText("");
         }
 
-        return true;
+        // Validation de la description
+        if (txtDescription.getText().isEmpty()) {
+            lblDescriptionError.setText("La description est requise");
+            isValid = false;
+        } else {
+            lblDescriptionError.setText("");
+        }
+
+        return isValid;
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

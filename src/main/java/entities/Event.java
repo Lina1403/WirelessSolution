@@ -1,44 +1,39 @@
 package entities;
 
+import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
 public class Event {
     private Integer idEvent;
-    private String name;
-    private String email;
     private String title;
     private Date date;
     private int nbrPersonne;
     private String description;
-     private Espace espace ;
+    private Espace espace;
+    private Time heure;
+
     public Event() {
     }
 
-
-
-    public Event(Integer idEvent, String name, String email, String title, Date date, int nbrPersonne,  String description, Espace espace) {
+    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String description, Espace espace, Time heure) {
         this.idEvent = idEvent;
-        this.name = name;
-        this.email = email;
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
         this.description = description;
         this.espace = espace;
+        this.heure = heure;
     }
 
-    public Event( String name, String email, String title, Date date, int nbrPersonne,  String description, Espace espace) {
-
-        this.name = name;
-        this.email = email;
+    public Event(String title, Date date, int nbrPersonne, String description, Espace espace, Time heure) {
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
         this.description = description;
         this.espace = espace;
+        this.heure = heure;
     }
-
 
     public Integer getIdEvent() {
         return idEvent;
@@ -46,22 +41,6 @@ public class Event {
 
     public void setIdEvent(Integer idEvent) {
         this.idEvent = idEvent;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getTitle() {
@@ -88,7 +67,6 @@ public class Event {
         this.nbrPersonne = nbrPersonne;
     }
 
-
     public String getDescription() {
         return description;
     }
@@ -105,16 +83,24 @@ public class Event {
         this.espace = espace;
     }
 
+    public Time getHeure() {
+        return heure;
+    }
+
+    public void setHeure(Time heure) {
+        this.heure = heure;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                "idEvent=" + idEvent +
                 ", title='" + title + '\'' +
                 ", date=" + date +
                 ", nbrPersonne=" + nbrPersonne +
                 ", description='" + description + '\'' +
                 ", espace=" + espace +
+                ", heure=" + heure +
                 '}';
     }
 
@@ -123,13 +109,17 @@ public class Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return Objects.equals(name, event.name) && Objects.equals(title, event.title) && Objects.equals(date, event.date);
+        return nbrPersonne == event.nbrPersonne &&
+                Objects.equals(idEvent, event.idEvent) &&
+                Objects.equals(title, event.title) &&
+                Objects.equals(date, event.date) &&
+                Objects.equals(description, event.description) &&
+                Objects.equals(espace, event.espace) &&
+                Objects.equals(heure, event.heure);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, title, date);
+        return Objects.hash(idEvent, title, date, nbrPersonne, description, espace, heure);
     }
-
-
 }

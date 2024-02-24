@@ -1,7 +1,12 @@
 package tests;
-
+import entities.Event;
 import entities.Espace;
 import services.ServiceEspace;
+import services.ServiceEvent;
+
+import java.sql.Time;
+import java.util.Date;
+
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -9,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         ServiceEspace serviceEspace = new ServiceEspace();
-
+/*
         // Ajout d'un nouvel espace
         Espace nouvelEspace = new Espace();
         nouvelEspace.setName("Salle de lina");
@@ -44,6 +49,49 @@ public class Main {
             System.out.println("Espace supprimé avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de la suppression de l'espace : " + e.getMessage());
+        }
+    */
+        ServiceEvent Event = new ServiceEvent();
+
+
+
+        try {
+            // Obtient une connexion à la base de données
+
+            // Crée une instance du service ServiceEvent
+            ServiceEvent serviceEvent = new ServiceEvent();
+
+            // Crée un nouvel espace
+            Espace espace = new Espace();
+        espace.setIdEspace(35);
+
+            // Crée un nouvel événement
+
+// Crée un nouvel événement
+            Event event = new Event();
+            event.setTitle("lina");
+            Date date = java.sql.Date.valueOf("2023-05-26");
+            event.setDate(date);
+            event.setNbrPersonne(20);
+            event.setDescription("A birthday party");
+            event.setEspace(espace); // Attribue l'espace à l'événement
+            Time heure = Time.valueOf("14:00:00"); // Exemple : 14 heures, 30 minutes et 0 secondes
+            event.setHeure(heure); // Attribue l'heure à l'événement
+            // Ajoute l'événement à la base de données
+            serviceEvent.ajouter(event);
+
+            // Affiche tous les événements
+            Set<Event> events = serviceEvent.getAll();
+            for (Event e : events) {
+                System.out.println(e);
+            }
+/*
+            // Supprime un événement par son ID
+            int eventIdToDelete = 25; // ID de l'événement à supprimer
+            serviceEvent.supprimer(eventIdToDelete);
+*/
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
