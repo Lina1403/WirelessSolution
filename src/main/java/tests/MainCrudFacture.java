@@ -11,8 +11,28 @@ import java.util.Set;
 public class MainCrudFacture {
     public static void main(String[] args) {
         ServiceFacture serviceFacture = new ServiceFacture();
+        Facture factureExistante = new Facture();
+        factureExistante.setIdFacture(28); // ID de la facture existante
+        factureExistante.setNumFacture(123456);
+        factureExistante.setDate(new Date());
+        factureExistante.setType(Facture.Type.Eau);
+        factureExistante.setMontant(100.0f);
+        factureExistante.setDescriptionFacture("Facture d'eau");
+        Appartement appartement = new Appartement(100); // Appartement existant
+        factureExistante.setAppartement(appartement);
 
         try {
+            // Modifier la facture existante
+            serviceFacture.modifier(factureExistante);
+
+            // Vérifier si la facture a été mise à jour correctement en récupérant la facture modifiée
+            Facture factureModifiee = serviceFacture.getOneById(factureExistante.getIdFacture());
+
+        } catch (SQLException e) {
+            System.out.println("An exception occurred while modifying the facture: " + e.getMessage());
+        }
+
+       /* try {
             // Créer un objet Facture avec des données appropriées
             Facture facture = new Facture();
             facture.setNumFacture(123);
@@ -58,7 +78,8 @@ public class MainCrudFacture {
             // Gérer l'exception, par exemple en affichant un message d'erreur
             System.err.println("Erreur lors de la récupération des factures depuis la base de données.");
         }
-
+           */
     }
+
 
 }

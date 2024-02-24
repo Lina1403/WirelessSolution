@@ -73,26 +73,50 @@ public class ServiceFacture implements IService<Facture>{
     }
 
 
- 
 
-   @Override
-   public void modifier(Facture p) {
-       String req = "UPDATE `facture` SET " +
-               "`numFacture`='" + p.getNumFacture() + "'," +
-               "`date`='" + new java.sql.Date(p.getDate().getTime()) + "'," +
-               "`type`='" + p.getType() + "'," +
-               "`montant`='" + p.getMontant() + "'," +
-               "`descriptionFacture`='" + p.getDescriptionFacture() + "' " +
-               "WHERE `idFacture`=" + p.getIdFacture();
 
-       try {
-           Statement st = cnx.createStatement();
-           st.executeUpdate(req);
-           System.out.println("Facture updated !");
-       } catch (SQLException e) {
-           System.out.println(e.getMessage());
-       }
-   }
+    @Override
+    public void modifier(Facture p) throws SQLException {
+        if (p == null) {
+            throw new IllegalArgumentException("Facture object is null");
+        }
+
+        if (p.getDate() == null) {
+            throw new IllegalArgumentException("Date is null in the provided Facture object");
+        }
+
+        // Vérifier si la facture existe dans la base de données en utilisant son ID
+        Facture existingFacture = getOneById(p.getIdFacture());
+        if (existingFacture == null) {
+            throw new IllegalArgumentException("Facture with ID " + p.getIdFacture() + " does not exist.");
+        }
+
+        // Récupérer l'idAppartement correspondant au numAppartement de la facture
+        int idAppartement = getIdAppartementByNumAppartement(p.getAppartement().getNumAppartement());
+
+        if (idAppartement == -1) {
+            throw new IllegalArgumentException("Appartement with numAppartement " + p.getAppartement().getNumAppartement() + " does not exist.");
+        }
+
+        String sql = "UPDATE facture SET numFacture=?, type=?, montant=?, descriptionFacture=?, date=?, idAppartement=? WHERE idFacture=?";
+
+        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
+            statement.setInt(1, p.getNumFacture());
+            statement.setString(2, p.getType().toString());
+            statement.setFloat(3, p.getMontant());
+            statement.setString(4, p.getDescriptionFacture());
+            statement.setDate(5, new java.sql.Date(p.getDate().getTime()));
+            statement.setInt(6, idAppartement);
+            statement.setInt(7, p.getIdFacture());
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Facture updated successfully.");
+            } else {
+                System.out.println("Failed to update Facture.");
+            }
+        }
+    }
 
     @Override
     public void supprimer(int idFacture) throws SQLException {

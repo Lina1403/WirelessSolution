@@ -58,12 +58,11 @@ public class AfficherFacture {
     private Button modifierButton;
     private Appartement appartementSelectionne;
 
-    public void initData(Appartement appartementSelectionne) {
-        this.appartementSelectionne = appartementSelectionne;
-    }
+
 
     @FXML
     void initialize() throws IOException {
+
         numFactureColumn.setCellValueFactory(new PropertyValueFactory<>("numFacture"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -86,7 +85,7 @@ public class AfficherFacture {
     }
 
     void afficherFactures(Appartement appartement) throws SQLException {
-        Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
+        Set<Facture> factures = serviceFacture.getAll();
         // Utilisez factures pour afficher les données dans votre interface graphique
         // ...
     }
@@ -94,7 +93,7 @@ public class AfficherFacture {
 
 
     // Méthode pour initialiser les données
-   /* public void initData(Appartement appartement) {
+    public void initData(Appartement appartement) {
         this.appartementSelectionne = appartement;
 
         if (appartementSelectionne != null) {
@@ -117,20 +116,7 @@ public class AfficherFacture {
     }
 
 
-    @FXML
-    void initialize() throws IOException {
-        // Assurez-vous que les colonnes sont correctement initialisées
-        numFactureColumn.setCellValueFactory(new PropertyValueFactory<>("numFacture"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionFacture"));
 
-        // Appelez la méthode initData() de ce contrôleur avec l'appartement sélectionné
-        initData(appartementSelectionne);
-    }
-
-*/
 
 
 
