@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterParking">
+<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterParkingController">
     <children>
-        <TextField fx:id="PlaceId" layoutX="250.0" layoutY="120.0" promptText="Place" />
-        <TextField fx:id="NumPlaceId" layoutX="250.0" layoutY="176.0" promptText="Numéro de place" />
-        <TextField fx:id="CapaciteId" layoutX="250.0" layoutY="232.0" promptText="Capacité" />
-        <Button layoutX="465.0" layoutY="316.0" mnemonicParsing="false" onAction="#ajouterParking" text="Ajouter" />
-        <Label layoutX="187.0" layoutY="124.0" text="Place" />
-        <Label layoutX="152.0" layoutY="180.0" text="Numéro de place" />
-        <Label layoutX="185.0" layoutY="236.0" text="Capacité" />
+        <VBox layoutX="30.0" layoutY="20.0" spacing="10">
+            <children>
+                <TextField fx:id="nomTextField" promptText="Nom" />
+                <TextField fx:id="capaciteTextField" promptText="Capacité" />
+                <TextField fx:id="typeTextField" promptText="Type" />
+                <TextField fx:id="nombreActuellesTextField" promptText="Nombre actuelles" />
+                <Button fx:id="boutonAjouter" mnemonicParsing="false" text="Ajouter" onAction="#ajouterParking" />
+            </children>
+        </VBox>
     </children>
 </AnchorPane>
