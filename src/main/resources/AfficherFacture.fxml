@@ -10,37 +10,18 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.collections.FXCollections?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherFacture">
     <VBox layoutX="50.0" layoutY="50.0" spacing="10.0">
 
-        <TableView fx:id="tableFactures">
-            <columns>
-                <TableColumn fx:id="numFactureColumn" text="Numéro de Facture">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="numFacture" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="dateColumn" text="Date">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="date" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="typeColumn" text="Type">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="type" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="montantColumn" text="Montant">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="montant" />
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn fx:id="descriptionColumn" text="Description">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="descriptionFacture" />
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-        </TableView>
+        <VBox layoutX="47.0" layoutY="98.0" spacing="10.0">
+
+            <ListView fx:id="listViewFacture" prefHeight="200.0" prefWidth="443.0">
+                <items>
+                    <FXCollections fx:factory="observableArrayList" />
+                </items>
+            </ListView>
+        </VBox>
     </VBox>
 </AnchorPane>

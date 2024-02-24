@@ -26,23 +26,6 @@ import java.util.Set;
 
 public class AfficherFacture  {
 
-    @FXML
-    private TableColumn<Facture, Integer> numFactureColumn;
-
-    @FXML
-    private TableColumn<Facture, Date> dateColumn;
-
-    @FXML
-    private TableColumn<Facture, Facture.Type> typeColumn;
-
-    @FXML
-    private TableColumn<Facture, Float> montantColumn;
-
-    @FXML
-    private TableColumn<Facture, String> descriptionColumn;
-
-    @FXML
-    private TableView<Facture> tableFactures;
 
     private final ServiceFacture serviceFacture = new ServiceFacture();
     @FXML
@@ -58,46 +41,47 @@ public class AfficherFacture  {
     private Button modifierButton;
     private Appartement appartementSelectionne;
 
-    public void initData(Appartement appartement) throws SQLException, IOException {
-        System.out.println(appartement);
-        this.appartementSelectionne = appartement;
-        System.out.println(appartementSelectionne);
-        try {
-            afficherFactures(appartementSelectionne);
-        } catch (SQLException e) {
-            e.printStackTrace(); // Gérer l'exception de manière appropriée
+    @FXML
+    private ListView<Facture> listViewFacture;
+
+
+
+    public void initData(Appartement appartement) throws SQLException {
+        if (appartement == null) {
+            System.out.println("L'objet appartementSelectionne est null !");
         }
-        initialize(); // Déplacer l'appel à initialize ici
+        this.appartementSelectionne = appartement;
+        System.out.println("Appartement sélectionné : " + appartementSelectionne);
     }
 
-
-
-    void afficherFactures(Appartement appartement) throws SQLException {
+    void afficherFactures() throws SQLException {
+        // Obtenez les factures pour l'appartement sélectionné
+        if (appartementSelectionne == null) {
+            System.out.println("L'appartement sélectionné est null !");
+            return;
+        }
         Set<Facture> factures = serviceFacture.getAllForAppartement(appartementSelectionne);
-        System.out.println(factures);
-
+        ObservableList<Facture> observableList = FXCollections.observableArrayList(factures);
+        listViewFacture.setItems(observableList);
     }
 
     @FXML
-    void initialize() throws IOException, SQLException {
-        if (appartementSelectionne != null) {
-            System.out.println("Appartement sélectionné : " + appartementSelectionne); // Ajoutez ce message
-
-            afficherFactures(appartementSelectionne);
-        } else {
-            System.out.println("Appartement is null.");
-            System.out.println(afficherAppartement);
+    void initialize() {
+        try {
+            afficherFactures(); // Actualiser la table après chaque modification
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gérer SQLException de manière appropriée
         }
-        numFactureColumn.setCellValueFactory(new PropertyValueFactory<>("numFacture"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
-        montantColumn.setCellValueFactory(new PropertyValueFactory<>("montant"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("descriptionFacture"));
-
-
     }
 
-
+    @FXML
+    void actualiserBaseDeDonnees() {
+        try {
+            afficherFactures(); // Actualiser la table après chaque modification
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gérer SQLException de manière appropriée
+        }
+    }
 }
 
   /*

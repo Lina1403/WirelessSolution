@@ -97,7 +97,6 @@ public class AfficherAppartement {
                 // Get the controller and pass the selected Appartement
                 AjouterFacture controller = loader.getController();
                 controller.setAppartementSelectionne(appartementSelectionne);
-
                 // Create a new stage
                 Stage stage = new Stage();
                 stage.setTitle("Ajouter Facture");
@@ -118,22 +117,25 @@ public class AfficherAppartement {
     @FXML
     void gererFacture(ActionEvent actionEvent) {
         Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
-        System.out.println("Appartement sélectionné pour afficher les factures : " + appartementSelectionne); // Ajoutez ce message
+        System.out.println("Appartement sélectionné pour afficher les factures : " + appartementSelectionne);
 
         if (appartementSelectionne != null) {
             try {
-                // Pass the selected Appartement
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFacture.fxml"));
                 Parent root = loader.load();
-                AfficherFacture controller = loader.getController();
-                controller.initData(appartementSelectionne); // Pass the data to the controller
 
-                // Create a new stage
+                System.out.println("FXML file loaded successfully.");
+
+                AfficherFacture controller = loader.getController();
+                System.out.println("Controller initialized.");
+
+                controller.initData(appartementSelectionne);
+                System.out.println("Data initialized in controller.");
+
                 Stage stage = new Stage();
                 stage.setTitle("Liste des Factures");
                 stage.setScene(new Scene(root));
 
-                // Show the new stage
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -141,9 +143,12 @@ public class AfficherAppartement {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Aucun appartement sélectionné."); // Ajoutez ce message
+            System.out.println("Aucun appartement sélectionné.");
         }
-    }/*
+    }
+
+}
+    /*
     @FXML
     void rechercherAppartements() {
         try {
@@ -218,7 +223,7 @@ public class AfficherAppartement {
 
 
   */
-}
+
 
 
 
