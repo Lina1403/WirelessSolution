@@ -52,6 +52,7 @@ public class AfficherFacture  {
         }
         this.appartementSelectionne = appartement;
         System.out.println("Appartement sélectionné : " + appartementSelectionne);
+        initialize();
     }
 
     void afficherFactures() throws SQLException {
@@ -82,31 +83,39 @@ public class AfficherFacture  {
             e.printStackTrace(); // Gérer SQLException de manière appropriée
         }
     }
+    @FXML
+    public void ajouterFacture(ActionEvent actionEvent) {
+        if (appartementSelectionne != null) {
+            System.out.println("Appartement selected: " + appartementSelectionne);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
+                Parent root = loader.load();
+
+                // Get the controller and pass the selected Appartement
+                AjouterFacture controller = loader.getController();
+                controller.setAppartementSelectionne(appartementSelectionne);
+                // Create a new stage
+                Stage stage = new Stage();
+                stage.setTitle("Ajouter Facture");
+                stage.setScene(new Scene(root));
+
+                // Show the new stage
+                System.out.println("Showing new stage...");
+                stage.show();
+                System.out.println("New stage should be visible now.");
+            } catch (IOException e) {
+                System.out.println("IOException occurred:");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No Appartement selected.");
+        }
+    }
 }
 
   /*
 
-    @FXML
-    public void ajouterFacture(ActionEvent actionEvent) {
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
-            Parent root = loader.load();
-
-            // Create a new stage
-            Stage stage = new Stage();
-            stage.setTitle("Ajouter Facture");
-            stage.setScene(new Scene(root));
-
-            // Show the new stage
-            stage.show();
-
-            // Close the current stage (optional)
-            ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle exception appropriately
-        }
-    }
 
     @FXML
     void supprimerFacture() {

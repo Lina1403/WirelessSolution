@@ -17,7 +17,6 @@
         </ListView>
     </VBox>
     <Button layoutX="255.0" layoutY="340.0" onAction="#ajouterAppartement" text="Ajouter Apartement" />
-    <Button layoutX="47.0" layoutY="340.0" onAction="#ajouterFacture" text="Ajouter Facture" />
     <Button layoutX="158.0" layoutY="340.0" onAction="#gererFacture" text="Gerer Facture" />
 
 </AnchorPane>

@@ -85,35 +85,7 @@ public class AfficherAppartement {
         }
     }
 
-    @FXML
-    public void ajouterFacture(ActionEvent actionEvent) {
-        Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
-        if (appartementSelectionne != null) {
-            System.out.println("Appartement selected: " + appartementSelectionne);
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
-                Parent root = loader.load();
 
-                // Get the controller and pass the selected Appartement
-                AjouterFacture controller = loader.getController();
-                controller.setAppartementSelectionne(appartementSelectionne);
-                // Create a new stage
-                Stage stage = new Stage();
-                stage.setTitle("Ajouter Facture");
-                stage.setScene(new Scene(root));
-
-                // Show the new stage
-                System.out.println("Showing new stage...");
-                stage.show();
-                System.out.println("New stage should be visible now.");
-            } catch (IOException e) {
-                System.out.println("IOException occurred:");
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("No Appartement selected.");
-        }
-    }
     @FXML
     void gererFacture(ActionEvent actionEvent) {
         Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
