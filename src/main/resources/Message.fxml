@@ -8,12 +8,14 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MessageController">
    <Button mnemonicParsing="false" onAction="#supprimerDiscussion" text="supprimer" textFill="#fc0101" />
+   <Button mnemonicParsing="false" onAction="#retour" text="Retour" />
    <Button mnemonicParsing="false" onAction="#modifierTitre" prefHeight="25.0" prefWidth="68.0" text="modifier" textFill="#3e08d3" />
     <ListView fx:id="messageList" prefHeight="400.0" prefWidth="665.0" VBox.vgrow="ALWAYS">
         <!-- Les messages seront ajoutés ici -->
     </ListView>
     <HBox spacing="10">
         <Button fx:id="attachButton" text="📎" />
+        <Button fx:id="emojiButton" onAction="#emojiPopup" text="😊" />
         <TextField fx:id="messageField" HBox.hgrow="ALWAYS" />
         <Button fx:id="sendButton" text="Envoyer" />
     </HBox>

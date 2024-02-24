@@ -3,10 +3,15 @@ import entities.Message;
 import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import services.DiscussionService;
 import services.MessageService;
 import utils.MessageCell;
@@ -28,8 +33,16 @@ public class MessageController {
 
     @FXML
     private Button sendButton;
+    @FXML
+    private Button emojiButton;
+
+    public void setMessageField(TextField messageField) {
+        this.messageField = messageField;
+    }
 
     public static int discuId ;
+    public static String emojis = "";
+
     User user1 = new User(2,"chiheb");
     MessageService ms = new MessageService();
     DiscussionService ds = new DiscussionService();
@@ -68,6 +81,9 @@ public class MessageController {
           System.out.println(e.getMessage());
       }
     }
+    public void retour() {
+      changeScene("/ListeDiscussion.fxml");
+    }
     public void changeScene(String s) {
         try {
             // Chargez le fichier FXML pour la nouvelle scène
@@ -94,5 +110,24 @@ public class MessageController {
     public void modifierTitre(){
         changeScene("/ModifierTitre.fxml");
     }
+
+    Stage newStage = new Stage();
+
+    public void emojiPopup() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/emojis.fxml"));
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        newStage.show();
+
+        newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                String currentText = messageField.getText();
+                messageField.setText(currentText +" "+ emojis);
+                emojis = "";
+            }
+        });
+    }
+
 
 }

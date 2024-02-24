@@ -15,5 +15,6 @@
 
         <!-- Bouton de validation -->
         <Button layoutX="198.0" layoutY="152.0" onAction="#ajouterEvent" text="Validate" />
+      <Button layoutX="311.0" layoutY="199.0" mnemonicParsing="false" onAction="#changeScene" text="Liste des discussions" />
     </children>
 </AnchorPane>
