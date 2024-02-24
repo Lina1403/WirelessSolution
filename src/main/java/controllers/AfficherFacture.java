@@ -75,14 +75,7 @@ public class AfficherFacture  {
         }
     }
 
-    @FXML
-    void actualiserBaseDeDonnees() {
-        try {
-            afficherFactures(); // Actualiser la table après chaque modification
-        } catch (SQLException e) {
-            e.printStackTrace(); // Gérer SQLException de manière appropriée
-        }
-    }
+
     @FXML
     public void ajouterFacture(ActionEvent actionEvent) {
         if (appartementSelectionne != null) {
@@ -110,22 +103,17 @@ public class AfficherFacture  {
         } else {
             System.out.println("No Appartement selected.");
         }
+        actualiser();
     }
-}
-
-  /*
-
-
-
     @FXML
     void supprimerFacture() {
-        Facture selectedFacture = tableFactures.getSelectionModel().getSelectedItem();
+        Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
 
         if (selectedFacture != null) {
             try {
                 serviceFacture.supprimer(selectedFacture.getIdFacture());
                 System.out.println("Facture supprimée avec succès !");
-                tableFactures.getItems().remove(selectedFacture);
+                listViewFacture.getItems().remove(selectedFacture);
             } catch (SQLException e) {
                 System.err.println("Erreur lors de la suppression de la facture : " + e.getMessage());
                 e.printStackTrace();
@@ -133,7 +121,26 @@ public class AfficherFacture  {
         } else {
             System.out.println("Veuillez sélectionner une facture à supprimer.");
         }
+        actualiser();
     }
+    @FXML
+    void actualiser() {
+        try {
+            afficherFactures(); // Actualiser la liste des factures depuis la base de données
+            initialize(); // Réinitialiser l'interface utilisateur
+            System.out.println("Base de données et interface actualisées avec succès !");
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de l'actualisation de la base de données et de l'interface : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+
+
    /* @FXML
     void modifier(ActionEvent event) throws IOException {
         // Obtenez la réclamation sélectionnée dans la table

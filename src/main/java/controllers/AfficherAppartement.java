@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import services.ServiceAppartemment;
@@ -83,6 +80,7 @@ public class AfficherAppartement {
         } catch (IOException e) {
             e.printStackTrace(); // Handle exception appropriately
         }
+        actualiser();
     }
 
 
@@ -117,6 +115,53 @@ public class AfficherAppartement {
         } else {
             System.out.println("Aucun appartement sélectionné.");
         }
+        actualiser();
+    }
+    @FXML
+    void actualiser() {
+        try {
+            afficherAppartements(); // Actualiser la liste des factures depuis la base de données
+            initialize(); // Réinitialiser l'interface utilisateur
+            System.out.println("Base de données et interface actualisées avec succès !");
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de l'actualisation de la base de données et de l'interface : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void supprimerAppartement() {
+        Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
+        if (appartementSelectionne != null) {
+            try {
+                System.out.println("ID de l'appartement à supprimer : " + appartementSelectionne.getNumAppartement());
+                serviceAppartemment.supprimer(appartementSelectionne.getIdAppartement());
+                System.out.println("Appartement supprimé avec succès !");
+
+                // Supprimer l'appartement de la liste affichée dans la table
+                listView.getItems().remove(appartementSelectionne);
+
+                // Afficher une confirmation à l'utilisateur
+                afficherAlerteErreur("Suppression réussie", "L'appartement a été supprimé avec succès.");
+            } catch (SQLException e) {
+                // Gérer l'exception pour les contraintes de clé étrangère
+                afficherAlerteErreur("Erreur de suppression", "Impossible de supprimer l'appartement : des factures sont associées à cet appartement. Veuillez d'abord supprimer toutes les factures associées.");
+            } catch (Exception e) {
+                // Gérer les autres exceptions
+                afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de la suppression de l'appartement : " + e.getMessage());
+            }
+        } else {
+            afficherAlerteErreur("Sélection requise", "Veuillez sélectionner un appartement à supprimer.");
+        }
+        actualiser();
+    }
+
+    private void afficherAlerteErreur(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
@@ -142,24 +187,6 @@ public class AfficherAppartement {
     }
 
 
-    @FXML
-    void supprimerAppartement() {
-        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
-        if (appartementSelectionne != null) {
-            try {
-                System.out.println("ID de l'appartement à supprimer : " + appartementSelectionne.getNumAppartement());
-                serviceAppartemment.supprimer(appartementSelectionne.getIdAppartement());
-                System.out.println("Appartement supprimé avec succès !");
-
-                // Supprimer l'appartement de la liste affichée dans la table
-                tableAppartements.getItems().remove(appartementSelectionne);
-            } catch (SQLException e) {
-                e.printStackTrace(); // Handle SQLException appropriately
-            }
-        } else {
-            System.out.println("Veuillez sélectionner un appartement à supprimer.");
-        }
-    }
 
 
     @FXML
