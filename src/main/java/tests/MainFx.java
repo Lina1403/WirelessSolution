@@ -10,9 +10,10 @@ public class MainFx extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Charger le fichier FXML
-         Parent root = FXMLLoader.load(getClass().getResource("/AjouterParking.fxml"));
-      // Parent root = FXMLLoader.load(getClass().getResource("/AfficherParking.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/AjouterParking.fxml"));
+     // Parent root = FXMLLoader.load(getClass().getResource("/AfficherParking.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoiture.fxml"));
+
 
         // Créer la scène
         Scene scene = new Scene(root);

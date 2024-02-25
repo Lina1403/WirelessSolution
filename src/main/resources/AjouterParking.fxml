@@ -1,20 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterParkingController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterParkingController">
     <children>
-        <VBox layoutX="30.0" layoutY="20.0" spacing="10">
-            <children>
-                <TextField fx:id="nomTextField" promptText="Nom" />
-                <TextField fx:id="capaciteTextField" promptText="Capacité" />
-                <TextField fx:id="typeTextField" promptText="Type" />
-                <TextField fx:id="nombreActuellesTextField" promptText="Nombre actuelles" />
-                <Button fx:id="boutonAjouter" mnemonicParsing="false" text="Ajouter" onAction="#ajouterParking" />
-            </children>
-        </VBox>
+          <ImageView fitHeight="600.0" fitWidth="800.0">
+              <image>
+                  <Image url="@image/ajouterParking.png" />
+              </image>
+          </ImageView>
+        <VBox layoutX="30.0" layoutY="20.0" spacing="10" />
+          <Button fx:id="boutonAjouter" layoutX="165.0" layoutY="366.0" mnemonicParsing="false" onAction="#ajouterParking" prefHeight="25.0" prefWidth="105.0" text="Ajouter" />
+          <TextField fx:id="nombreActuellesTextField" layoutX="206.0" layoutY="308.0" promptText="Nombre actuel" />
+          <TextField fx:id="typeTextField" layoutX="206.0" layoutY="256.0" promptText="Type" />
+          <TextField fx:id="capaciteTextField" layoutX="206.0" layoutY="204.0" promptText="Capacité" />
+          <TextField fx:id="nomTextField" layoutX="206.0" layoutY="160.0" promptText="Nom" />
+      <Label layoutX="65.0" layoutY="162.0" text="Nom" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="62.0" layoutY="206.0" text="Capacité" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="258.0" text="Type" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="310.0" text="Nombre actuel" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
