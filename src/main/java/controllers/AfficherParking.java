@@ -1,3 +1,4 @@
+// AfficherParking.java
 package controllers;
 
 import entities.Parking;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseButton;
 import services.ServiceParking;
 
 import java.io.IOException;
@@ -62,6 +64,31 @@ public class AfficherParking {
         });
 
         // Autres gestionnaires d'événements...
+
+        // Gestionnaire d'événements pour le double-clic sur un élément de la ListView
+        listeParkings.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                Parking selectedParking = listeParkings.getSelectionModel().getSelectedItem();
+                if (selectedParking != null) {
+                    ouvrirDetailsParking(selectedParking);
+                }
+            }
+        });
+    }
+
+    private void ouvrirDetailsParking(Parking parking) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsParking.fxml"));
+            Parent root = loader.load();
+            DetailsParking controller = loader.getController();
+            controller.initData(parking);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Détails du parking");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void refreshList() {

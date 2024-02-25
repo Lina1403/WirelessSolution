@@ -30,7 +30,7 @@ public class Parking {
     }
 
     public String getNom() {
-        return nom;
+        return this.nom;
     }
 
     public void setNom(String nom) {
