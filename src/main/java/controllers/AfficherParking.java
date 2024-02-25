@@ -82,6 +82,8 @@ public class AfficherParking {
             Parent root = loader.load();
             DetailsParking controller = loader.getController();
             controller.initData(parking);
+            controller.setAfficherParking(this); // Passer une référence à AfficherParking
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Détails du parking");
