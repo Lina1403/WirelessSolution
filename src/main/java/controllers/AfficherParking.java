@@ -25,12 +25,6 @@ public class AfficherParking {
     @FXML
     private Button boutonAjouter;
 
-    @FXML
-    private Button boutonModifier;
-
-    @FXML
-    private Button boutonSupprimer;
-
     private ObservableList<Parking> parkingsObservableList;
     private ServiceParking serviceParking;
 
