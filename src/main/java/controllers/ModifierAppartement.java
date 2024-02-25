@@ -37,6 +37,7 @@ public class ModifierAppartement {
             // Assurez-vous que le statut de l'appartement est sélectionné dans le ComboBox
             typeComboBox.setValue(appartement.getStatutAppartement().toString());
         }
+
     }
 
     @FXML

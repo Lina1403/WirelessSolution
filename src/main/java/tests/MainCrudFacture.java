@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Set;
 
 public class MainCrudFacture {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         ServiceFacture serviceFacture = new ServiceFacture();
       /*
         Facture factureExistante = new Facture();
@@ -125,7 +125,10 @@ public class MainCrudFacture {
         }
         */
 
+        int idFactureASupprimer = 19;
 
+
+        serviceFacture.supprimer(idFactureASupprimer);
 
     }
 }

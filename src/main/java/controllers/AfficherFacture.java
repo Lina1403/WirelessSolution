@@ -30,7 +30,7 @@ public class AfficherFacture  {
     private TextField searchNumField;
 
 
-
+     private Facture selectedFacture ;
 
     private Appartement appartementSelectionne;
 
@@ -69,7 +69,9 @@ public class AfficherFacture  {
 
     @FXML
     void modifierFacture() {
-        Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
+         selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
+        System.out.println(selectedFacture);
+
 
         if (selectedFacture != null) {
             try {
@@ -124,25 +126,24 @@ public class AfficherFacture  {
 
             @FXML
             void supprimerFacture () {
-                Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
+                 selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
 
                 if (selectedFacture != null) {
                     try {
-                        System.out.println("ID de la Facture à supprimer : " + selectedFacture.getNumFacture());
+                        System.out.println("Num de la Facture à supprimer : " + selectedFacture.getNumFacture());
                         serviceFacture.supprimer(selectedFacture.getIdFacture());
                         System.out.println("Facture supprimée avec succès !");
                         listViewFacture.getItems().remove(selectedFacture);
-                        afficherAlerteErreur("Suppression réussie", "La Facture a été supprimé avec succès.");
 
                     } catch (SQLException e) {
                         // Gérer l'exception pour les contraintes de clé étrangère
-                        afficherAlerteErreur("Erreur de suppression", "Impossible de supprimer la facture : des factures sont associées à cet appartement. Veuillez d'abord supprimer toutes les factures associées.");
+                        System.out.println("Erreur de suppression Impossible de supprimer la facture : des factures sont associées à cet appartement. Veuillez d'abord supprimer toutes les factures associées.");
                     } catch (Exception e) {
                         // Gérer les autres exceptions
-                        afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de la suppression de la facture : " + e.getMessage());
+                        System.out.println("Erreur Une erreur s'est produite lors de la suppression de la facture : " );
                     }
                 } else {
-                    afficherAlerteErreur("Sélection requise", "Veuillez sélectionner un facture à supprimer.");
+                    System.out.println("Sélection requise Veuillez sélectionner un facture à supprimer.");
                 }
                 actualiser();
             }
@@ -179,13 +180,7 @@ public class AfficherFacture  {
 
 
 
-    private void afficherAlerteErreur(String titre, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titre);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }
 
 
