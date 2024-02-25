@@ -42,25 +42,54 @@ public class AjouterParking {
     }
 
     public void ajouterParking() {
-        String nom = nomTextField.getText();
-        int capacite = Integer.parseInt(capaciteTextField.getText());
-        String type = typeComboBox.getValue(); // Récupérer la valeur sélectionnée dans le ComboBox
-        int nombreActuelles = Integer.parseInt(nombreActuellesTextField.getText());
+        String nom = nomTextField.getText().trim(); // Supprimer les espaces avant et après
+        String capaciteText = capaciteTextField.getText();
+        String type = typeComboBox.getValue();
+        String nombreActuellesText = nombreActuellesTextField.getText();
 
-        if (nom.isEmpty() || type == null) {
-            // Vérifier si les champs obligatoires sont vides
-            afficherMessage("Erreur", "Veuillez remplir tous les champs obligatoires.");
+        // Validation du champ Nom
+        if (nom.isEmpty()) {
+            afficherMessage("Erreur", "Veuillez saisir un nom pour le parking.");
             return;
         }
 
-        Parking nouveauParking = new Parking(nom, capacite, type, nombreActuelles);
+        // Validation du champ Capacité
+        int capacite;
+        try {
+            capacite = Integer.parseInt(capaciteText);
+            if (capacite <= 0 || capacite > 100) {
+                afficherMessage("Erreur", "La capacité doit être un entier entre 1 et 100.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            afficherMessage("Erreur", "Veuillez saisir La capacité .");
+            return;
+        }
 
+        // Validation du champ Type
+        if (type == null) {
+            afficherMessage("Erreur", "Veuillez sélectionner un type pour le parking.");
+            return;
+        }
+
+        // Validation du champ Nombre Actuelles
+        int nombreActuelles;
+        try {
+            nombreActuelles = Integer.parseInt(nombreActuellesText);
+            if (nombreActuelles < 0 || nombreActuelles > 100) {
+                afficherMessage("Erreur", "Le nombre actuel de voitures doit être un entier entre 0 et 100.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            afficherMessage("Erreur", "Veuillez saisir Le nombre actuel de voitures .");
+            return;
+        }
+
+        // Si toutes les validations sont passées, ajoutez le parking
+        Parking nouveauParking = new Parking(nom, capacite, type, nombreActuelles);
         try {
             serviceParking.ajouter(nouveauParking);
-
-            // Affichage d'un message de succès
             afficherMessage("Parking ajouté", "Le parking a été ajouté avec succès.");
-
             if (afficherParking != null) {
                 afficherParking.refreshList();
             }
