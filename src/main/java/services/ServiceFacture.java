@@ -120,7 +120,7 @@ public class ServiceFacture implements IService<Facture>{
 
     @Override
     public void supprimer(int id) throws SQLException {
-        String req = "DELETE FROM facture WHERE idFacture=?";
+        String req = "DELETE FROM facture WHERE idFacture = ?";
 
         try (PreparedStatement st = cnx.prepareStatement(req)) {
             st.setInt(1, id);

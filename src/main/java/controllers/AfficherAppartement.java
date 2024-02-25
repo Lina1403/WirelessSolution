@@ -155,6 +155,7 @@ public class AfficherAppartement {
         }
     }
 
+
     @FXML
     void supprimerAppartement() {
         Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();

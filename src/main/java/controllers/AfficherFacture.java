@@ -30,7 +30,6 @@ public class AfficherFacture  {
     private TextField searchNumField;
 
 
-     private Facture selectedFacture ;
 
     private Appartement appartementSelectionne;
 
@@ -69,7 +68,7 @@ public class AfficherFacture  {
 
     @FXML
     void modifierFacture() {
-         selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
+       Facture  selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
         System.out.println(selectedFacture);
 
 
@@ -120,37 +119,51 @@ public class AfficherFacture  {
         } else {
             System.out.println("No Appartement selected.");
         }
-        actualiser();
+        listViewFacture.refresh();
     }
 
 
-            @FXML
-            void supprimerFacture () {
-                 selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
+    @FXML
+    void supprimerFacture() {
+        Facture factureSelectionnee = listViewFacture.getSelectionModel().getSelectedItem();
+        if (factureSelectionnee != null) {
+            try {
+                System.out.println("Facture sélectionnée : " + factureSelectionnee); // Vérifiez la facture sélectionnée
+                System.out.println(factureSelectionnee.getIdFacture());
 
-                if (selectedFacture != null) {
-                    try {
-                        System.out.println("Num de la Facture à supprimer : " + selectedFacture.getNumFacture());
-                        serviceFacture.supprimer(selectedFacture.getIdFacture());
-                        System.out.println("Facture supprimée avec succès !");
-                        listViewFacture.getItems().remove(selectedFacture);
+                int idFacture = factureSelectionnee.getIdFacture();
+                System.out.println("ID de la facture à supprimer : " + idFacture); // Vérifiez l'ID de la facture
 
-                    } catch (SQLException e) {
-                        // Gérer l'exception pour les contraintes de clé étrangère
-                        System.out.println("Erreur de suppression Impossible de supprimer la facture : des factures sont associées à cet appartement. Veuillez d'abord supprimer toutes les factures associées.");
-                    } catch (Exception e) {
-                        // Gérer les autres exceptions
-                        System.out.println("Erreur Une erreur s'est produite lors de la suppression de la facture : " );
-                    }
-                } else {
-                    System.out.println("Sélection requise Veuillez sélectionner un facture à supprimer.");
-                }
-                actualiser();
+                // Ajoutez d'autres instructions de débogage au besoin...
+
+                serviceFacture.supprimer(idFacture);
+                System.out.println("Facture supprimée avec succès !");
+
+                listViewFacture.getItems().remove(factureSelectionnee);
+
+                afficherAlerteErreur("Suppression réussie", "La facture a été supprimée avec succès.");
+            } catch (SQLException e) {
+                afficherAlerteErreur("Erreur de suppression", "Impossible de supprimer la facture : des contraintes de clé étrangère sont violées.");
+            } catch (Exception e) {
+                afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de la suppression de la facture : " + e.getMessage());
             }
+        } else {
+            afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture à supprimer.");
+        }
+        actualiser();
+    }
+
+    private void afficherAlerteErreur(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 
-            @FXML
-            void actualiser () {
+    @FXML
+            void actualiser() {
                 try {
                     afficherFactures(); // Actualiser la liste des factures depuis la base de données
                     initialize(); // Réinitialiser l'interface utilisateur
@@ -159,7 +172,7 @@ public class AfficherFacture  {
                 }
             }
             @FXML
-            void rechercherFactures () {
+            void rechercherFactures() {
                 try {
                     int numFacture = 0; // Valeur par défaut
                     if (!searchNumField.getText().isEmpty()) {

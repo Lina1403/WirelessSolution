@@ -99,6 +99,7 @@ public class AjouterFacture {
             // Gérer les autres exceptions
             afficherAlerteErreur("Error", e.getMessage());
         }
+
     }
     // Méthode pour récupérer l'identifiant d'un appartement en fonction de son numéro
 

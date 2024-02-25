@@ -21,8 +21,12 @@ public class Facture {
     public enum Type {
         Eau, Gaz, Electricite, Dechets
     }
-   public Facture(){}
+    public Facture(){
 
+    }
+    public Facture(int idFacture) {
+        this.idFacture = idFacture;
+    }
     public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture, Appartement appartement) {
         this.idFacture = idFacture;
         this.numFacture = numFacture;
