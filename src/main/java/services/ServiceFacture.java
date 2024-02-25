@@ -120,11 +120,23 @@ public class ServiceFacture implements IService<Facture>{
 
     @Override
     public void supprimer(int id) throws SQLException {
-        String req = "DELETE FROM facture WHERE idFacture=?" ;
-        Statement st = cnx.createStatement();
-        st.executeUpdate(req);
-        System.out.println("Facture supprimé !");
+        String req = "DELETE FROM facture WHERE idFacture=?";
+
+        try (PreparedStatement st = cnx.prepareStatement(req)) {
+            st.setInt(1, id);
+            int rowsAffected = st.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Facture supprimée !");
+            } else {
+                System.out.println("Aucune facture n'a été supprimée. Vérifiez l'ID de la facture.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la suppression de la facture : " + e.getMessage());
+            throw e; // Propager l'exception pour la gérer dans la couche supérieure si nécessaire
+        }
     }
+
 
 
     @Override
