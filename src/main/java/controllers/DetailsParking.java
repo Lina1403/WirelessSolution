@@ -4,6 +4,7 @@ import entities.Parking;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -37,11 +38,54 @@ public class DetailsParking {
     private void modifierParking() {
         if (parking != null) {
             try {
+                String nom = textFieldNom.getText().trim();
+                String capaciteText = textFieldCapacite.getText();
+                String type = comboBoxType.getValue();
+                String nombreActuellesText = textFieldNombreActuelles.getText();
+
+                // Validation du champ Nom
+                if (nom.isEmpty()) {
+                    afficherMessage("Erreur", "Veuillez entrer un nom pour le parking.");
+                    return;
+                }
+
+                // Validation du champ Capacité
+                int capacite;
+                try {
+                    capacite = Integer.parseInt(capaciteText);
+                    if (capacite <= 0 || capacite > 100) {
+                        afficherMessage("Erreur", "La capacité doit être un entier entre 1 et 100.");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    afficherMessage("Erreur", "Veuillez saisir La capacité.");
+                    return;
+                }
+
+                // Validation du champ Type
+                if (type == null) {
+                    afficherMessage("Erreur", "Veuillez sélectionner un type de parking.");
+                    return;
+                }
+
+                // Validation du champ Nombre Actuelles
+                int nombreActuelles;
+                try {
+                    nombreActuelles = Integer.parseInt(nombreActuellesText);
+                    if (nombreActuelles < 0 || nombreActuelles > 100) {
+                        afficherMessage("Erreur", "Le nombre actuel de voitures doit être un entier entre 0 et 100.");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    afficherMessage("Erreur", "Veuillez saisir Le nombre actuel de voitures .");
+                    return;
+                }
+
                 // Mettre à jour les détails du parking avec les valeurs des champs de texte
-                parking.setNom(textFieldNom.getText());
-                parking.setCapacite(Integer.parseInt(textFieldCapacite.getText()));
-                parking.setType(comboBoxType.getValue());
-                parking.setNombreActuelles(Integer.parseInt(textFieldNombreActuelles.getText()));
+                parking.setNom(nom);
+                parking.setCapacite(capacite);
+                parking.setType(type);
+                parking.setNombreActuelles(nombreActuelles);
 
                 // Appeler le service pour modifier le parking dans la base de données
                 serviceParking.modifier(parking);
@@ -57,6 +101,8 @@ public class DetailsParking {
             }
         }
     }
+
+
     @FXML
     private void supprimerParking() {
         if (parking != null) {
@@ -100,4 +146,12 @@ public class DetailsParking {
         Stage stage = (Stage) textFieldNom.getScene().getWindow();
         stage.close();
     }
+    private void afficherMessage(String titre, String contenu) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(contenu);
+        alert.showAndWait();
+    }
+
 }
