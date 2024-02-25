@@ -30,10 +30,9 @@ public class ModifierFacture {
     private final ServiceFacture serviceFacture = new ServiceFacture();
     private  Facture selectedFacture;
 
-    public void setFactureSelectionne(Facture facture) {
+    public void setFactureSelectionne(Facture facture) throws SQLException {
         this.selectedFacture = facture;
         System.out.println(selectedFacture);
-
     }
     @FXML
     void modifierFacture(ActionEvent event) {

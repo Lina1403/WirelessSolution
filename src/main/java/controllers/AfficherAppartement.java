@@ -29,6 +29,11 @@ public class AfficherAppartement {
     private final ServiceFacture serviceFacture = new ServiceFacture();
     AjouterFacture controler;
 
+    @FXML
+    private TextField searchNumField;
+
+    @FXML
+    private TextField searchNomResidentField;
 
     @FXML
     public ListView<Appartement> listView;
@@ -137,6 +142,7 @@ public class AfficherAppartement {
         }
         actualiser();
     }
+
     @FXML
     void actualiser() {
         try {
@@ -185,8 +191,6 @@ public class AfficherAppartement {
     }
 
 
-}
-    /*
     @FXML
     void rechercherAppartements() {
         try {
@@ -199,7 +203,7 @@ public class AfficherAppartement {
 
             Set<Appartement> appartements = serviceAppartemment.rechercherAppartements(numAppartement, nomResident);
             ObservableList<Appartement> observableList = FXCollections.observableArrayList(new ArrayList<>(appartements));
-            tableAppartements.setItems(observableList);
+            listView.setItems(observableList);
         } catch (NumberFormatException e) {
             System.out.println("Veuillez saisir un numéro d'appartement valide.");
         } catch (SQLException e) {
@@ -207,43 +211,7 @@ public class AfficherAppartement {
         }
     }
 
-
-
-
-    @FXML
-    public void ajouterFacture(ActionEvent actionEvent) {
-        Appartement appartementSelectionne = tableAppartements.getSelectionModel().getSelectedItem();
-        if (appartementSelectionne != null) {
-            System.out.println("Appartement selected: " + appartementSelectionne);
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
-                Parent root = loader.load();
-
-                // Get the controller and pass the selected Appartement
-                AjouterFacture controller = loader.getController();
-                controller.setAppartementSelectionne(appartementSelectionne);
-
-                // Create a new stage
-                Stage stage = new Stage();
-                stage.setTitle("Ajouter Facture");
-                stage.setScene(new Scene(root));
-
-                // Show the new stage
-                System.out.println("Showing new stage...");
-                stage.show();
-                System.out.println("New stage should be visible now.");
-            } catch (IOException e) {
-                System.out.println("IOException occurred:");
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("No Appartement selected.");
-        }
-    }
-
-
-  */
-
+}
 
 
 

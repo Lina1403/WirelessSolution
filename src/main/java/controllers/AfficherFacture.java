@@ -26,6 +26,11 @@ import java.util.Set;
 
 public class AfficherFacture  {
     private final ServiceFacture serviceFacture = new ServiceFacture();
+    @FXML
+    private TextField searchNumField;
+
+
+
 
     private Appartement appartementSelectionne;
 
@@ -39,6 +44,7 @@ public class AfficherFacture  {
         this.appartementSelectionne = appartement;
         System.out.println("Appartement sélectionné : " + appartementSelectionne);
         initialize();
+        supprimerFacture();
     }
 
     void afficherFactures() throws SQLException {
@@ -78,6 +84,8 @@ public class AfficherFacture  {
                 actualiser();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println("Veuillez sélectionner une facture à modifier.");
@@ -113,63 +121,75 @@ public class AfficherFacture  {
         actualiser();
     }
 
-    @FXML
-    void supprimerFacture() {
-        Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
 
-        if (selectedFacture != null) {
-            try {
-                serviceFacture.supprimer(selectedFacture.getIdFacture());
-                System.out.println("Facture supprimée avec succès !");
-                listViewFacture.getItems().remove(selectedFacture);
-            } catch (SQLException e) {
-                System.err.println("Erreur lors de la suppression de la facture : " + e.getMessage());
-                e.printStackTrace();
+            @FXML
+            void supprimerFacture () {
+                Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
+
+                if (selectedFacture != null) {
+                    try {
+                        System.out.println("ID de la Facture à supprimer : " + selectedFacture.getNumFacture());
+                        serviceFacture.supprimer(selectedFacture.getIdFacture());
+                        System.out.println("Facture supprimée avec succès !");
+                        listViewFacture.getItems().remove(selectedFacture);
+                        afficherAlerteErreur("Suppression réussie", "La Facture a été supprimé avec succès.");
+
+                    } catch (SQLException e) {
+                        // Gérer l'exception pour les contraintes de clé étrangère
+                        afficherAlerteErreur("Erreur de suppression", "Impossible de supprimer la facture : des factures sont associées à cet appartement. Veuillez d'abord supprimer toutes les factures associées.");
+                    } catch (Exception e) {
+                        // Gérer les autres exceptions
+                        afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de la suppression de la facture : " + e.getMessage());
+                    }
+                } else {
+                    afficherAlerteErreur("Sélection requise", "Veuillez sélectionner un facture à supprimer.");
+                }
+                actualiser();
             }
-        } else {
-            System.out.println("Veuillez sélectionner une facture à supprimer.");
-        }
-        actualiser();
-    }
-    @FXML
-    void actualiser() {
-        try {
-            afficherFactures(); // Actualiser la liste des factures depuis la base de données
-            initialize(); // Réinitialiser l'interface utilisateur
-            System.out.println("Base de données et interface actualisées avec succès !");
-        } catch (SQLException e) {
-            System.err.println("Erreur lors de l'actualisation de la base de données et de l'interface : " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
+
+            @FXML
+            void actualiser () {
+                try {
+                    afficherFactures(); // Actualiser la liste des factures depuis la base de données
+                    initialize(); // Réinitialiser l'interface utilisateur
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            @FXML
+            void rechercherFactures () {
+                try {
+                    int numFacture = 0; // Valeur par défaut
+                    if (!searchNumField.getText().isEmpty()) {
+                        numFacture = Integer.parseInt(searchNumField.getText());
+                    }
+
+                    // Supprimez la partie liée à la recherche par date
+
+                    Set<Facture> factures = serviceFacture.rechercherFactures(numFacture);
+                    ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
+                    listViewFacture.setItems(observableList);
+                } catch (NumberFormatException e) {
+                    System.out.println("Veuillez saisir un numéro de facture valide.");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+    private void afficherAlerteErreur(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
 
 
 
 
 
-
-   /*
-   @FXML
-   void rechercherFactures() {
-       try {
-           int numFacture = 0; // Valeur par défaut
-           if (!searchNumField.getText().isEmpty()) {
-               numFacture = Integer.parseInt(searchNumField.getText());
-           }
-
-           // Supprimez la partie liée à la recherche par date
-
-           Set<Facture> factures = serviceFacture.rechercherFactures(numFacture);
-           ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
-           tableFactures.setItems(observableList);
-       } catch (NumberFormatException e) {
-           System.out.println("Veuillez saisir un numéro de facture valide.");
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
-   }
-
-           */
 
