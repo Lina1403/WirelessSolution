@@ -72,8 +72,6 @@ public class AjouterFacture {
             }
             // Récupérer l'idAppartement correspondant au numAppartement de la facture
 
-
-
             if (appartementSelectionne == null) {
                 throw new IllegalArgumentException("No apartment selected.");
             }
@@ -103,15 +101,7 @@ public class AjouterFacture {
         }
     }
     // Méthode pour récupérer l'identifiant d'un appartement en fonction de son numéro
-    public int getIdAppartementByNumAppartement(int numAppartement, Set<Appartement> appartements) {
-        for (Appartement appartement : appartements) {
-            if (appartement.getNumAppartement() == numAppartement) {
-                return appartement.getIdAppartement();
-            }
-        }
-        // Retourne -1 si aucun appartement n'est trouvé avec le numéro spécifié
-        return -1;
-    }
+
 
 
 

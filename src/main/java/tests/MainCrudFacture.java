@@ -10,7 +10,8 @@ import java.util.Set;
 
 public class MainCrudFacture {
     public static void main(String[] args) {
-      /*  ServiceFacture serviceFacture = new ServiceFacture();
+        ServiceFacture serviceFacture = new ServiceFacture();
+      /*
         Facture factureExistante = new Facture();
         factureExistante.setIdFacture(28); // ID de la facture existante
         factureExistante.setNumFacture(123456);
@@ -92,8 +93,41 @@ public class MainCrudFacture {
             }
         } catch (SQLException e) {
             System.out.println("Une erreur s'est produite lors de la récupération des factures : " + e.getMessage());
-        } */
+        }
+        try {
+            Facture facture = serviceFacture.getOneById(19); // ID de la facture existant dans votre base de données de test
+            System.out.println(facture);
+            // Vous pouvez ajouter d'autres assertions pour vérifier les valeurs de la facture récupérée si nécessaire
+        } catch (SQLException e) {
+            System.out.println("Une exception SQL s'est produite : " + e.getMessage());
+        }
+
+
+
+
+        Facture facture = new Facture();
+        // Initialisez la facture avec les valeurs appropriées pour les tests
+        facture.setIdFacture(19);
+        facture.setNumFacture(40);
+        facture.setDescriptionFacture("Alii");
+        facture.setType(Facture.Type.Gaz);
+        facture.setDate(new Date());
+        facture.getAppartement().setIdAppartement(7);
+        // ID de la facture existant dans votre base de données de test
+        // Initialisez d'autres valeurs de la facture si nécessaire
+
+        try {
+            serviceFacture.modifier(facture);
+            // Si aucune exception n'est levée, cela signifie que la modification a réussi
+            System.out.println(true);
+        } catch (SQLException e) {
+            System.out.println("Une exception SQL s'est produite : " + e.getMessage());
+        }
+        */
+
+
+
     }
-
-
 }
+
+

@@ -6,6 +6,7 @@ entities\Facture.class
 controllers\AfficherFacture.class
 entities\Appartement.class
 controllers\AfficherAppartement.class
+controllers\ModifierAppartement.class
 tests\main.class
 services\ServiceAppartemment.class
 tests\MainFx.class

@@ -32,12 +32,13 @@ public class ModifierFacture {
 
     public void setFactureSelectionne(Facture facture) {
         this.selectedFacture = facture;
+        System.out.println(selectedFacture);
+
     }
     @FXML
     void modifierFacture(ActionEvent event) {
         try {
             int idFacture = Integer.parseInt(id_numFacture_modifier.getText());
-
             float montant = Float.parseFloat(id_montant_modifier.getText());
             LocalDate date = id_date_modifier.getValue();
             String description = id_description_modifier.getText();

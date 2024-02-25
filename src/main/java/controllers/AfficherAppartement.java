@@ -50,12 +50,32 @@ public class AfficherAppartement {
     }
 
     @FXML
-    void actualiserBaseDeDonnees() {
-        try {
-            afficherAppartements(); // Actualiser la table après chaque modification
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle SQLException appropriately
+    void modiferAppartement(ActionEvent actionEvent) {
+        Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
+        System.out.println("Appartement sélectionné pour modifier : " + appartementSelectionne);
+        if (appartementSelectionne != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierAppartement.fxml"));
+                Parent root = loader.load();
+                System.out.println("FXML file loaded successfully.");
+                ModifierAppartement controller = loader.getController();
+                System.out.println("Controller initialized.");
+
+                controller.setAppartementSelectionne(appartementSelectionne);
+                System.out.println("Data initialized in controller.");
+
+                Stage stage = new Stage();
+                stage.setTitle("Liste des Factures");
+                stage.setScene(new Scene(root));
+
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Aucun appartement sélectionné.");
         }
+        actualiser();
     }
 
 
