@@ -19,6 +19,7 @@
         </VBox>
     </VBox>
     <Button layoutX="47.0" layoutY="340.0" onAction="#ajouterFacture" text="Ajouter Facture" />
+    <Button layoutX="278.0" layoutY="340.0" onAction="#modifierFacture" text="Modifier Facture" />
     <Button layoutX="158.0" layoutY="340.0" onAction="#supprimerFacture" text="Supprimer Facture" />
 
 

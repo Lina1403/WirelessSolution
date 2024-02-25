@@ -164,6 +164,7 @@ public class AfficherAppartement {
         alert.showAndWait();
     }
 
+
 }
     /*
     @FXML

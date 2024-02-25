@@ -10,7 +10,7 @@
 
     <VBox layoutX="47.0" layoutY="98.0" spacing="10.0">
 
-        <ListView fx:id="listView" prefHeight="200.0" prefWidth="443.0">
+        <ListView fx:id="listView" prefHeight="220.0" prefWidth="443.0">
             <items>
                 <FXCollections fx:factory="observableArrayList" />
             </items>

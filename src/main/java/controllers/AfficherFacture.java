@@ -25,26 +25,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AfficherFacture  {
-
-
     private final ServiceFacture serviceFacture = new ServiceFacture();
-    @FXML
-    private TextField searchNumField;
-    AfficherAppartement afficherAppartement ;
 
-
-
-    @FXML
-    private Button supprimerButton;
-
-    @FXML
-    private Button modifierButton;
     private Appartement appartementSelectionne;
 
     @FXML
     private ListView<Facture> listViewFacture;
-
-
 
     public void initData(Appartement appartement) throws SQLException {
         if (appartement == null) {
@@ -75,7 +61,28 @@ public class AfficherFacture  {
         }
     }
 
+    @FXML
+    void modifierFacture() {
+        Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
 
+        if (selectedFacture != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFacture.fxml"));
+                Parent root = loader.load();
+                ModifierFacture controller = loader.getController();
+                controller.setFactureSelectionne(selectedFacture);
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.showAndWait();
+                actualiser();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Veuillez sélectionner une facture à modifier.");
+        }
+    }
     @FXML
     public void ajouterFacture(ActionEvent actionEvent) {
         if (appartementSelectionne != null) {
@@ -105,6 +112,7 @@ public class AfficherFacture  {
         }
         actualiser();
     }
+
     @FXML
     void supprimerFacture() {
         Facture selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
@@ -134,6 +142,7 @@ public class AfficherFacture  {
             e.printStackTrace();
         }
     }
+
 }
 
 
@@ -141,26 +150,7 @@ public class AfficherFacture  {
 
 
 
-   /* @FXML
-    void modifier(ActionEvent event) throws IOException {
-        // Obtenez la réclamation sélectionnée dans la table
-        Reclamation r = (Reclamation) TableViewRec.getSelectionModel().getSelectedItem();
-        if (r != null) {
-            // Mettez à jour les champs de la réclamation
-            r.setCategorieRec(CategorieRecTF.getText());
-            r.setDescriRec(descriRecTF.getText());
-
-            try {
-                // Mettez à jour la réclamation dans la base de données
-                rs.modifier(r);
-                // Rafraîchir les données de la table
-                ShowReclamation();
-                TableViewRec.refresh(); // Ajoutez cette ligne
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
+   /*
    @FXML
    void rechercherFactures() {
        try {
@@ -180,28 +170,6 @@ public class AfficherFacture  {
            e.printStackTrace();
        }
    }
-    @FXML
-    void modifierFacture() {
-        Facture selectedFacture =(Facture) tableFactures.getSelectionModel().getSelectedItem();
 
-        if (selectedFacture != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFacture.fxml"));
-                Parent root = loader.load();
-                ModifierFacture controller = loader.getController();
-                controller.initData(selectedFacture);
-
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.showAndWait();
-
-                actualiserTableFactures();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Veuillez sélectionner une facture à modifier.");
-        }
-    }
            */
 

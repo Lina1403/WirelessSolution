@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Appartement;
 import entities.Facture;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,11 @@ public class ModifierFacture {
     private TextField id_description_modifier;
 
     private final ServiceFacture serviceFacture = new ServiceFacture();
+    private  Facture selectedFacture;
+
+    public void setFactureSelectionne(Facture facture) {
+        this.selectedFacture = facture;
+    }
     @FXML
     void modifierFacture(ActionEvent event) {
         try {
@@ -38,17 +44,17 @@ public class ModifierFacture {
             String type = typeComboBox.getValue(); // Récupérez la valeur sélectionnée du ComboBox
 
             // Récupérer la facture à modifier
-            Facture facture = serviceFacture.getOneById(idFacture);
+            selectedFacture = serviceFacture.getOneById(idFacture);
 
-            if (facture != null) {
+            if (selectedFacture != null) {
                 // Mettre à jour les attributs de la facture
-                facture.setMontant(montant);
-                facture.setDate(java.sql.Date.valueOf(date));
-                facture.setDescriptionFacture(description);
-                facture.setType(Facture.Type.valueOf(type)); // Définissez le type de facture
+                selectedFacture.setMontant(montant);
+                selectedFacture.setDate(java.sql.Date.valueOf(date));
+                selectedFacture.setDescriptionFacture(description);
+                selectedFacture.setType(Facture.Type.valueOf(type)); // Définissez le type de facture
 
                 // Appeler la méthode pour modifier la facture dans la base de données
-                serviceFacture.modifier(facture);
+                serviceFacture.modifier(selectedFacture);
 
                 System.out.println("Facture modifiée avec succès !");
             } else {
@@ -62,38 +68,7 @@ public class ModifierFacture {
     }
 
 
-  /*  @FXML
-    void modifierFacture(ActionEvent event) {
-        try {
-            int idFacture = Integer.parseInt(id_numFacture_modifier.getText());
 
-            int numFacture = Integer.parseInt(id_numFacture_modifier.getText());
-            float montant = Float.parseFloat(id_montant_modifier.getText());
-            LocalDate date = id_date_modifier.getValue();
-            String description = id_description_modifier.getText();
-            String type = typeComboBox.getValue(); // Récupérez la valeur sélectionnée du ComboBox
-            // Récupérer la facture à modifier
-            Facture facture = serviceFacture.getOneById(idFacture);
-            if (facture != null) {
-                // Mettre à jour les attributs de la facture
-                facture.setMontant(montant);
-                facture.setDate(java.sql.Date.valueOf(date));
-                facture.setDescriptionFacture(description);
-                facture.setType(Facture.Type.valueOf(type)); // Définissez le type de facture
-
-                // Appeler la méthode pour modifier la facture dans la base de données
-                serviceFacture.modifier(facture);
-
-                System.out.println("Facture modifiée avec succès !");
-            } else {
-                System.out.println("Facture non trouvée !");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Veuillez saisir des valeurs valides pour les champs numériques !");
-        } catch (SQLException e) {
-            System.out.println("Erreur lors de la modification de la facture : " + e.getMessage());
-        }
-    } */
 
 
     }
