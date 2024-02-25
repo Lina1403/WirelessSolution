@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <AnchorPane prefHeight="200.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsParking">
     <children>
         <Label layoutX="41.0" layoutY="47.0" text="Nom:" />
         <Label layoutX="41.0" layoutY="78.0" text="Capacité:" />
         <Label layoutX="41.0" layoutY="109.0" text="Type:" />
         <Label layoutX="41.0" layoutY="140.0" text="Nombre Actuelles:" />
-        <Label fx:id="labelNom" layoutX="137.0" layoutY="47.0" />
-        <Label fx:id="labelCapacite" layoutX="137.0" layoutY="78.0" />
-        <Label fx:id="labelType" layoutX="137.0" layoutY="109.0" />
-        <Label fx:id="labelNombreActuelles" layoutX="137.0" layoutY="140.0" />
-        <Button fx:id="boutonSupprimer" text="Supprimer" onAction="#supprimerParking"/>
+        <TextField fx:id="textFieldNom" layoutX="137.0" layoutY="47.0" />
+        <TextField fx:id="textFieldCapacite" layoutX="137.0" layoutY="78.0" />
+        <ComboBox fx:id="comboBoxType" layoutX="137.0" layoutY="109.0" />
+        <TextField fx:id="textFieldNombreActuelles" layoutX="137.0" layoutY="140.0" />
+        <Button fx:id="boutonModifier" text="Modifier" onAction="#modifierParking" layoutX="220.0" layoutY="180.0"/>
+        <Button fx:id="boutonSupprimer" text="Supprimer" onAction="#supprimerParking" layoutX="137.0" layoutY="180.0"/>
 
     </children>
 </AnchorPane>
