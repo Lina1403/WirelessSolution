@@ -2,10 +2,12 @@ package services;
 
 import entities.Parking;
 import utils.DataSource;
-
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ServiceParking implements IService<Parking> {
     Connection cnx = DataSource.getInstance().getCnx();
@@ -127,5 +129,37 @@ public class ServiceParking implements IService<Parking> {
             }
         }
         return false;
+    }
+    public List<String> getTypes() throws SQLException {
+        List<String> types = new ArrayList<>();
+
+        String req = "SELECT DISTINCT type FROM parking";
+
+        try (Statement st = cnx.createStatement();
+             ResultSet rs = st.executeQuery(req)) {
+
+            while (rs.next()) {
+                types.add(rs.getString("type"));
+            }
+        }
+
+        return types;
+    }
+    public List<String> getParkingsByType(String type) throws SQLException {
+        List<String> parkings = new ArrayList<>();
+
+        String req = "SELECT nom FROM parking WHERE type = ?";
+
+        try (PreparedStatement st = cnx.prepareStatement(req)) {
+            st.setString(1, type);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                parkings.add(rs.getString("nom"));
+            }
+        }
+
+        return parkings;
     }
 }
