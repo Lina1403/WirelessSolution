@@ -50,7 +50,7 @@ public class AfficherParking {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterParking.fxml"));
             try {
                 Parent root = loader.load();
-                AjouterParkingController controller = loader.getController();
+                AjouterParking controller = loader.getController();
                 controller.setAfficherParking(this);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));

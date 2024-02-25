@@ -16,8 +16,8 @@
         </ImageView>
         <ListView fx:id="listeParkings" layoutX="60.0" layoutY="118.0" prefHeight="312.0" prefWidth="651.0" />
         <HBox layoutX="46.0" layoutY="366.0" spacing="20.0" />
-          <Button fx:id="boutonAjouter" layoutX="81.0" layoutY="453.0" mnemonicParsing="false" text="Ajouter" />
-          <Button fx:id="boutonModifier" layoutX="166.0" layoutY="452.0" mnemonicParsing="false" text="Modifier" />
-          <Button fx:id="boutonSupprimer" layoutX="262.0" layoutY="450.0" mnemonicParsing="false" text="Supprimer" />
+        <Button fx:id="boutonAjouter" layoutX="81.0" layoutY="453.0" mnemonicParsing="false" text="Ajouter" />
+        <Button fx:id="boutonModifier" layoutX="166.0" layoutY="452.0" mnemonicParsing="false" text="Modifier" />
+        <Button fx:id="boutonSupprimer" layoutX="262.0" layoutY="450.0" mnemonicParsing="false" text="Supprimer" />
     </children>
 </AnchorPane>
