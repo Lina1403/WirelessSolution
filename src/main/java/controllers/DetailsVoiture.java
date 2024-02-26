@@ -42,18 +42,81 @@ public class DetailsVoiture {
     @FXML
     private void modifierVoiture(ActionEvent event) {
         if (voiture != null) {
-            voiture.setMarque(textFieldMarque.getText());
-            voiture.setModel(textFieldModele.getText());
-            voiture.setCouleur(textFieldCouleur.getText());
-            voiture.setMatricule(textFieldMatricule.getText());
+            String nouvelleMarque = textFieldMarque.getText().trim();
+            String nouveauModele = textFieldModele.getText().trim();
+            String nouvelleCouleur = textFieldCouleur.getText().trim();
+            String nouveauMatricule = textFieldMatricule.getText().trim();
 
-            try {
-                serviceVoiture.modifier(voiture);
-                afficherVoitureAdmin.refreshList();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (validerChamps(nouvelleMarque, nouveauModele, nouvelleCouleur, nouveauMatricule)) {
+                voiture.setMarque(nouvelleMarque);
+                voiture.setModel(nouveauModele);
+                voiture.setCouleur(nouvelleCouleur);
+                voiture.setMatricule(nouveauMatricule);
+
+                try {
+                    serviceVoiture.modifier(voiture);
+                    afficherVoitureAdmin.refreshList();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    private boolean validerChamps(String marque, String modele, String couleur, String matricule) {
+        return validerMarque(marque) && validerModele(modele) && validerCouleur(couleur) && validerMatricule(matricule);
+    }
+
+    private boolean validerMarque(String marque) {
+        if (marque.isEmpty()) {
+            afficherErreur("Erreur", "Veuillez saisir une marque pour la voiture.");
+            return false;
+        } else if (!marque.matches("[a-zA-Z]{1,20}")) {
+            afficherErreur("Erreur", "La marque doit contenir uniquement des lettres et avoir au maximum 20 caractères.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validerModele(String modele) {
+        if (modele.isEmpty()) {
+            afficherErreur("Erreur", "Veuillez saisir un modèle pour la voiture.");
+            return false;
+        } else if (!modele.matches("[a-zA-Z0-9]{1,20}")) {
+            afficherErreur("Erreur", "Le modèle doit contenir des lettres et des chiffres et avoir au maximum 20 caractères.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validerCouleur(String couleur) {
+        if (couleur.isEmpty()) {
+            afficherErreur("Erreur", "Veuillez saisir une couleur pour la voiture.");
+            return false;
+        } else if (!couleur.matches("[a-zA-Z]{1,20}")) {
+            afficherErreur("Erreur", "La couleur doit contenir uniquement des lettres et avoir au maximum 20 caractères.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validerMatricule(String matricule) {
+        if (matricule.isEmpty()) {
+            afficherErreur("Erreur", "Veuillez saisir un matricule pour la voiture.");
+            return false;
+        } else if (!matricule.matches("[a-zA-Z0-9]{6,15}")) {
+            afficherErreur("Erreur", "Le matricule doit contenir des lettres et des chiffres et avoir entre 6 et 15 caractères.");
+            return false;
+        }
+        return true;
+    }
+
+    private void afficherErreur(String titre, String contenu) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(contenu);
+        alert.showAndWait();
     }
 
     @FXML
