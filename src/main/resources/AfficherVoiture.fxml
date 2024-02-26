@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVoitureAdmin">
-    <children>
-        <!-- Ajoutez une ListView pour afficher la liste des voitures -->
-        <ListView fx:id="listeVoitures" />
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.AfficherVoiture"
+            prefHeight="400.0" prefWidth="600.0">
 
-        <Button fx:id="boutonAjouter" layoutX="258.0" layoutY="356.0" mnemonicParsing="false" text="Ajouter une voiture" />
-    </children>
+    <ComboBox fx:id="comboBoxType" layoutX="30.0" layoutY="30.0" promptText="Sélectionner un type"/>
+
+    <ListView fx:id="listViewParkings" layoutX="30.0" layoutY="80.0" prefHeight="250.0" prefWidth="200.0"/>
+
+    <Button fx:id="ajouterButton" layoutX="30.0" layoutY="350.0" onAction="#handleAjouterButton" text="Ajouter une voiture"/>
+
 </AnchorPane>
