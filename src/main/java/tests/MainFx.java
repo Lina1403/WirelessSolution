@@ -11,8 +11,10 @@ public class MainFx extends Application {
     public void start(Stage stage) throws Exception {
         // Charger le fichier FXML
        // Parent root = FXMLLoader.load(getClass().getResource("/AjouterParking.fxml"));
-     // Parent root = FXMLLoader.load(getClass().getResource("/AfficherParking.fxml"));
-         Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoiture.fxml"));
+      // Parent root = FXMLLoader.load(getClass().getResource("/AfficherParking.fxml"));
+        // Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoiture.fxml"));
+         Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoitureAdmin.fxml"));
+
         // Parent root = FXMLLoader.load(getClass().getResource("/DetailsParking.fxml"));
 
 

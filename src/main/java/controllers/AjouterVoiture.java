@@ -32,8 +32,13 @@ public class AjouterVoiture {
     private Parking selectedParking; // Stocker le parking sélectionné
     private int idVoitureAjoutee;
 
+    private AfficherVoitureAdmin afficherVoitureAdmin; // Déclaration de la variable afficherVoitureAdmin
+
     public void setSelectedParking(Parking parking) {
         this.selectedParking = parking;
+    }
+    public void setAfficherVoitureAdmin(AfficherVoitureAdmin afficherVoitureAdmin) {
+        this.afficherVoitureAdmin = afficherVoitureAdmin;
     }
 
     @FXML
