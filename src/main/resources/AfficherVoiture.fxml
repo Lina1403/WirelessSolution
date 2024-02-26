@@ -13,7 +13,7 @@
 
         <Label layoutX="47.0" layoutY="100.0" text="Liste des parkings :" />
         <ListView fx:id="listViewParkings" layoutX="47.0" layoutY="150.0" prefHeight="200.0" prefWidth="500.0" />
-        <Button text="Ajouter" onAction="#handleAjouterButton"/>
+        <Button fx:id="ajouterButton" text="Ajouter" onAction="#handleAjouterButton" layoutX="47.0" layoutY="350.0" />
 
     </children>
 </AnchorPane>

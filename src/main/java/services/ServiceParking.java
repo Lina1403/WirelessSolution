@@ -162,4 +162,21 @@ public class ServiceParking implements IService<Parking> {
 
         return parkings;
     }
+    public Parking getParkingByName(String name) throws SQLException {
+        String query = "SELECT * FROM parking WHERE nom = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(query)) {
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Parking parking = new Parking();
+                parking.setIdParking(resultSet.getInt("idParking"));
+                parking.setNom(resultSet.getString("nom"));
+                parking.setType(resultSet.getString("type"));
+                // Vous pouvez définir d'autres propriétés du parking ici si nécessaire
+                return parking;
+            }
+        }
+        return null; // Retourner null si aucun parking n'est trouvé avec ce nom
+    }
+
 }
