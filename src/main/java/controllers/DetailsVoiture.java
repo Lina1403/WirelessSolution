@@ -1,8 +1,10 @@
 package controllers;
 
 import entities.Voiture;
-import javafx.event.ActionEvent; // Correction de l'import
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import services.ServiceVoiture;
 
@@ -21,15 +23,14 @@ public class DetailsVoiture {
 
     @FXML
     private TextField textFieldMatricule;
-    private AfficherVoitureAdmin afficherVoitureAdmin;
-
 
     private Voiture voiture;
     private ServiceVoiture serviceVoiture;
+    private AfficherVoitureAdmin afficherVoitureAdmin;
 
     public void initData(Voiture voiture, AfficherVoitureAdmin afficherVoitureAdmin) {
         this.voiture = voiture;
-        this.afficherVoitureAdmin = afficherVoitureAdmin; // Ajouter un champ pour stocker l'instance de AfficherVoitureAdmin
+        this.afficherVoitureAdmin = afficherVoitureAdmin;
         textFieldMarque.setText(voiture.getMarque());
         textFieldModele.setText(voiture.getModel());
         textFieldCouleur.setText(voiture.getCouleur());
@@ -48,13 +49,33 @@ public class DetailsVoiture {
 
             try {
                 serviceVoiture.modifier(voiture);
-                afficherVoitureAdmin.refreshList(); // Utiliser l'instance de AfficherVoitureAdmin pour rafraîchir la liste
-                // Vous pouvez également afficher un message de confirmation ici
+                afficherVoitureAdmin.refreshList();
             } catch (SQLException e) {
                 e.printStackTrace();
-                // Gérer l'erreur de modification
             }
         }
     }
 
+    @FXML
+    private void supprimerVoiture(ActionEvent event) {
+        if (voiture != null) {
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirmation de suppression");
+            confirmationAlert.setHeaderText(null);
+            confirmationAlert.setContentText("Voulez-vous vraiment supprimer cette voiture ?");
+
+            confirmationAlert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        serviceVoiture.supprimer(voiture.getIdVoiture());
+                        afficherVoitureAdmin.refreshList();
+                        // Fermer la fenêtre de détails de voiture
+                        textFieldMarque.getScene().getWindow().hide();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
 }

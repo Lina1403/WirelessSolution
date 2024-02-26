@@ -22,6 +22,8 @@
     <Label text="Matricule:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
     <TextField fx:id="textFieldMatricule" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     <Button text="Modifier" onAction="#modifierVoiture" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <Button fx:id="boutonSupprimer" layoutX="358.0" layoutY="356.0" mnemonicParsing="false" text="Supprimer" onAction="#supprimerVoiture" />
+
 
 
     <!-- Ajoutez d'autres champs selon les besoins -->
