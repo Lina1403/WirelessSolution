@@ -35,6 +35,11 @@ public class AjouterParking {
     @FXML
     public void initialize() {
         typeComboBox.getItems().addAll("Sous-sol","Pleine air","Couverte");
+        // Initialiser le champ "Nombre Actuelles" à 0
+        nombreActuellesTextField.setText("0");
+        // Rendre le champ "Nombre Actuelles" non modifiable
+        nombreActuellesTextField.setEditable(false);
+
     }
 
     public void setAfficherParking(AfficherParking afficherParking) {

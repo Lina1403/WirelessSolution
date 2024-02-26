@@ -38,6 +38,10 @@ public class AfficherParking {
         try {
             parkingsObservableList.addAll(serviceParking.getAll());
             listeParkings.setItems(parkingsObservableList);
+            // Initialiser le nombre actuel de voitures à 0 pour chaque parking
+            for (Parking parking : parkingsObservableList) {
+                parking.setNombreActuelles(0);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
