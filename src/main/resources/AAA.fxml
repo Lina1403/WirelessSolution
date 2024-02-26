@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherAppartement">
+    <children>
+        <VBox layoutX="47.0" layoutY="98.0" spacing="10.0" />
+        <HBox alignment="CENTER" layoutX="189.0" layoutY="368.0" spacing="20.0">
+            <children>
+                <Button fx:id="ajouterAppartement" onAction="#ajouterAppartement" text="Ajouter Appartement" />
+                <Button fx:id="modiferAppartement" onAction="#modiferAppartement" text="Modifier Appartement" />
+                <Button fx:id="gererFacture" onAction="#gererFacture" text="Gerer Facture" />
+                <Button fx:id="supprimerAppartement" onAction="#supprimerAppartement" text="Supprimer Appartement" />
+            </children>
+        </HBox>
+        <HBox alignment="CENTER" layoutX="189.0" layoutY="85.0" spacing="10.0">
+            <children>
+                <TextField fx:id="searchNumField" promptText="Numéro d'Appartement" />
+                <TextField fx:id="searchNomResidentField" promptText="Nom Resident" />
+                <Button fx:id="rechercherAppartements" onAction="#rechercherAppartements" text="Rechercher" />
+            </children>
+        </HBox>
+        <ImageView fitHeight="124.0" fitWidth="150.0" layoutX="-22.0" layoutY="-3.0">
+            <image>
+                <Image url="@../../../../../Downloads/logo.png" />
+            </image>
+        </ImageView>
+        <ListView fx:id="listView" layoutX="189.0" layoutY="115.0" prefHeight="239.0" prefWidth="646.0" />
+        <ImageView fitHeight="26.0" fitWidth="33.0" layoutX="739.0" layoutY="13.0">
+            <image>
+                <Image url="@../../../../../Downloads/rotation.png" />
+            </image>
+        </ImageView>
+        <Text fill="WHITE"  layoutX="189.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des Appartements" />
+        <Button defaultButton="true" layoutX="645.0" layoutY="72.0" onAction="#actualiser" prefHeight="26.0" prefWidth="75.0" text="Ac" textFill="WHITE">
+            <background>
+                <javafx.scene.layout.Background/>
+            </background>
+        </Button>
+    </children>
+</AnchorPane>
