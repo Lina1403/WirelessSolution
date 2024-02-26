@@ -1,6 +1,5 @@
 package entities;
 
-import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
@@ -11,28 +10,25 @@ public class Event {
     private int nbrPersonne;
     private String description;
     private Espace espace;
-    private Time heure;
 
     public Event() {
     }
 
-    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String description, Espace espace, Time heure) {
+    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String description, Espace espace) {
         this.idEvent = idEvent;
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
         this.description = description;
         this.espace = espace;
-        this.heure = heure;
     }
 
-    public Event(String title, Date date, int nbrPersonne, String description, Espace espace, Time heure) {
+    public Event(String title, Date date, int nbrPersonne, String description, Espace espace) {
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
         this.description = description;
         this.espace = espace;
-        this.heure = heure;
     }
 
     public Integer getIdEvent() {
@@ -83,14 +79,6 @@ public class Event {
         this.espace = espace;
     }
 
-    public Time getHeure() {
-        return heure;
-    }
-
-    public void setHeure(Time heure) {
-        this.heure = heure;
-    }
-
     @Override
     public String toString() {
         return "Event{" +
@@ -100,7 +88,6 @@ public class Event {
                 ", nbrPersonne=" + nbrPersonne +
                 ", description='" + description + '\'' +
                 ", espace=" + espace +
-                ", heure=" + heure +
                 '}';
     }
 
@@ -114,12 +101,11 @@ public class Event {
                 Objects.equals(title, event.title) &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(description, event.description) &&
-                Objects.equals(espace, event.espace) &&
-                Objects.equals(heure, event.heure);
+                Objects.equals(espace, event.espace);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, title, date, nbrPersonne, description, espace, heure);
+        return Objects.hash(idEvent, title, date, nbrPersonne, description, espace);
     }
 }

@@ -18,7 +18,7 @@ public class ServiceEvent implements IService<Event> {
             throw new IllegalArgumentException("L'espace est déjà occupé à cette date.");
         }
 
-        String req = "INSERT INTO `event` (`title`, `date`, `nbrPersonne`, `description`, `idEspace`, `heure`) VALUES (?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO `event` (`title`, `date`, `nbrPersonne`, `description`, `idEspace`) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, event.getTitle());
@@ -26,13 +26,6 @@ public class ServiceEvent implements IService<Event> {
             pstmt.setInt(3, event.getNbrPersonne());
             pstmt.setString(4, event.getDescription());
             pstmt.setInt(5, event.getEspace().getIdEspace());
-
-            // Vérifier si l'heure n'est pas nulle avant de l'ajouter à la requête
-            if (event.getHeure() != null) {
-                pstmt.setTime(6, new Time(event.getHeure().getTime()));
-            } else {
-                pstmt.setNull(6, Types.TIME); // Ajouter une valeur null pour l'heure
-            }
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -44,6 +37,8 @@ public class ServiceEvent implements IService<Event> {
             } else {
                 System.out.println("Failed to insert Event.");
             }
+        } finally {
+            cnx.close(); // Fermer la connexion une fois que toutes les opérations ont été effectuées
         }
     }
 
@@ -59,6 +54,7 @@ public class ServiceEvent implements IService<Event> {
         }
         return false;
     }
+
     public Espace getEspaceByName(String name) throws SQLException {
         String req = "SELECT * FROM espace WHERE name = ?";
         try (PreparedStatement ps = cnx.prepareStatement(req)) {
@@ -76,7 +72,6 @@ public class ServiceEvent implements IService<Event> {
         return null; // Retourne null si aucun espace avec ce nom n'est trouvé
     }
 
-
     public Set<String> getAllEspacesNames() throws SQLException {
         Set<String> espacesNames = new HashSet<>();
         String req = "SELECT name FROM espace";
@@ -90,10 +85,6 @@ public class ServiceEvent implements IService<Event> {
 
         return espacesNames;
     }
-
-
-
-
 
     @Override
     public Set<Event> getAll() throws SQLException {
@@ -111,7 +102,6 @@ public class ServiceEvent implements IService<Event> {
                 event.setDate(rs.getDate("date")); // Utilisation directe de rs.getDate()
                 event.setNbrPersonne(rs.getInt("nbrPersonne"));
                 event.setDescription(rs.getString("description"));
-                event.setHeure(rs.getTime("heure"));
 
                 // Création de l'objet Espace et assignation au nouvel événement
                 Espace espace = new Espace();
@@ -126,20 +116,15 @@ public class ServiceEvent implements IService<Event> {
         return events;
     }
 
-
     @Override
     public void modifier(Event event) throws SQLException {
-        // Vous pouvez implémenter la modification de l'événement selon vos besoins ici
-        // Assurez-vous de vérifier la contrainte de date pour l'occupation de l'espace
-        // Exemple de mise à jour d'un événement :
-        String req = "UPDATE event SET title = ?, date = ?, nbrPersonne = ?, description = ?, heure = ? WHERE idEvent = ?";
+        String req = "UPDATE event SET title = ?, date = ?, nbrPersonne = ?, description = ? WHERE idEvent = ?";
         try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
             pstmt.setString(1, event.getTitle());
-            pstmt.setDate(2, new java.sql.Date(event.getDate().getTime()));
+            pstmt.setTimestamp(2, new Timestamp(event.getDate().getTime())); // Utilisation de Timestamp pour java.sql.Date
             pstmt.setInt(3, event.getNbrPersonne());
             pstmt.setString(4, event.getDescription());
-            pstmt.setTime(5, new Time(event.getHeure().getTime()));
-            pstmt.setInt(6, event.getIdEvent());
+            pstmt.setInt(5, event.getIdEvent());
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
@@ -184,7 +169,6 @@ public class ServiceEvent implements IService<Event> {
                     event.setDate(rs.getDate("date"));
                     event.setNbrPersonne(rs.getInt("nbrPersonne"));
                     event.setDescription(rs.getString("description"));
-                    event.setHeure(rs.getTime("heure"));
 
                     // Création de l'objet Espace et assignation à l'événement
                     Espace espace = new Espace();

@@ -81,7 +81,7 @@ public class AjouterEvent {
                 throw new IllegalArgumentException("L'espace sélectionné n'existe pas.");
             }
 
-            Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, description, espaceObj, heure);
+            Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, description, espaceObj);
 
             serviceEvent.ajouter(eventObj);
 

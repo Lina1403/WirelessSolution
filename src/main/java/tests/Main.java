@@ -76,7 +76,6 @@ public class Main {
             event.setDescription("A birthday party");
             event.setEspace(espace); // Attribue l'espace à l'événement
             Time heure = Time.valueOf("14:00:00"); // Exemple : 14 heures, 30 minutes et 0 secondes
-            event.setHeure(heure); // Attribue l'heure à l'événement
             // Ajoute l'événement à la base de données
             serviceEvent.ajouter(event);
 
