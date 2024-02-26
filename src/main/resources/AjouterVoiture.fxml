@@ -12,6 +12,8 @@
         <TextField fx:id="couleurField" layoutX="148.0" layoutY="148.0" promptText="Couleur"/>
         <TextField fx:id="matriculeField" layoutX="148.0" layoutY="193.0" promptText="Matricule"/>
         <Button text="Ajouter" onAction="#handleAjouterButton" layoutX="200.0" layoutY="250.0" />
+        <Button fx:id="supprimerButton" text="Supprimer" onAction="#handleSupprimerButton" disable="true" />
+
 
     </children>
 </AnchorPane>
