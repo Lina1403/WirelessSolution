@@ -12,9 +12,7 @@ import services.ServiceEvent;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Set;
 
 public class AjouterEvent {
@@ -23,9 +21,6 @@ public class AjouterEvent {
 
     @FXML
     private DatePicker datePicker;
-
-    @FXML
-    private TextField heureField;
 
     @FXML
     private TextField descriptionField;
@@ -67,12 +62,6 @@ public class AjouterEvent {
 
             int nbrPersonne = Integer.parseInt(nbrPersonneField.getText());
 
-            Time heure = null;
-            String heureText = heureField.getText();
-            if (!heureText.isEmpty()) {
-                heure = Time.valueOf(LocalTime.parse(heureText));
-            }
-
             // Rechercher l'objet Espace correspondant au nom sélectionné
             Espace espaceObj = serviceEvent.getEspaceByName(espaceName);
 
@@ -99,6 +88,7 @@ public class AjouterEvent {
             afficherAlerteErreurEvent("Erreur", e.getMessage());
         }
     }
+
 
     private void afficherAlerteErreurEvent(String titre, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

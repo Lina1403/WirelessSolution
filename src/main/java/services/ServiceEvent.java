@@ -10,11 +10,10 @@ import java.util.Set;
 
 public class ServiceEvent implements IService<Event> {
     Connection cnx = DataSource.getInstance().getCnx();
-
     @Override
     public void ajouter(Event event) throws SQLException {
         // Vérifier si l'espace est occupé dans cette date
-        if (isEspaceOccupied(event.getDate())) {
+        if (isEspaceOccupied(event.getDate(), event.getEspace().getIdEspace())) {
             throw new IllegalArgumentException("L'espace est déjà occupé à cette date.");
         }
 
@@ -37,11 +36,22 @@ public class ServiceEvent implements IService<Event> {
             } else {
                 System.out.println("Failed to insert Event.");
             }
-        } finally {
-            cnx.close(); // Fermer la connexion une fois que toutes les opérations ont été effectuées
         }
     }
 
+    private boolean isEspaceOccupied(Date date, int idEspace) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM event WHERE date = ? AND idEspace = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
+            statement.setTimestamp(1, new Timestamp(date.getTime()));
+            statement.setInt(2, idEspace);
+            try (ResultSet rs = statement.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+
+
+/*
     private boolean isEspaceOccupied(java.util.Date date) throws SQLException {
         String sql = "SELECT COUNT(*) FROM event WHERE date = ?";
         try (PreparedStatement statement = cnx.prepareStatement(sql)) {
@@ -53,7 +63,7 @@ public class ServiceEvent implements IService<Event> {
             }
         }
         return false;
-    }
+    }*/
 
     public Espace getEspaceByName(String name) throws SQLException {
         String req = "SELECT * FROM espace WHERE name = ?";

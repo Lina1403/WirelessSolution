@@ -47,8 +47,8 @@ public class Event {
         this.title = title;
     }
 
-    public Date getDate() {
-        return date;
+    public java.sql.Date getDate() {
+        return (java.sql.Date) date;
     }
 
     public void setDate(Date date) {
