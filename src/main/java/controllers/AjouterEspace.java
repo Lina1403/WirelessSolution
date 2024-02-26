@@ -15,6 +15,7 @@ import services.ServiceEspace;
 import services.ServiceEvent;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
@@ -43,7 +44,6 @@ public class AjouterEspace {
     private Button btnAdd;
 
 
-
     @FXML
     private Label lblNomError, lblCapaciteError, lblDescriptionError, lblEtatError;
 
@@ -69,49 +69,61 @@ public class AjouterEspace {
     @FXML
     void saveChanges() {
         if (espace != null) {
-            if (validerChamps()) {
-                espace.setName(txtNom.getText());
-                espace.setEtat(cbEtat.getValue());
-                espace.setCapacite(Integer.parseInt(txtCapacite.getText()));
-                espace.setDescription(txtDescription.getText());
-
-                try {
-                    serviceEspace.modifier(espace);
-                    listEspace.refresh();
-                } catch (SQLException e) {
-                    afficherErreur("Erreur lors de la modification de l'espace : " + e.getMessage());
+            try {
+                // Contrôle de saisie pour le nom
+                String nom = txtNom.getText().trim();
+                if (nom.isEmpty()) {
+                    throw new IllegalArgumentException("Le nom de l'espace ne peut pas être vide.");
                 }
+                if (!nom.matches("[a-zA-Z ]+")) {
+                    throw new IllegalArgumentException("Le nom doit contenir uniquement des lettres et des espaces.");
+                }
+
+                // Contrôle de saisie pour la capacité
+                int capacite = Integer.parseInt(txtCapacite.getText().trim());
+                if (capacite <= 0 || capacite > 50) {
+                    throw new IllegalArgumentException("La capacité de l'espace doit être un entier compris entre 1 et 50.");
+                }
+
+                // Contrôle de saisie pour la description
+                String description = txtDescription.getText().trim();
+                if (description.isEmpty()) {
+                    throw new IllegalArgumentException("La description ne peut pas être vide.");
+                }
+
+                // Mettre à jour les propriétés de l'espace avec les nouvelles valeurs
+                espace.setName(nom);
+                espace.setEtat(cbEtat.getValue());
+                espace.setCapacite(capacite);
+                espace.setDescription(description);
+
+                // Appeler la méthode pour mettre à jour l'espace dans la base de données
+                serviceEspace.modifier(espace);
+                listEspace.refresh(); // Rafraîchir l'affichage de la liste
+
+                afficherAlerteConfirmationEvent("Validation", "Espace modifié avec succès !");
+            } catch (NumberFormatException e) {
+                afficherAlerteErreurEvent("Erreur de format", "Veuillez saisir un nombre valide pour la capacité.");
+            } catch (IllegalArgumentException e) {
+                afficherAlerteErreurEvent("Erreur de saisie", e.getMessage());
+            } catch (SQLException e) {
+                afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de la modification de l'espace : " + e.getMessage());
+            } catch (Exception e) {
+                afficherAlerteErreurEvent("Erreur", e.getMessage());
             }
         } else {
-            afficherErreur("Veuillez sélectionner un espace à modifier.");
+            afficherAlerteErreurEvent("Erreur", "Veuillez sélectionner un espace à modifier.");
         }
     }
+
     public void initData(Espace espace) {
         this.espace = espace;
         remplirChamps(espace);
     }
 
-    @FXML
-    void ajouterEspace() {
-        if (validerChamps()) {
-            Espace nouvelEspace = new Espace(
-                    txtNom.getText(),
-                    cbEtat.getValue(),
-                    Integer.parseInt(txtCapacite.getText()),
-                    txtDescription.getText()
-            );
 
 
-            try {
-                serviceEspace.ajouter(nouvelEspace);
-                clearFields(); // Efface les champs après l'ajout
-            } catch (SQLException e) {
-                afficherErreur("Erreur lors de l'ajout de l'espace : " + e.getMessage());
-            }
-        }
-        }
-
-// ouvrir fenetre afficherespace
+    // ouvrir fenetre afficherespace
     @FXML
     void afficherListeEspaces() {
         try {
@@ -125,6 +137,7 @@ public class AjouterEspace {
             e.printStackTrace();
         }
     }
+
     @FXML
     void gererEvenements() {
         try {
@@ -147,54 +160,79 @@ public class AjouterEspace {
         txtDescription.clear();
     }
 
-    private boolean validerChamps() {
-        boolean valide = true;
-
-        if (txtNom.getText().isEmpty() || !txtNom.getText().matches("[a-zA-Z]{1,20}")) {
-            afficherErreurChamp(lblNomError, "Le nom doit contenir uniquement des lettres et avoir une longueur maximale de 20 caractères.");
-            valide = false;
-        } else {
-            lblNomError.setText("");
-        }
-
-        if (cbEtat.getValue() == null) {
-            afficherErreurChamp(lblEtatError, "Veuillez sélectionner un état.");
-            valide = false;
-        } else {
-            lblEtatError.setText("");
-        }
-
-        if (txtCapacite.getText().isEmpty() || !txtCapacite.getText().matches("\\d+") || Integer.parseInt(txtCapacite.getText()) <= 0 || Integer.parseInt(txtCapacite.getText()) > 50) {
-            afficherErreurChamp(lblCapaciteError, "La capacité doit être un entier positif et ne doit pas dépasser 50.");
-            valide = false;
-        } else {
-            lblCapaciteError.setText("");
-        }
-
-        if (txtDescription.getText().isEmpty() || txtDescription.getText().length() > 1000) {
-            afficherErreurChamp(lblDescriptionError, "La description ne peut pas être vide et ne doit pas dépasser 1000 caractères.");
-            valide = false;
-        } else {
-            lblDescriptionError.setText("");
-        }
-
-        return valide;
-    }
-
     private void afficherErreurChamp(Label champErreur, String message) {
         champErreur.setText(message);
     }
+    @FXML
+    void ajouterEspace() {
+        try {
+            // Contrôle de saisie pour le titre
+            String nom = txtNom.getText().trim();
+            if (nom.isEmpty()) {
+                throw new IllegalArgumentException("Le nom de l'espace ne peut pas être vide.");
+            }
+            if (!nom.matches("[a-zA-Z ]+")) {
+                throw new IllegalArgumentException("Le nom doit contenir uniquement des lettres et des espaces.");
+            }
 
-    private void chargerListeEspaces() throws SQLException {
-        Set<Espace> espaces = serviceEspace.getAll();
-        ObservableList<Espace> espaceList = FXCollections.observableArrayList(espaces);
-        listEspace.setItems(espaceList);
+            // Contrôle de saisie pour le nombre de personnes
+            int capacite = Integer.parseInt(txtCapacite.getText().trim());
+            if (capacite <= 0 || capacite > 50) {
+                throw new IllegalArgumentException("La capacite de l'espace doit être un entier compris entre 1 et 50.");
+            }
+
+            // Contrôle de saisie pour la description
+            String description = txtDescription.getText().trim();
+            if (description.isEmpty()) {
+                throw new IllegalArgumentException("La description ne peut pas être vide.");
+            }
+
+            // Contrôle de saisie pour l'état
+            if (cbEtat.getValue() == null) {
+                throw new IllegalArgumentException("Veuillez sélectionner un état pour l'espace.");
+            }
+
+            // Créer l'objet Espace et l'ajouter
+            Espace nouvelEspace = new Espace(nom, cbEtat.getValue(), capacite, description);
+            serviceEspace.ajouter(nouvelEspace);
+
+            clearFields(); // Efface les champs après l'ajout
+
+            afficherAlerteConfirmationEvent("Validation", "Espace ajouté avec succès");
+        } catch (NumberFormatException e) {
+            afficherAlerteErreurEvent("Erreur de format", "Veuillez saisir un nombre valide pour la capacité.");
+        } catch (IllegalArgumentException e) {
+            afficherAlerteErreurEvent("Erreur de saisie", e.getMessage());
+        } catch (SQLException e) {
+            afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de l'ajout de l'espace : " + e.getMessage());
+        } catch (Exception e) {
+            afficherAlerteErreurEvent("Erreur", e.getMessage());
+        }
     }
+
+
+
+
 
     private void afficherErreur(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void afficherAlerteConfirmationEvent(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titre);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+    private void afficherAlerteErreurEvent(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
         alert.setContentText(message);
         alert.showAndWait();
     }

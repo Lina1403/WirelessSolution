@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -43,6 +42,6 @@
         <TextField fx:id="textFieldDescription" layoutX="180.0" layoutY="278.0" prefHeight="63.0" prefWidth="226.0" />
         <Button fx:id="boutonModifier" layoutX="288.0" layoutY="383.0" onAction="#modifierEvent" text="Modifier" />
         <Button fx:id="boutonSupprimer" layoutX="194.0" layoutY="383.0" onAction="#supprimerEvent" text="Supprimer" />
-        <TextField fx:id="textFieldDate" layoutX="137.0" layoutY="78.0" />
+        <TextField fx:id="textFieldDate" layoutX="180.0" layoutY="188.0" prefHeight="26.0" prefWidth="106.0" />
     </children>
 </AnchorPane>

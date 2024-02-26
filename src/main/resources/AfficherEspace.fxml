@@ -21,8 +21,8 @@
         </ImageView>
 
          <TextField fx:id="txtNom" layoutX="377.0" layoutY="358.0" prefHeight="26.0" prefWidth="123.0" promptText="Nom" />
-          <Button fx:id="btnSupprimer" layoutX="534.0" layoutY="454.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="104.0" text="Supprimer" />
-          <Button fx:id="btnModifier" layoutX="534.0" layoutY="400.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="104.0" text="Modifier" />
+          <Button fx:id="btnSupprimer" layoutX="534.0" layoutY="454.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="123.0" text="Supprimer" />
+          <Button fx:id="btnModifier" layoutX="534.0" layoutY="400.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="123.0" text="Modifier" />
          <!-- Remplacez le champ d'état par une ComboBox -->
          <ComboBox fx:id="comboEtat" layoutX="377.0" layoutY="400.0" prefHeight="26.0" prefWidth="123.0" promptText="État">
              <items>
@@ -38,6 +38,9 @@
         <Label fx:id="lblTitleError" layoutX="305.0" layoutY="362.0" prefHeight="18.0" prefWidth="86.0" />
 
             <ListView fx:id="listEspace" layoutX="257.0" layoutY="112.0" prefHeight="228.0" prefWidth="483.0" />
+      <Button layoutX="536.0" layoutY="510.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" onAction="#ajouterEspace"  />
+      <Button layoutX="64.0" layoutY="165.0" mnemonicParsing="false" opacity="0.0" prefHeight="35.0" prefWidth="106.0" text="gerer les events" onAction="#gererEvenements" />
+
 
     </children>
 </AnchorPane>

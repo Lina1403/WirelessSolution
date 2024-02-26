@@ -6,6 +6,7 @@ import entities.Espace;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.util.StringConverter;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -51,13 +52,47 @@ public class DetailsEvent {
     private void modifierEvent() {
         if (event != null) {
             try {
-                event.setTitle(textFieldTitre.getText());
-                event.setNbrPersonne(Integer.parseInt(textFieldNbrPersonne.getText()));
-                event.setEspace(comboBoxEspace.getValue());
-                event.setDescription(textFieldDescription.getText());
+                // Contrôle de saisie pour le titre
+                String titre = textFieldTitre.getText().trim();
+                if (titre.isEmpty() || !titre.matches("[a-zA-Z ]+")) {
+                    throw new IllegalArgumentException("Le titre ne peut pas être vide et doit contenir uniquement des lettres et des espaces.");
+                }
 
-                // Conversion des champs de texte en date
-                Date date = dateFormat.parse(textFieldDate.getText());
+                // Contrôle de saisie pour le nombre de personnes
+                String nbrPersonneText = textFieldNbrPersonne.getText().trim();
+                if (nbrPersonneText.isEmpty()) {
+                    throw new IllegalArgumentException("Veuillez saisir un nombre pour le nombre de personnes.");
+                }
+                int nbrPersonne = Integer.parseInt(nbrPersonneText);
+                if (nbrPersonne <= 0 || nbrPersonne > 50) {
+                    throw new IllegalArgumentException("Le nombre de personnes doit être compris entre 1 et 50.");
+                }
+
+                // Contrôle de saisie pour la description
+                String description = textFieldDescription.getText().trim();
+                if (description.isEmpty()) {
+                    throw new IllegalArgumentException("La description ne peut pas être vide.");
+                }
+
+                // Contrôle de saisie pour la date
+                String dateString = textFieldDate.getText().trim();
+                if (dateString.isEmpty()) {
+                    throw new IllegalArgumentException("Veuillez saisir une date.");
+                }
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(dateString);
+
+                // Contrôle de saisie pour l'espace
+                Espace espace = comboBoxEspace.getValue();
+                if (espace == null) {
+                    throw new IllegalArgumentException("Veuillez sélectionner un espace.");
+                }
+
+                // Si toutes les validations sont passées, vous pouvez effectuer la modification
+                event.setTitle(titre);
+                event.setNbrPersonne(nbrPersonne);
+                event.setEspace(espace);
+                event.setDescription(description);
                 event.setDate(date);
 
                 serviceEvent.modifier(event);
@@ -65,12 +100,23 @@ public class DetailsEvent {
                 afficherEvent.refreshList();
 
                 fermerFenetreDetails();
-            } catch (SQLException | NumberFormatException | ParseException e) {
-                e.printStackTrace();
-                // Gérer l'erreur de modification
+            } catch (NumberFormatException e) {
+                afficherAlerteErreurEvent("Erreur de format", "Veuillez saisir un nombre valide pour le nombre de personnes.");
+            } catch (IllegalArgumentException | ParseException e) {
+                afficherAlerteErreurEvent("Erreur de saisie", e.getMessage());
+            } catch (SQLException e) {
+                afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de la modification de l'événement : " + e.getMessage());
+            } catch (Exception e) {
+                afficherAlerteErreurEvent("Erreur", e.getMessage());
             }
         }
-
+    }
+    private void afficherAlerteErreurEvent(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 

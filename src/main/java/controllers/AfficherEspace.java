@@ -4,10 +4,15 @@ import entities.Espace;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import services.IService;
 import services.ServiceEspace;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
@@ -77,28 +82,50 @@ public class AfficherEspace {
     void modifier() {
         Espace espace = listEspace.getSelectionModel().getSelectedItem();
         if (espace != null) {
-            // Récupérer les valeurs modifiées dans le formulaire
-            String nom = txtNom.getText();
-            String etat = comboEtat.getValue();
-            int capacite = Integer.parseInt(txtCapacite.getText());
-            String description = txtDescription.getText();
-
-            // Mettre à jour les propriétés de l'espace avec les nouvelles valeurs
-            espace.setName(nom);
-            espace.setEtat(Espace.Etat.valueOf(etat));
-            espace.setCapacite(capacite);
-            espace.setDescription(description);
-
-            // Appeler la méthode pour mettre à jour l'espace dans la base de données
             try {
+                // Contrôle de saisie pour le nom
+                String nom = txtNom.getText().trim();
+                if (nom.isEmpty()) {
+                    throw new IllegalArgumentException("Le nom de l'espace ne peut pas être vide.");
+                }
+                if (!nom.matches("[a-zA-Z ]+")) {
+                    throw new IllegalArgumentException("Le nom doit contenir uniquement des lettres et des espaces.");
+                }
+
+                // Contrôle de saisie pour la capacité
+                int capacite = Integer.parseInt(txtCapacite.getText().trim());
+                if (capacite <= 0 || capacite > 50) {
+                    throw new IllegalArgumentException("La capacité de l'espace doit être un entier compris entre 1 et 50.");
+                }
+
+                // Contrôle de saisie pour la description
+                String description = txtDescription.getText().trim();
+                if (description.isEmpty()) {
+                    throw new IllegalArgumentException("La description ne peut pas être vide.");
+                }
+
+                // Mettre à jour les propriétés de l'espace avec les nouvelles valeurs
+                espace.setName(nom);
+                espace.setEtat(Espace.Etat.valueOf(comboEtat.getValue()));
+                espace.setCapacite(capacite);
+                espace.setDescription(description);
+
+                // Appeler la méthode pour mettre à jour l'espace dans la base de données
                 serviceEspace.modifier(espace);
                 listEspace.refresh(); // Rafraîchir l'affichage de la liste
+
                 afficherConfirmation("Espace modifié avec succès !");
+            } catch (NumberFormatException e) {
+                afficherAlerteErreur("Erreur de format", "Veuillez saisir un nombre valide pour la capacité.");
+            } catch (IllegalArgumentException e) {
+                afficherAlerteErreur("Erreur de saisie", e.getMessage());
             } catch (SQLException e) {
-                afficherAlerteErreur("Erreur lors de la modification de l'espace : " + e.getMessage());
+                afficherAlerteErreur("Erreur SQL", "Erreur lors de la modification de l'espace : " + e.getMessage());
+            } catch (Exception e) {
+                afficherAlerteErreur("Erreur", e.getMessage());
             }
         } else {
-            afficherAlerteErreur("Veuillez sélectionner un espace à modifier.");
+            afficherAlerteErreur("Erreur", "Veuillez sélectionner un espace à modifier.");
         }
     }
 
@@ -119,6 +146,33 @@ public class AfficherEspace {
         }
     }
 
+    @FXML
+    void gererEvenements() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherEvent.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gérer les événements");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void ajouterEspace() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterEspace.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Ajouter un espace");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void chargerListeEspaces() throws SQLException {
@@ -133,6 +187,10 @@ public class AfficherEspace {
         showAlert(Alert.AlertType.ERROR, "Erreur", message);
     }
 
+    private void afficherAlerteErreur(String titre, String message) {
+        showAlert(Alert.AlertType.ERROR, titre, message);
+    }
+
     private boolean afficherConfirmation(String message) {
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
@@ -141,53 +199,6 @@ public class AfficherEspace {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
-
-    private boolean validateInputs() {
-        boolean isValid = true;
-
-        // Validation du titre
-        String nom = txtNom.getText().trim();
-        if (nom.isEmpty() || !nom.matches("[a-zA-Z ]+")) {
-            lblTitleError.setText("Le nom doit contenir uniquement des lettres et des espaces.");
-            isValid = false;
-        } else {
-            lblTitleError.setText("");
-        }
-
-        // Validation de l'état
-        if (comboEtat.getValue() == null) {
-            lblDateError.setText("L'état est requis");
-            isValid = false;
-        } else {
-            lblDateError.setText("");
-        }
-
-        // Validation de la capacité
-        String capaciteText = txtCapacite.getText().trim();
-        if (capaciteText.isEmpty() || !capaciteText.matches("\\d+")) {
-            lblNbrPersonneError.setText("Capacité invalide");
-            isValid = false;
-        } else {
-            int capacite = Integer.parseInt(capaciteText);
-            if (capacite <= 0 || capacite > 50) {
-                lblNbrPersonneError.setText("La capacité doit être un entier positif inférieur à 50.");
-                isValid = false;
-            } else {
-                lblNbrPersonneError.setText("");
-            }
-        }
-
-        // Validation de la description
-        if (txtDescription.getText().trim().isEmpty()) {
-            lblDescriptionError.setText("La description est requise");
-            isValid = false;
-        } else {
-            lblDescriptionError.setText("");
-        }
-
-        return isValid;
-    }
-
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
