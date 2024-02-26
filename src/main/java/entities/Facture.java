@@ -1,11 +1,12 @@
 package entities;
 
-import java.sql.ResultSet;
+import javafx.scene.control.Tooltip;
+
 import java.util.Date;
 import java.util.Objects;
 
 public class Facture {
-    private int idFacture ;
+    public int idFacture ;
     private int numFacture;
     private Date date ;
     private Type type;
@@ -39,6 +40,16 @@ public class Facture {
 
 
     public Facture(int numFacture, Date date, Type type, float montant, String descriptionFacture) {
+        this.numFacture = numFacture;
+        this.date = date;
+        this.type = type;
+        this.montant = montant;
+        this.descriptionFacture = descriptionFacture;
+
+
+    }
+    public Facture(int idFacture,int numFacture, Date date, Type type, float montant, String descriptionFacture) {
+        this.idFacture = idFacture;
         this.numFacture = numFacture;
         this.date = date;
         this.type = type;
@@ -101,6 +112,7 @@ public class Facture {
     public int getIdFacture() {
         return idFacture;
     }
+
 
     public void setIdFacture(int idFacture) {
         this.idFacture = idFacture;

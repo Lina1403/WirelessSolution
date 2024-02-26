@@ -2,39 +2,33 @@ package controllers;
 
 import entities.Appartement;
 import entities.Facture;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.ServiceFacture;
-import javafx.scene.control.cell.PropertyValueFactory; // Add this import
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
-public class AfficherFacture  {
+public class AfficherFacture {
     private final ServiceFacture serviceFacture = new ServiceFacture();
     @FXML
     private TextField searchNumField;
-
-
-
+    private Facture factureSelectionnee ;
     private Appartement appartementSelectionne;
-
     @FXML
     private ListView<Facture> listViewFacture;
+
 
     public void initData(Appartement appartement) throws SQLException {
         if (appartement == null) {
@@ -43,7 +37,6 @@ public class AfficherFacture  {
         this.appartementSelectionne = appartement;
         System.out.println("Appartement sélectionné : " + appartementSelectionne);
         initialize();
-        supprimerFacture();
     }
 
     void afficherFactures() throws SQLException {
@@ -57,144 +50,175 @@ public class AfficherFacture  {
         listViewFacture.setItems(observableList);
     }
 
-    @FXML
-    void initialize() {
-        try {
-            afficherFactures(); // Actualiser la table après chaque modification
-        } catch (SQLException e) {
-            e.printStackTrace(); // Gérer SQLException de manière appropriée
-        }
-    }
 
-    @FXML
-    void modifierFacture() {
-       Facture  selectedFacture = listViewFacture.getSelectionModel().getSelectedItem();
-        System.out.println(selectedFacture);
-
-
-        if (selectedFacture != null) {
+        @FXML
+        void initialize() {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFacture.fxml"));
-                Parent root = loader.load();
-                ModifierFacture controller = loader.getController();
-                controller.setFactureSelectionne(selectedFacture);
-
-                Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.showAndWait();
-                actualiser();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            System.out.println("Veuillez sélectionner une facture à modifier.");
-        }
-    }
-    @FXML
-    public void ajouterFacture(ActionEvent actionEvent) {
-        if (appartementSelectionne != null) {
-            System.out.println("Appartement selected: " + appartementSelectionne);
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
-                Parent root = loader.load();
-
-                // Get the controller and pass the selected Appartement
-                AjouterFacture controller = loader.getController();
-                controller.setAppartementSelectionne(appartementSelectionne);
-                // Create a new stage
-                Stage stage = new Stage();
-                stage.setTitle("Ajouter Facture");
-                stage.setScene(new Scene(root));
-
-                // Show the new stage
-                System.out.println("Showing new stage...");
-                stage.show();
-                System.out.println("New stage should be visible now.");
-            } catch (IOException e) {
-                System.out.println("IOException occurred:");
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("No Appartement selected.");
-        }
-        listViewFacture.refresh();
-    }
-
-
-    @FXML
-    void supprimerFacture() {
-        Facture factureSelectionnee = listViewFacture.getSelectionModel().getSelectedItem();
-        if (factureSelectionnee != null) {
-            try {
-                System.out.println("Facture sélectionnée : " + factureSelectionnee); // Vérifiez la facture sélectionnée
-                System.out.println(factureSelectionnee.getIdFacture());
-
-                int idFacture = factureSelectionnee.getIdFacture();
-                System.out.println("ID de la facture à supprimer : " + idFacture); // Vérifiez l'ID de la facture
-
-                // Ajoutez d'autres instructions de débogage au besoin...
-
-                serviceFacture.supprimer(idFacture);
-                System.out.println("Facture supprimée avec succès !");
-
-                listViewFacture.getItems().remove(factureSelectionnee);
-
-                afficherAlerteErreur("Suppression réussie", "La facture a été supprimée avec succès.");
-            } catch (SQLException e) {
-                afficherAlerteErreur("Erreur de suppression", "Impossible de supprimer la facture : des contraintes de clé étrangère sont violées.");
-            } catch (Exception e) {
-                afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de la suppression de la facture : " + e.getMessage());
-            }
-        } else {
-            afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture à supprimer.");
-        }
-        actualiser();
-    }
-
-    private void afficherAlerteErreur(String titre, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titre);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-
-    @FXML
-            void actualiser() {
-                try {
-                    afficherFactures(); // Actualiser la liste des factures depuis la base de données
-                    initialize(); // Réinitialiser l'interface utilisateur
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            @FXML
-            void rechercherFactures() {
-                try {
-                    int numFacture = 0; // Valeur par défaut
-                    if (!searchNumField.getText().isEmpty()) {
-                        numFacture = Integer.parseInt(searchNumField.getText());
+                afficherFactures(); // Actualiser la table après chaque modification
+                // Add a ChangeListener to the ListView's selection model
+                listViewFacture.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Facture>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Facture> observable, Facture oldValue, Facture newValue) {
+                        if (newValue != null) {
+                            System.out.println("Facture selected: " + newValue);
+                        }
                     }
+                });
+            } catch (SQLException e) {
+                e.printStackTrace(); // Gérer SQLException de manière appropriée
+            }
+        }
 
-                    // Supprimez la partie liée à la recherche par date
+        // ...
 
-                    Set<Facture> factures = serviceFacture.rechercherFactures(numFacture);
-                    ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
-                    listViewFacture.setItems(observableList);
-                } catch (NumberFormatException e) {
-                    System.out.println("Veuillez saisir un numéro de facture valide.");
+
+        /* @FXML
+        void initialize() {
+            try {
+                afficherFactures(); // Actualiser la table après chaque modification
+            } catch (SQLException e) {
+                e.printStackTrace(); // Gérer SQLException de manière appropriée
+            }
+        } */
+         public void initDataFacture(Facture facture) throws SQLException {
+             this.factureSelectionnee = facture ;
+             System.out.println(factureSelectionnee.getIdFacture());
+             serviceFacture.supprimer(factureSelectionnee.getIdFacture());
+
+         }
+        @FXML
+        void supprimerFacture() {
+             factureSelectionnee = listViewFacture.getSelectionModel().getSelectedItem();
+            if (factureSelectionnee != null) {
+                try {
+                    System.out.println("Facture sélectionnée : " + factureSelectionnee); // Check the selected invoice
+                    System.out.println("ID de la facture sélectionnée : " + factureSelectionnee.getIdFacture());
+
+                    int idFacture = factureSelectionnee.getNumFacture();
+                    System.out.println("ID de la facture à supprimer : " + idFacture); // Check the ID of the invoice
+                    initDataFacture(factureSelectionnee);
+                    // Add more debug statements as needed...
+
+                    serviceFacture.supprimer(idFacture);
+                    System.out.println("Facture supprimée avec succès !");
+
+                    listViewFacture.getItems().remove(factureSelectionnee);
+
+                    afficherAlerteErreur("Suppression réussie", "La facture a été supprimée avec succès.");
                 } catch (SQLException e) {
+                    System.out.println("Erreur SQL : " + e.getMessage());
+                    afficherAlerteErreur("Erreur de suppression", "Impossible de supprimer la facture : des contraintes de clé étrangère sont violées.");
+                } catch (Exception e) {
+                    System.out.println("Erreur : " + e.getMessage());
+                    afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de la suppression de la facture : " + e.getMessage());
+                }
+            } else {
+                System.out.println("Aucune facture sélectionnée.");
+                afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture à supprimer.");
+            }
+        }
+
+        @FXML
+        void modifierFacture(ActionEvent actionEvent) {
+            Facture factureSelectionne = listViewFacture.getSelectionModel().getSelectedItem();
+            System.out.println("Facture sélectionnée pour modification : " + factureSelectionne);
+            if (factureSelectionne != null) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFacture.fxml"));
+                    Parent root = loader.load();
+                    System.out.println("FXML file loaded successfully.");
+                    ModifierFacture controller = loader.getController();
+                    System.out.println("Controller initialized.");
+
+                    controller.setFactureSelectionne(factureSelectionne);
+                    System.out.println("Data initialized in controller.");
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Liste des Factures");
+                    stage.setScene(new Scene(root));
+
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                System.out.println("Aucune facture sélectionnée.");
+            }
+        }
+
+        @FXML
+        public void ajouterFacture(ActionEvent actionEvent) {
+            if (appartementSelectionne != null) {
+                System.out.println("Appartement selected: " + appartementSelectionne);
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFacture.fxml"));
+                    Parent root = loader.load();
+
+                    // Get the controller and pass the selected Appartement
+                    AjouterFacture controller = loader.getController();
+                    controller.setAppartementSelectionne(appartementSelectionne);
+                    // Create a new stage
+                    Stage stage = new Stage();
+                    stage.setTitle("Ajouter Facture");
+                    stage.setScene(new Scene(root));
+
+                    // Show the new stage
+                    System.out.println("Showing new stage...");
+                    stage.show();
+                    System.out.println("New stage should be visible now.");
+                } catch (IOException e) {
+                    System.out.println("IOException occurred:");
                     e.printStackTrace();
                 }
+            } else {
+                System.out.println("No Appartement selected.");
             }
+        }
 
 
+        private void afficherAlerteErreur(String titre, String message) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(titre);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
 
 
-}
+        @FXML
+        void actualiser() {
+            try {
+                afficherFactures(); // Actualiser la liste des factures depuis la base de données
+                initialize(); // Réinitialiser l'interface utilisateur
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @FXML
+        void rechercherFactures() {
+            try {
+                int numFacture = 0; // Valeur par défaut
+                if (!searchNumField.getText().isEmpty()) {
+                    numFacture = Integer.parseInt(searchNumField.getText());
+                }
+
+                // Supprimez la partie liée à la recherche par date
+
+                Set<Facture> factures = serviceFacture.rechercherFactures(numFacture);
+                ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
+                listViewFacture.setItems(observableList);
+            } catch (NumberFormatException e) {
+                System.out.println("Veuillez saisir un numéro de facture valide.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
 
 
 

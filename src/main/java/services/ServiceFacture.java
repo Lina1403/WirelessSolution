@@ -73,9 +73,21 @@ public class ServiceFacture implements IService<Facture>{
     }
 
 
-
-
     @Override
+    public void modifier(Facture p) throws SQLException {
+        String req = "UPDATE `facture` SET `NumFacture`='" + p.getNumFacture() + "'," +
+                "`date`='" + p.getDate() + "'," +
+                "`type`='" + p.getType() + "'," +
+                "`montant`='" + p.getMontant() + "' " +
+                "WHERE `idFacture`=" + p.getIdFacture();
+
+        Statement st = cnx.createStatement();
+        st.executeUpdate(req);
+        System.out.println("Appartement modifié !");
+    }
+
+   /*
+   @Override
     public void modifier(Facture p) throws SQLException {
         if (p == null) {
             throw new IllegalArgumentException("Facture object is null");
@@ -117,7 +129,7 @@ public class ServiceFacture implements IService<Facture>{
             }
         }
     }
-
+ */
     @Override
     public void supprimer(int id) throws SQLException {
         String req = "DELETE FROM facture WHERE idFacture = ?";
@@ -142,7 +154,8 @@ public class ServiceFacture implements IService<Facture>{
     @Override
     public Facture getOneById(int id) throws SQLException {
         Facture facture = null;
-        String req = "SELECT * FROM `facture` WHERE `idFacture`=?";
+        String req = "SELECT * FROM `facture` WHERE `idFacture` =?" ;
+
 
         try {
             if (cnx == null) {
@@ -226,6 +239,7 @@ public class ServiceFacture implements IService<Facture>{
     public Set<Facture> rechercherFactures(int numFacture) throws SQLException {
         Set<Facture> factures = new HashSet<>();
         String req = "SELECT * FROM `facture` WHERE `numFacture` = ? ";
+
 
         try (PreparedStatement statement = cnx.prepareStatement(req)) {
             statement.setInt(1, numFacture);
