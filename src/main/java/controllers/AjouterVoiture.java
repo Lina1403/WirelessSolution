@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import services.ServiceParking;
 import services.ServiceVoiture;
 
 import java.sql.SQLException;
@@ -29,6 +30,9 @@ public class AjouterVoiture {
     @FXML
     private Button supprimerButton;
 
+    @FXML
+    private Button ajouterButton;
+
     private Parking selectedParking;
     private int idVoitureAjoutee;
 
@@ -44,7 +48,10 @@ public class AjouterVoiture {
 
     @FXML
     private void handleAjouterButton(ActionEvent event) {
+        // Désactiver le bouton de suppression avant d'ajouter la voiture
         supprimerButton.setDisable(true);
+        // Désactiver le bouton d'ajout pour éviter les clics multiples
+        ajouterButton.setDisable(true);
 
         String marque = marqueField.getText();
         String modele = modeleField.getText();
@@ -63,6 +70,10 @@ public class AjouterVoiture {
             int idVoitureAjoutee = serviceVoiture.ajouter(voiture);
 
             if (idVoitureAjoutee != -1) {
+                // Mettre à jour le nombre actuel de voitures dans le parking
+                selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() + 1);
+                ServiceParking serviceParking = new ServiceParking();
+                serviceParking.modifier(selectedParking);
                 supprimerButton.setDisable(false);
                 this.idVoitureAjoutee = idVoitureAjoutee;
                 afficherMessageSucces("Voiture ajoutée avec succès!");
@@ -71,6 +82,10 @@ public class AjouterVoiture {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        finally {
+            // Réactiver le bouton d'ajout après le processus d'ajout
+            ajouterButton.setDisable(false);
         }
     }
 

@@ -47,6 +47,12 @@ public class AfficherVoiture {
                 Parent root = loader.load();
                 AjouterVoiture controller = loader.getController();
                 controller.setSelectedParking(parking); // Définir le parking sélectionné dans le contrôleur AjouterVoiture
+
+                // Incrémenter le nombre actuel de voitures dans le parking
+                parking.setNombreActuelles(parking.getNombreActuelles() + 1);
+                // Mettre à jour le parking dans la base de données ou dans votre service
+                serviceParking.modifier(parking);
+
                 Stage stage = new Stage();
                 stage.setTitle("Ajouter une voiture");
                 stage.setScene(new Scene(root));

@@ -4,16 +4,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 <AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.AjouterVoiture">
     <children>
+        <HBox spacing="10" alignment="CENTER">
+
         <TextField fx:id="marqueField" layoutX="148.0" layoutY="61.0" promptText="Marque"/>
         <TextField fx:id="modeleField" layoutX="148.0" layoutY="105.0" promptText="Modèle"/>
         <TextField fx:id="couleurField" layoutX="148.0" layoutY="148.0" promptText="Couleur"/>
         <TextField fx:id="matriculeField" layoutX="148.0" layoutY="193.0" promptText="Matricule"/>
-        <Button text="Ajouter" onAction="#handleAjouterButton" layoutX="200.0" layoutY="250.0" />
+        <Button fx:id="ajouterButton" text="Ajouter" onAction="#handleAjouterButton" />
         <Button fx:id="supprimerButton" text="Supprimer" onAction="#handleSupprimerButton" disable="true" />
 
+        </HBox>
 
     </children>
 </AnchorPane>
