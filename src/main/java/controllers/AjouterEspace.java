@@ -1,12 +1,14 @@
 package controllers;
 
 import entities.Espace;
+import entities.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import services.IService;
 import services.ServiceEspace;
+import services.ServiceEvent;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -78,6 +80,10 @@ public class AjouterEspace {
         } else {
             afficherErreur("Veuillez sélectionner un espace à modifier.");
         }
+    }
+    public void initData(Espace espace) {
+        this.espace = espace;
+        remplirChamps(espace);
     }
 
     @FXML

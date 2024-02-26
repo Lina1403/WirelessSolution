@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Espace;
 import entities.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,6 +23,8 @@ public class AfficherEvent {
 
     @FXML
     private Button boutonGerer;
+    @FXML
+    private Button boutonGererEspace;
 
     private ObservableList<Event> eventsObservableList;
     private ServiceEvent serviceEvent;
@@ -57,8 +60,28 @@ public class AfficherEvent {
                 }
             }
         });
-    }
+        boutonGererEspace.setOnAction(event -> {
+            ouvrirAjouterEspace(); // Méthode pour ouvrir la vue d'ajout d'espace
+        });
 
+    }
+@FXML
+    private void ouvrirAjouterEspace() {   try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterEspace.fxml"));
+        Parent root = loader.load();
+        AjouterEspace controller = loader.getController(); // Assurez-vous d'importer la classe AjouterEspace
+        // Vous devez appeler initData() avec des données appropriées, comme un nouvel objet Espace à ajouter
+        // Par exemple, vous pouvez passer un nouvel objet Espace vide pour l'initialiser dans la vue AjouterEspace
+        controller.initData(new Espace()); // Remplacez new Espace() par les données appropriées si nécessaire
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle("Ajoutez un espace");
+        stage.show();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
 
     private void ouvrirDetailsEvent(Event event) {
         try {

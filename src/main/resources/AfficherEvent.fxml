@@ -17,7 +17,7 @@
         <ListView fx:id="listeEvents" layoutX="264.0" layoutY="109.0" prefHeight="320.0" prefWidth="459.0" />
         <HBox layoutX="46.0" layoutY="366.0" spacing="20.0" /> <!-- Vous pouvez ajouter d'autres éléments ici si nécessaire -->
         <Button fx:id="boutonGerer" layoutX="283.0" layoutY="462.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" text="Gerer les évènements" />
-      <Button layoutX="59.0" layoutY="103.0" mnemonicParsing="false" opacity="0.0" prefHeight="35.0" prefWidth="110.0" text="Gerer les espace" />
+        <Button fx:id="boutonGererEspace" layoutX="59.0" layoutY="103.0" mnemonicParsing="false" opacity="0.0" prefHeight="35.0" prefWidth="110.0" onAction="#ouvrirAjouterEspace" text="Gerer les espaces " />
         <!-- Ajoutez d'autres boutons ou éléments au besoin -->
     </children>
 </AnchorPane>
