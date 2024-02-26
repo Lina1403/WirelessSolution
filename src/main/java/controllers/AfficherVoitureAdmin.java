@@ -48,6 +48,7 @@ public class AfficherVoitureAdmin {
         });
     }
 
+
     private void ouvrirDetailsVoiture(Voiture voiture) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsVoiture.fxml"));

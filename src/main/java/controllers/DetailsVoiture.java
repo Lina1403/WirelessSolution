@@ -1,32 +1,55 @@
 package controllers;
 
 import entities.Voiture;
+import javafx.event.ActionEvent; // Correction de l'import
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import services.ServiceVoiture;
+
+import java.sql.SQLException;
 
 public class DetailsVoiture {
 
     @FXML
-    private Label labelMarque;
+    private TextField textFieldMarque;
 
     @FXML
-    private Label labelModele;
+    private TextField textFieldModele;
 
     @FXML
-    private Label labelCouleur;
+    private TextField textFieldCouleur;
+
     @FXML
-    private Label labelMatricule;
+    private TextField textFieldMatricule;
 
-
-    // Autres labels pour afficher les détails de la voiture...
+    private Voiture voiture;
+    private ServiceVoiture serviceVoiture;
 
     public void initData(Voiture voiture) {
-        // Initialisez les labels avec les détails de la voiture
-        labelMarque.setText(voiture.getMarque());
-        labelModele.setText(voiture.getModel());
-        labelCouleur.setText(voiture.getCouleur());
-        labelMatricule.setText(voiture.getMatricule());
+        this.voiture = voiture;
+        textFieldMarque.setText(voiture.getMarque());
+        textFieldModele.setText(voiture.getModel());
+        textFieldCouleur.setText(voiture.getCouleur());
+        textFieldMatricule.setText(voiture.getMatricule());
 
-        // Initialisez d'autres labels avec les détails de la voiture...
+        serviceVoiture = new ServiceVoiture();
+    }
+
+    @FXML
+    private void modifierVoiture(ActionEvent event) {
+        if (voiture != null) {
+            voiture.setMarque(textFieldMarque.getText());
+            voiture.setModel(textFieldModele.getText()); //
+            voiture.setCouleur(textFieldCouleur.getText());
+            voiture.setMatricule(textFieldMatricule.getText());
+
+            try {
+                serviceVoiture.modifier(voiture);
+                // Vous pouvez également afficher un message de confirmation ici
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Gérer l'erreur de modification
+            }
+        }
     }
 }
