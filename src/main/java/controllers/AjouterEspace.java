@@ -5,11 +5,16 @@ import entities.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import services.IService;
 import services.ServiceEspace;
 import services.ServiceEvent;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
@@ -106,6 +111,20 @@ public class AjouterEspace {
         }
         }
 
+// ouvrir fenetre afficherespace
+    @FXML
+    void afficherListeEspaces() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherEspace.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Liste des Espaces");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void clearFields() {
