@@ -46,7 +46,10 @@ public class AjouterEspace {
 
     @FXML
     void initialize() {
-        cbEtat.getItems().addAll(Espace.Etat.values());
+        cbEtat.getItems().addAll(Espace.Etat.LIBRE, Espace.Etat.RESERVE);
+
+        // Définir l'état par défaut comme "Libre"
+        cbEtat.setValue(Espace.Etat.LIBRE);
     }
 
     private void remplirChamps(Espace espace) {
@@ -130,8 +133,8 @@ public class AjouterEspace {
             lblCapaciteError.setText("");
         }
 
-        if (txtDescription.getText().isEmpty() || txtDescription.getText().length() > 100) {
-            afficherErreurChamp(lblDescriptionError, "La description ne peut pas être vide et ne doit pas dépasser 100 caractères.");
+        if (txtDescription.getText().isEmpty() || txtDescription.getText().length() > 1000) {
+            afficherErreurChamp(lblDescriptionError, "La description ne peut pas être vide et ne doit pas dépasser 1000 caractères.");
             valide = false;
         } else {
             lblDescriptionError.setText("");

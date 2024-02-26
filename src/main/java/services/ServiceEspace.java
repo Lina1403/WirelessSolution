@@ -34,6 +34,15 @@ public class ServiceEspace implements IService<Espace> {
             System.out.println(e.getMessage());
         }
     }
+    public static void marquerEspaceCommeReserve(int idEspace) throws SQLException {
+        ServiceEspace serviceEspace = new ServiceEspace(); // Créer une instance du serviceEspace
+        Espace espace = serviceEspace.getOneById(idEspace); // Utiliser l'instance pour appeler la méthode
+        if (espace != null) {
+            espace.setEtat(Espace.Etat.RESERVE);
+            serviceEspace.modifier(espace);
+        }
+    }
+
 
     public Set<Espace> getAll() throws SQLException {
         Set<Espace> espaces = new HashSet<>();

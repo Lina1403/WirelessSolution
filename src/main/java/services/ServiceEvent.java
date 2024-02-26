@@ -3,14 +3,13 @@ package services;
 import entities.Espace;
 import entities.Event;
 import utils.DataSource;
-
+import  services.ServiceEspace;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class ServiceEvent implements IService<Event> {
     Connection cnx = DataSource.getInstance().getCnx();
-    @Override
     public void ajouter(Event event) throws SQLException {
         // Vérifier si l'espace est occupé dans cette date
         if (isEspaceOccupied(event.getDate(), event.getEspace().getIdEspace())) {
@@ -32,12 +31,14 @@ public class ServiceEvent implements IService<Event> {
                 while (rs.next()) {
                     event.setIdEvent(rs.getInt(1));
                 }
+                ServiceEspace.marquerEspaceCommeReserve(event.getEspace().getIdEspace());
                 System.out.println("Event added !");
             } else {
                 System.out.println("Failed to insert Event.");
             }
         }
     }
+
 
     private boolean isEspaceOccupied(Date date, int idEspace) throws SQLException {
         String sql = "SELECT COUNT(*) FROM event WHERE date = ? AND idEspace = ?";

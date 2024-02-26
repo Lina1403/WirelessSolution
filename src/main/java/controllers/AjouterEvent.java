@@ -47,20 +47,35 @@ public class AjouterEvent {
     @FXML
     void ajouterEvent(ActionEvent event) {
         try {
+            // Contrôle de saisie pour le titre
+            String title = titleField.getText().trim();
+            if (!title.matches("[a-zA-Z ]+")) {
+                throw new IllegalArgumentException("Le titre doit contenir uniquement des lettres et des espaces.");
+            }
+
+            // Contrôle de saisie pour la date
             LocalDate date = datePicker.getValue();
             if (date == null) {
                 throw new IllegalArgumentException("Veuillez sélectionner une date.");
             }
 
-            String title = titleField.getText();
-            String description = descriptionField.getText();
-            String espaceName = espaceComboBox.getValue(); // Récupérer le nom de l'espace sélectionné
-
-            if (title.isEmpty() || description.isEmpty() || espaceName == null) {
-                throw new IllegalArgumentException("Veuillez remplir tous les champs.");
+            // Contrôle de saisie pour le nombre de personnes
+            int nbrPersonne = Integer.parseInt(nbrPersonneField.getText().trim());
+            if (nbrPersonne <= 0 || nbrPersonne > 50) {
+                throw new IllegalArgumentException("Le nombre de personnes doit être un entier compris entre 1 et 50.");
             }
 
-            int nbrPersonne = Integer.parseInt(nbrPersonneField.getText());
+            // Contrôle de saisie pour la description
+            String description = descriptionField.getText().trim();
+            if (description.isEmpty()) {
+                throw new IllegalArgumentException("La description ne peut pas être vide.");
+            }
+
+            // Récupérer le nom de l'espace sélectionné
+            String espaceName = espaceComboBox.getValue();
+            if (espaceName == null) {
+                throw new IllegalArgumentException("Veuillez sélectionner un espace.");
+            }
 
             // Rechercher l'objet Espace correspondant au nom sélectionné
             Espace espaceObj = serviceEvent.getEspaceByName(espaceName);
@@ -70,14 +85,12 @@ public class AjouterEvent {
                 throw new IllegalArgumentException("L'espace sélectionné n'existe pas.");
             }
 
+            // Créer l'objet Event et l'ajouter
             Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, description, espaceObj);
-
             serviceEvent.ajouter(eventObj);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Validation");
-            alert.setContentText("Événement ajouté avec succès");
-            alert.showAndWait();
+            // Afficher une confirmation
+            afficherAlerteConfirmationEvent("Validation", "Événement ajouté avec succès");
         } catch (NumberFormatException e) {
             afficherAlerteErreurEvent("Erreur de format", "Veuillez saisir un nombre valide pour le nombre de personnes.");
         } catch (IllegalArgumentException e) {
@@ -87,6 +100,12 @@ public class AjouterEvent {
         } catch (Exception e) {
             afficherAlerteErreurEvent("Erreur", e.getMessage());
         }
+    }
+    private void afficherAlerteConfirmationEvent(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(titre);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 
