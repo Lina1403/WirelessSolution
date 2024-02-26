@@ -21,12 +21,15 @@ public class DetailsVoiture {
 
     @FXML
     private TextField textFieldMatricule;
+    private AfficherVoitureAdmin afficherVoitureAdmin;
+
 
     private Voiture voiture;
     private ServiceVoiture serviceVoiture;
 
-    public void initData(Voiture voiture) {
+    public void initData(Voiture voiture, AfficherVoitureAdmin afficherVoitureAdmin) {
         this.voiture = voiture;
+        this.afficherVoitureAdmin = afficherVoitureAdmin; // Ajouter un champ pour stocker l'instance de AfficherVoitureAdmin
         textFieldMarque.setText(voiture.getMarque());
         textFieldModele.setText(voiture.getModel());
         textFieldCouleur.setText(voiture.getCouleur());
@@ -39,12 +42,13 @@ public class DetailsVoiture {
     private void modifierVoiture(ActionEvent event) {
         if (voiture != null) {
             voiture.setMarque(textFieldMarque.getText());
-            voiture.setModel(textFieldModele.getText()); //
+            voiture.setModel(textFieldModele.getText());
             voiture.setCouleur(textFieldCouleur.getText());
             voiture.setMatricule(textFieldMatricule.getText());
 
             try {
                 serviceVoiture.modifier(voiture);
+                afficherVoitureAdmin.refreshList(); // Utiliser l'instance de AfficherVoitureAdmin pour rafraîchir la liste
                 // Vous pouvez également afficher un message de confirmation ici
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -52,4 +56,5 @@ public class DetailsVoiture {
             }
         }
     }
+
 }

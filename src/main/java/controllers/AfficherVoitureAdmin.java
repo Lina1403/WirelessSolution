@@ -23,10 +23,20 @@ public class AfficherVoitureAdmin {
     private ObservableList<Voiture> voituresObservableList;
     private ServiceVoiture serviceVoiture;
 
+    private static AfficherVoitureAdmin instance;
+
+    public static AfficherVoitureAdmin getInstance() {
+        if (instance == null) {
+            instance = new AfficherVoitureAdmin();
+        }
+        return instance;
+    }
+
     public AfficherVoitureAdmin() {
         serviceVoiture = new ServiceVoiture();
         voituresObservableList = FXCollections.observableArrayList();
     }
+
 
     @FXML
     public void initialize() {
@@ -48,13 +58,12 @@ public class AfficherVoitureAdmin {
         });
     }
 
-
     private void ouvrirDetailsVoiture(Voiture voiture) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsVoiture.fxml"));
             Parent root = loader.load();
             DetailsVoiture controller = loader.getController();
-            controller.initData(voiture);
+            controller.initData(voiture, this); // Passer l'instance actuelle de AfficherVoitureAdmin
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -64,6 +73,7 @@ public class AfficherVoitureAdmin {
             e.printStackTrace();
         }
     }
+
 
     public void refreshList() {
         try {
