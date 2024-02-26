@@ -142,13 +142,13 @@ public class AfficherEspace {
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    @FXML
     private boolean validateInputs() {
         boolean isValid = true;
 
         // Validation du titre
-        if (txtNom.getText().isEmpty()) {
-            lblTitleError.setText("Le titre est requis");
+        String nom = txtNom.getText().trim();
+        if (nom.isEmpty() || !nom.matches("[a-zA-Z ]+")) {
+            lblTitleError.setText("Le nom doit contenir uniquement des lettres et des espaces.");
             isValid = false;
         } else {
             lblTitleError.setText("");
@@ -163,15 +163,22 @@ public class AfficherEspace {
         }
 
         // Validation de la capacité
-        if (txtCapacite.getText().isEmpty() || !txtCapacite.getText().matches("\\d+")) {
+        String capaciteText = txtCapacite.getText().trim();
+        if (capaciteText.isEmpty() || !capaciteText.matches("\\d+")) {
             lblNbrPersonneError.setText("Capacité invalide");
             isValid = false;
         } else {
-            lblNbrPersonneError.setText("");
+            int capacite = Integer.parseInt(capaciteText);
+            if (capacite <= 0 || capacite > 50) {
+                lblNbrPersonneError.setText("La capacité doit être un entier positif inférieur à 50.");
+                isValid = false;
+            } else {
+                lblNbrPersonneError.setText("");
+            }
         }
 
         // Validation de la description
-        if (txtDescription.getText().isEmpty()) {
+        if (txtDescription.getText().trim().isEmpty()) {
             lblDescriptionError.setText("La description est requise");
             isValid = false;
         } else {
@@ -180,6 +187,7 @@ public class AfficherEspace {
 
         return isValid;
     }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

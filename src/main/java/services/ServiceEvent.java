@@ -20,7 +20,7 @@ public class ServiceEvent implements IService<Event> {
 
         try (PreparedStatement pstmt = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, event.getTitle());
-            pstmt.setTimestamp(2, new Timestamp(event.getDate().getTime()));
+            pstmt.setTimestamp(2, new java.sql.Timestamp(event.getDate().getTime()));
             pstmt.setInt(3, event.getNbrPersonne());
             pstmt.setString(4, event.getDescription());
             pstmt.setInt(5, event.getEspace().getIdEspace());
@@ -40,7 +40,7 @@ public class ServiceEvent implements IService<Event> {
     }
 
 
-    private boolean isEspaceOccupied(Date date, int idEspace) throws SQLException {
+    private boolean isEspaceOccupied(java.util.Date date, int idEspace) throws SQLException {
         String sql = "SELECT COUNT(*) FROM event WHERE date = ? AND idEspace = ?";
         try (PreparedStatement statement = cnx.prepareStatement(sql)) {
             statement.setTimestamp(1, new Timestamp(date.getTime()));

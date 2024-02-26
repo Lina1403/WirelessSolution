@@ -70,7 +70,9 @@ public class DetailsEvent {
                 // Gérer l'erreur de modification
             }
         }
+
     }
+
 
     @FXML
     private void supprimerEvent() {

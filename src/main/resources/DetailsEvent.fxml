@@ -2,23 +2,47 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="200.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsEvent">
     <children>
-        <Label layoutX="41.0" layoutY="16.0" text="Titre:" />
-        <Label layoutX="41.0" layoutY="47.0" text="Nombre de Personnes:" />
-        <Label layoutX="41.0" layoutY="78.0" text="Date:" />
-        <Label layoutX="41.0" layoutY="140.0" text="Espace:" />
-        <Label layoutX="41.0" layoutY="171.0" text="Description:" />
-        <TextField fx:id="textFieldTitre" layoutX="137.0" layoutY="16.0" />
-        <TextField fx:id="textFieldNbrPersonne" layoutX="137.0" layoutY="47.0" />
+        <ImageView fitHeight="476.0" fitWidth="638.0">
+            <image>
+                <Image url="@image/modification des events.png" />
+            </image>
+        </ImageView>
+        <Label layoutX="42.0" layoutY="107.0" text="Titre:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <Label layoutX="44.0" layoutY="149.0" text="Nombre de Personnes:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <Label layoutX="46.0" layoutY="193.0" text="Date:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <Label layoutX="46.0" layoutY="236.0" text="Espace:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <Label layoutX="49.0" layoutY="285.0" text="Description:" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+        <TextField fx:id="textFieldTitre" layoutX="180.0" layoutY="96.0" prefHeight="26.0" prefWidth="106.0" />
+        <TextField fx:id="textFieldNbrPersonne" layoutX="180.0" layoutY="145.0" prefHeight="26.0" prefWidth="106.0" />
+        <ComboBox fx:id="comboBoxEspace" layoutX="180.0" layoutY="232.0" prefHeight="26.0" prefWidth="121.0" />
+        <TextField fx:id="textFieldDescription" layoutX="180.0" layoutY="278.0" prefHeight="63.0" prefWidth="226.0" />
+        <Button fx:id="boutonModifier" layoutX="288.0" layoutY="383.0" onAction="#modifierEvent" text="Modifier" />
+        <Button fx:id="boutonSupprimer" layoutX="194.0" layoutY="383.0" onAction="#supprimerEvent" text="Supprimer" />
         <TextField fx:id="textFieldDate" layoutX="137.0" layoutY="78.0" />
-        <ComboBox fx:id="comboBoxEspace" layoutX="137.0" layoutY="140.0" />
-        <TextField fx:id="textFieldDescription" layoutX="137.0" layoutY="171.0" />
-        <Button fx:id="boutonModifier" text="Modifier" onAction="#modifierEvent" layoutX="220.0" layoutY="180.0"/>
-        <Button fx:id="boutonSupprimer" text="Supprimer" onAction="#supprimerEvent" layoutX="137.0" layoutY="180.0"/>
     </children>
 </AnchorPane>

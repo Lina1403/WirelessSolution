@@ -11,9 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
-import javafx.util.Callback;
 import services.ServiceEvent;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -38,22 +36,6 @@ public class AfficherEvent {
         try {
             eventsObservableList.addAll(serviceEvent.getAll());
             listeEvents.setItems(eventsObservableList);
-            listeEvents.setCellFactory(new Callback<ListView<Event>, javafx.scene.control.ListCell<Event>>() {
-                @Override
-                public javafx.scene.control.ListCell<Event> call(ListView<Event> listView) {
-                    return new javafx.scene.control.ListCell<Event>() {
-                        @Override
-                        protected void updateItem(Event event, boolean empty) {
-                            super.updateItem(event, empty);
-                            if (event != null) {
-                                setText(event.getTitle() + " - " + event.getEspace().getName());
-                            } else {
-                                setText(null);
-                            }
-                        }
-                    };
-                }
-            });
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -76,6 +58,7 @@ public class AfficherEvent {
             }
         });
     }
+
 
     private void ouvrirDetailsEvent(Event event) {
         try {

@@ -4,43 +4,40 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherEspace">
 
     <children>
-        <ImageView fitWidth="800.0" fitHeight="600.0">
+        <ImageView fitHeight="600.0" fitWidth="800.0">
             <image>
-                <Image url="@/image/AffichageEspace.png" />
+                <Image url="@image/ListEspace.png" />
             </image>
         </ImageView>
 
-        <VBox layoutX="63.0" layoutY="95.0" prefHeight="457.0" prefWidth="673.0" spacing="10.0">
+         <TextField fx:id="txtNom" layoutX="377.0" layoutY="358.0" prefHeight="26.0" prefWidth="123.0" promptText="Nom" />
+          <Button fx:id="btnSupprimer" layoutX="534.0" layoutY="454.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="104.0" text="Supprimer" />
+          <Button fx:id="btnModifier" layoutX="534.0" layoutY="400.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="104.0" text="Modifier" />
+         <!-- Remplacez le champ d'état par une ComboBox -->
+         <ComboBox fx:id="comboEtat" layoutX="377.0" layoutY="400.0" prefHeight="26.0" prefWidth="123.0" promptText="État">
+             <items>
+                 <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="LIBRE" />
+                     <String fx:value="RESERVE" />
+                 </FXCollections>
+             </items>
+         </ComboBox>
+         <TextField fx:id="txtDescription" layoutX="377.0" layoutY="441.0" prefHeight="26.0" prefWidth="123.0" promptText="Description" />
 
-            <ListView fx:id="listEspace" prefHeight="260.0" prefWidth="674.0" />
+         <TextField fx:id="txtCapacite" layoutX="377.0" layoutY="484.0" prefHeight="26.0" prefWidth="123.0" promptText="Capacité" />
+        <Label fx:id="lblTitleError" layoutX="305.0" layoutY="362.0" prefHeight="18.0" prefWidth="86.0" />
 
-            <TextField fx:id="txtNom" promptText="Nom" />
-            <!-- Remplacez le champ d'état par une ComboBox -->
-            <ComboBox fx:id="comboEtat" promptText="État">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="LIBRE" />
-                        <String fx:value="RESERVE" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-            <TextField fx:id="txtCapacite" promptText="Capacité" />
-            <TextField fx:id="txtDescription" promptText="Description" />
-            <HBox prefHeight="58.0" prefWidth="673.0" spacing="10.0">
-                <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="104.0" text="Modifier" />
-                <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="104.0" text="Supprimer" />
-            </HBox>
-        </VBox>
+            <ListView fx:id="listEspace" layoutX="257.0" layoutY="112.0" prefHeight="228.0" prefWidth="483.0" />
+
     </children>
 </AnchorPane>
