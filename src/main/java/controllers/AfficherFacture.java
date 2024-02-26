@@ -94,7 +94,7 @@ public class AfficherFacture {
                     System.out.println("Facture sélectionnée : " + factureSelectionnee); // Check the selected invoice
                     System.out.println("ID de la facture sélectionnée : " + factureSelectionnee.getIdFacture());
 
-                    int idFacture = factureSelectionnee.getNumFacture();
+                    int idFacture = factureSelectionnee.getIdFacture();
                     System.out.println("ID de la facture à supprimer : " + idFacture); // Check the ID of the invoice
                     initDataFacture(factureSelectionnee);
                     // Add more debug statements as needed...

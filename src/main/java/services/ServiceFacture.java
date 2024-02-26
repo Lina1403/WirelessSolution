@@ -280,6 +280,7 @@ public class ServiceFacture implements IService<Facture>{
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Facture facture = new Facture();
+                    facture.setIdFacture(rs.getInt("idFacture"));
                     facture.setNumFacture(rs.getInt("numFacture"));
                     facture.setDate(rs.getDate("date"));
                     Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
