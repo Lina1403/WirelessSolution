@@ -8,33 +8,47 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ServiceVoiture implements IService<Voiture> {
+public class ServiceVoiture {
+
     Connection cnx = DataSource.getInstance().getCnx();
 
-    @Override
-    public void ajouter(Voiture v) throws SQLException {
+    public int ajouter(Voiture v) throws SQLException {
         // Vérifier si le parking existe avant d'ajouter la voiture
         ServiceParking serviceParking = new ServiceParking();
         Parking parking = serviceParking.getOneById(v.getParking().getIdParking());
 
         if (parking != null) {
-            String req = "INSERT INTO voiture (idResident, marque, model, couleur, matricule, idParking) VALUES (?, ?, ?, ?, ?, ?)";
+            String req = "INSERT INTO voiture (marque, model, couleur, matricule, idParking, idResident) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
-                st.setInt(1, v.getIdResident());
-                st.setString(2, v.getMarque());
-                st.setString(3, v.getModel());
-                st.setString(4, v.getCouleur());
-                st.setString(5, v.getMatricule());
-                st.setInt(6, v.getParking().getIdParking());
+                st.setString(1, v.getMarque());
+                st.setString(2, v.getModel());
+                st.setString(3, v.getCouleur());
+                st.setString(4, v.getMatricule());
+                st.setInt(5, v.getParking().getIdParking());
+                st.setInt(6, v.getIdResident());
 
-                st.executeUpdate();
-                System.out.println("Voiture ajoutée !");
+                int rowsAffected = st.executeUpdate();
+
+                // Vérifier si l'insertion a été réussie
+                if (rowsAffected > 0) {
+                    // Récupérer l'identifiant de la voiture ajoutée
+                    ResultSet generatedKeys = st.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int idVoiture = generatedKeys.getInt(1);
+                        System.out.println("Voiture ajoutée avec l'identifiant : " + idVoiture);
+                        return idVoiture;
+                    } else {
+                        System.out.println("Impossible de récupérer l'identifiant de la voiture ajoutée.");
+                    }
+                } else {
+                    System.out.println("Aucune voiture ajoutée.");
+                }
             }
         }
+        return -1;
     }
 
-    @Override
     public void modifier(Voiture v) throws SQLException {
         String req = "UPDATE voiture SET " +
                 "marque=?, " +
@@ -43,14 +57,12 @@ public class ServiceVoiture implements IService<Voiture> {
                 "matricule=? " +
                 "WHERE idVoiture=?";
 
-
         try (PreparedStatement st = cnx.prepareStatement(req)) {
             st.setString(1, v.getMarque());
             st.setString(2, v.getModel());
             st.setString(3, v.getCouleur());
             st.setString(4, v.getMatricule());
             st.setInt(5, v.getIdVoiture());
-
 
             st.executeUpdate();
             System.out.println("Voiture modifiée !");
@@ -60,7 +72,6 @@ public class ServiceVoiture implements IService<Voiture> {
         }
     }
 
-    @Override
     public void supprimer(int id) throws SQLException {
         String req = "DELETE FROM voiture WHERE idVoiture=?";
 
@@ -75,11 +86,10 @@ public class ServiceVoiture implements IService<Voiture> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Erreur lors de la suppression de la voiture.");
+            throw new SQLException("Erreur lors de la suppression de la voiture : " + e.getMessage());
         }
     }
 
-    @Override
     public Voiture getOneById(int id) throws SQLException {
         Voiture voiture = null;
         String req = "SELECT * FROM voiture WHERE idVoiture=?";
@@ -112,8 +122,6 @@ public class ServiceVoiture implements IService<Voiture> {
         return voiture;
     }
 
-
-    @Override
     public Set<Voiture> getAll() throws SQLException {
         Set<Voiture> voitures = new HashSet<>();
         String req = "SELECT * FROM voiture";

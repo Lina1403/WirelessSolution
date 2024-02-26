@@ -1,3 +1,4 @@
+// AjouterVoiture.java
 package controllers;
 
 import entities.Parking;
@@ -29,6 +30,7 @@ public class AjouterVoiture {
     private Button supprimerButton; // Ajout du bouton de suppression
 
     private Parking selectedParking; // Stocker le parking sélectionné
+    private int idVoitureAjoutee;
 
     public void setSelectedParking(Parking parking) {
         this.selectedParking = parking;
@@ -51,13 +53,23 @@ public class AjouterVoiture {
         // Ajouter la voiture à la base de données ou à votre service de gestion des voitures
         try {
             ServiceVoiture serviceVoiture = new ServiceVoiture();
-            serviceVoiture.ajouter(voiture);
+            // Ajouter la voiture et stocker son identifiant
+            int idVoitureAjoutee = serviceVoiture.ajouter(voiture);
 
-            // Activer le bouton de suppression après un ajout réussi
-            supprimerButton.setDisable(false);
+            // Vérifier si l'ajout s'est bien passé et l'identifiant est valide
+            if (idVoitureAjoutee != -1) {
+                // Activer le bouton de suppression après un ajout réussi
+                supprimerButton.setDisable(false);
 
-            // Afficher un message de succès
-            afficherMessageSucces("Voiture ajoutée avec succès!");
+                // Stocker l'identifiant de la voiture ajoutée pour une utilisation ultérieure
+                this.idVoitureAjoutee = idVoitureAjoutee;
+
+                // Afficher un message de succès
+                afficherMessageSucces("Voiture ajoutée avec succès!");
+            } else {
+                // Afficher un message d'erreur si l'ajout a échoué
+                afficherMessageErreur("Impossible d'ajouter la voiture.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             // Gérer l'erreur, par exemple afficher un message à l'utilisateur
@@ -66,12 +78,12 @@ public class AjouterVoiture {
 
     @FXML
     private void handleSupprimerButton(ActionEvent event) {
-        // Vérifier d'abord si une voiture est sélectionnée ou non
-        if (selectedParking != null) {
-            // Supprimer la voiture du service de gestion des voitures ou de la base de données
+        // Vérifier d'abord si une voiture a été ajoutée récemment et a un identifiant valide
+        if (idVoitureAjoutee != -1) {
+            // Supprimer la voiture ajoutée récemment en utilisant son identifiant
             try {
                 ServiceVoiture serviceVoiture = new ServiceVoiture();
-                serviceVoiture.supprimer(selectedParking.getIdParking());
+                serviceVoiture.supprimer(idVoitureAjoutee);
 
                 // Afficher un message de succès
                 afficherMessageSucces("Voiture supprimée avec succès!");
@@ -89,8 +101,8 @@ public class AjouterVoiture {
                 // Gérer l'erreur, par exemple afficher un message à l'utilisateur
             }
         } else {
-            // Afficher un message d'erreur si aucune voiture n'est sélectionnée
-            afficherMessageErreur("Aucune voiture sélectionnée pour la suppression!");
+            // Afficher un message d'erreur indiquant qu'aucune voiture n'a été ajoutée récemment
+            afficherMessageErreur("Aucune voiture ajoutée récemment pour être supprimée.");
         }
     }
 
