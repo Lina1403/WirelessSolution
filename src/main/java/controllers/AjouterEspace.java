@@ -125,6 +125,19 @@ public class AjouterEspace {
             e.printStackTrace();
         }
     }
+    @FXML
+    void gererEvenements() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherEvent.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gérer les événements");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void clearFields() {
