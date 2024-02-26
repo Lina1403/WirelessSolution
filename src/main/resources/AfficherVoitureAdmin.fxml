@@ -8,7 +8,5 @@
     <children>
         <!-- Ajoutez une ListView pour afficher la liste des voitures -->
         <ListView fx:id="listeVoitures" />
-
-        <Button fx:id="boutonAjouter" layoutX="258.0" layoutY="356.0" mnemonicParsing="false" text="Ajouter une voiture" />
     </children>
 </AnchorPane>
