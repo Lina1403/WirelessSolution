@@ -29,11 +29,25 @@ public class AfficherAppartement {
     private final ServiceFacture serviceFacture = new ServiceFacture();
     AjouterFacture controler;
 
+
     @FXML
     private TextField searchNumField;
 
     @FXML
     private TextField searchNomResidentField;
+
+    @FXML
+    private TextField searchTailleField;
+
+    @FXML
+    private TextField searchNbrEtageField;
+
+    @FXML
+    private ComboBox<Appartement.statutAppartement> searchStatutComboBox;
+
+
+
+
 
     @FXML
     public ListView<Appartement> listView;
@@ -52,6 +66,7 @@ public class AfficherAppartement {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQLException appropriately
         }
+
     }
 
     @FXML
@@ -201,15 +216,25 @@ public class AfficherAppartement {
             }
 
             String nomResident = searchNomResidentField.getText();
+            String taille = searchTailleField.getText();
+            int nbrEtage = 0; // Valeur par défaut
+            if (!searchNbrEtageField.getText().isEmpty()) {
+                nbrEtage = Integer.parseInt(searchNbrEtageField.getText());
+            }
+            Appartement.statutAppartement statut = null; // Valeur par défaut
+            if (searchStatutComboBox.getValue() != null) {
+                statut = searchStatutComboBox.getValue();
+            }
 
-            Set<Appartement> appartements = serviceAppartemment.rechercherAppartements(numAppartement, nomResident);
+            Set<Appartement> appartements = serviceAppartemment.rechercherAppartements(numAppartement, nomResident, taille, nbrEtage, statut);
             ObservableList<Appartement> observableList = FXCollections.observableArrayList(new ArrayList<>(appartements));
             listView.setItems(observableList);
         } catch (NumberFormatException e) {
-            System.out.println("Veuillez saisir un numéro d'appartement valide.");
+            System.out.println("Veuillez saisir des valeurs valides pour les champs numériques.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
 }

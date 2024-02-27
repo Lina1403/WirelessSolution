@@ -1,45 +1,58 @@
-/* Apply styles to the TableView */
-#tableFactures {
-    -fx-pref-width: 100%; /* Corrected to fit the container */
-    -fx-max-height: 500px;
+/* AnchorPane */
+.root {
+    -fx-background-color: lightsteelblue; /* Couleur de fond */
 }
 
-/* Apply styles to the TableColumn headers */
-.table-view .column-header-background {
-    -fx-background-color: #6495ED;
+/* VBox */
+.vbox {
+    -fx-spacing: 10.0; /* Espacement entre les éléments */
 }
 
-.table-view .column-header {
-    -fx-text-fill: white;
-    -fx-font-size: 14px; /* Corrected for better readability */
-    -fx-padding: 2px; /* Corrected for a cleaner look */
-    -fx-border-color: white;
-    -fx-border-width: 1px;
-}
-
-/* Apply styles to the TableView rows */
-.table-row-cell {
-    -fx-background-color: #F0F8FF;
-    -fx-border-color: lightgrey;
-}
-
-.table-row-cell:odd {
-    -fx-background-color: #E6E6FA;
-}
-
-/* Apply styles to the Buttons */
+/* Buttons */
 .button {
-    -fx-font-size: 14px;
-    -fx-pref-width: auto;
-    -fx-pref-height: 30px;
-    -fx-background-color: #87CEFA; /* Changed to a lighter color - LightSkyBlue */
-    -fx-text-fill: white;
-    -fx-border-color: #3454B4;
-    -fx-border-width: 2px;
+    -fx-background-color: dodgerblue; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
 }
 
-.button:hover {
-    -fx-background-color: #3454B4;
-    -fx-text-fill: #F0F8FF;
-    -fx-border-color: #4169E1;
+/* TextField */
+.text-field {
+    -fx-prompt-text-fill: #0000FF; /* Couleur du texte de rappel */
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: #ffffff; /* Couleur de fond */
+}
+
+/* ListView */
+.list-view {
+    -fx-background-color: skyblue; /* Couleur de fond */
+}
+
+/* ImageView */
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0); /* Effet d'ombre portée */
+}
+/* Ajout des styles pour la ListView */
+.list-view .list-cell:odd {
+    -fx-background-color: white; /* Couleur de fond pour les lignes impaires */
+}
+
+.list-view .list-cell:even {
+    -fx-background-color: #8f8; /* Couleur de fond pour les lignes paires */
+}
+
+.list-view .list-cell:filled:selected:focused,
+.list-view .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%); /* Couleur de fond pour les éléments sélectionnés */
+    -fx-text-fill: white; /* Couleur du texte pour les éléments sélectionnés */
+}
+
+.list-view .list-cell {
+    -fx-text-fill: black; /* Couleur du texte par défaut */
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-background-color: #00f; /* Couleur de fond au survol */
+    -fx-text-fill: white; /* Couleur du texte au survol */
 }

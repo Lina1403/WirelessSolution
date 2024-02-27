@@ -115,19 +115,28 @@ public class ServiceAppartemment implements IService<Appartement> {
         }
         return appartements;
     }
-    public Set<Appartement> rechercherAppartements(int numAppartement, String nomResident) throws SQLException {
+    public Set<Appartement> rechercherAppartements(int numAppartement, String nomResident, String taille, int nbrEtage, Appartement.statutAppartement statut) throws SQLException {
         Set<Appartement> appartements = new HashSet<>();
-        StringBuilder reqBuilder = new StringBuilder("SELECT * FROM `appartement` WHERE");
+        StringBuilder reqBuilder = new StringBuilder("SELECT * FROM `appartement` WHERE 1=1");
 
         if (numAppartement != 0) {
-            reqBuilder.append(" `numAppartement` = ").append(numAppartement);
+            reqBuilder.append(" AND `numAppartement` = ").append(numAppartement);
         }
 
         if (!nomResident.isEmpty()) {
-            if (numAppartement != 0) {
-                reqBuilder.append(" AND");
-            }
-            reqBuilder.append(" `nomResident` = '").append(nomResident).append("'");
+            reqBuilder.append(" AND `nomResident` = '").append(nomResident).append("'");
+        }
+
+        if (!taille.isEmpty()) {
+            reqBuilder.append(" AND `taille` = '").append(taille).append("'");
+        }
+
+        if (nbrEtage != 0) {
+            reqBuilder.append(" AND `nbrEtage` = ").append(nbrEtage);
+        }
+
+        if (statut != null) {
+            reqBuilder.append(" AND `statutAppartement` = '").append(statut.toString()).append("'");
         }
 
         String req = reqBuilder.toString();
@@ -150,6 +159,7 @@ public class ServiceAppartemment implements IService<Appartement> {
 
         return appartements;
     }
+
 
 
 }
