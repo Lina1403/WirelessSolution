@@ -55,11 +55,15 @@ public class ModifierFacture {
                 String description = id_description_modifier.getText();
                 Facture.Type type = Facture.Type.valueOf(typeComboBox.getValue());
 
+                System.out.println("Description before modification: " + selectedFacture.getDescriptionFacture());
+
                 selectedFacture.setNumFacture(numFacture);
                 selectedFacture.setMontant(montant);
-                selectedFacture.setDate(java.sql.Date.valueOf(date));
+                selectedFacture.setDate(Date.valueOf(date));
                 selectedFacture.setDescriptionFacture(description);
                 selectedFacture.setType(type);
+
+                System.out.println("Description after modification: " + selectedFacture.getDescriptionFacture());
 
                 serviceFacture.modifier(selectedFacture);
 
@@ -73,4 +77,5 @@ public class ModifierFacture {
             System.out.println("Aucune facture sélectionnée.");
         }
     }
+
 }

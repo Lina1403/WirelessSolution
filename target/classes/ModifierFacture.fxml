@@ -29,6 +29,8 @@
                 <String fx:value="Electricite" />
                 <String fx:value="Eau" />
                 <String fx:value="Gaz" />
+                <String fx:value="Dechets" />
+
             </FXCollections>
         </items>
     </ComboBox>

@@ -79,10 +79,12 @@ public class ServiceFacture implements IService<Facture>{
 
     @Override
     public void modifier(Facture p) throws SQLException {
-        String req = "UPDATE `facture` SET `NumFacture`='" + p.getNumFacture() + "'," +
+        String req = "UPDATE `facture` SET " +
+                "`NumFacture`='" + p.getNumFacture() + "'," +
                 "`date`='" + p.getDate() + "'," +
                 "`type`='" + p.getType() + "'," +
-                "`montant`='" + p.getMontant() + "' " +
+                "`montant`='" + p.getMontant() + "'," +
+                "`descriptionFacture`='" + p.getDescriptionFacture() + "' " +
                 "WHERE `idFacture`=" + p.getIdFacture();
 
         Statement st = cnx.createStatement();
@@ -90,7 +92,8 @@ public class ServiceFacture implements IService<Facture>{
         System.out.println("Facture modifié !");
     }
 
-   /*
+
+    /*
    @Override
     public void modifier(Facture p) throws SQLException {
         if (p == null) {
