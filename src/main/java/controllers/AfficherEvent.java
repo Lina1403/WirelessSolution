@@ -107,16 +107,16 @@ public class AfficherEvent {
                 // Charger la police Cairoplay
                 PDType0Font font = PDType0Font.load(document, getClass().getResourceAsStream("/fonts/CairoPlay-VariableFont_slnt,wght.ttf"));
 
-                float margin = 30;
+                float margin = 0;
 
                 // Charger l'image de bordure
-                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/bordure.png", document);
+                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/image/bordure.png", document);
 
                 // Dessiner l'image de bordure sur la page
                 contentStream.drawImage(borderImage, margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);
 
                 // Charger l'image du logo
-                PDImageXObject logoImage = PDImageXObject.createFromFile("src/main/resources/logo.png", document);
+                PDImageXObject logoImage = PDImageXObject.createFromFile("src/main/resources/image/logo.png", document);
                 float logoWidth = 125; // Largeur du logo réduite de 10 unités
                 float logoHeight = logoWidth * logoImage.getHeight() / logoImage.getWidth(); // Calculer la hauteur du logo en préservant les proportions
 
@@ -128,7 +128,7 @@ public class AfficherEvent {
                 contentStream.setFont(font, titleFontSize);
 
                 float titleX = (page.getMediaBox().getWidth() - font.getStringWidth("Détails de l'événement") / 1000 * titleFontSize) / 2+40; // Centrer le texte sur l'axe des x
-                float titleY = page.getMediaBox().getHeight() - 3 * margin;
+                float titleY = page.getMediaBox().getHeight() - 3 * (margin+30);
                 contentStream.setNonStrokingColor(new Color(0, 0, 139)); // Bleu foncé pour le lieu de l'événement
 
                 writeText(contentStream, "Détails de l'événement", titleX , titleY , font);
@@ -137,7 +137,7 @@ public class AfficherEvent {
                 float normalFontSize = 14;
                 contentStream.setFont(font, normalFontSize);
 
-                float infoX = margin * 3;
+                float infoX = (margin+30) * 3;
                 float infoY = titleY - normalFontSize * 6; // Décaler un peu plus vers le haut
                 float infoSpacing = normalFontSize * 2; // Ajouter un peu d'espace entre les lignes
 
@@ -171,7 +171,7 @@ public class AfficherEvent {
         contentStream.beginText();
         // Ajouter un décalage vers la droite (par exemple, 10 unités)
         contentStream.newLineAtOffset(x + 10, y);
-        contentStream.setFont(font, 12);
+        contentStream.setFont(font, 14);
         contentStream.showText(text);
         contentStream.endText();
     }

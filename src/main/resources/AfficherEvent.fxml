@@ -16,8 +16,8 @@
         </ImageView>
         <ListView fx:id="listeEvents" layoutX="264.0" layoutY="109.0" prefHeight="320.0" prefWidth="459.0" />
         <HBox layoutX="46.0" layoutY="366.0" spacing="20.0" /> <!-- Vous pouvez ajouter d'autres éléments ici si nécessaire -->
-        <Button fx:id="boutonGerer" layoutX="283.0" layoutY="462.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" text="Gerer les évènements" />
-        <Button fx:id="boutonGererEspace" layoutX="59.0" layoutY="103.0" mnemonicParsing="false" opacity="0.0" prefHeight="35.0" prefWidth="110.0" onAction="#ouvrirAjouterEspace" text="Gerer les espaces " />
-        <Button fx:id="boutonPDF" layoutX="470.0" layoutY="462.0" mnemonicParsing="false" onAction="#ouvrirPDFListeEvents" prefHeight="26.0" prefWidth="110.0" text="Ouvrir PDF" />
+        <Button fx:id="boutonGerer" blendMode="HARD_LIGHT" layoutX="283.0" layoutY="462.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="147.0" text="Gerer les évènements" />
+        <Button fx:id="boutonGererEspace" layoutX="59.0" layoutY="103.0" mnemonicParsing="false" onAction="#ouvrirAjouterEspace" opacity="0.0" prefHeight="35.0" prefWidth="110.0" text="Gerer les espaces " />
+        <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" layoutX="461.0" layoutY="462.0" mnemonicParsing="false" onAction="#ouvrirPDFListeEvents" prefHeight="26.0" prefWidth="110.0" text="Ouvrir PDF" />
     </children>
 </AnchorPane>

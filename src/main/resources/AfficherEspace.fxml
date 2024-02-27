@@ -20,11 +20,11 @@
             </image>
         </ImageView>
 
-         <TextField fx:id="txtNom" layoutX="377.0" layoutY="358.0" prefHeight="26.0" prefWidth="123.0" promptText="Nom" />
-          <Button fx:id="btnSupprimer" layoutX="534.0" layoutY="454.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="123.0" text="Supprimer" />
-          <Button fx:id="btnModifier" layoutX="534.0" layoutY="400.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="123.0" text="Modifier" />
+         <TextField fx:id="txtNom" layoutX="593.0" layoutY="138.0" prefHeight="26.0" prefWidth="86.0" promptText="Nom" />
+          <Button fx:id="btnSupprimer" blendMode="HARD_LIGHT" layoutX="429.0" layoutY="418.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="123.0" text="Supprimer" />
+          <Button fx:id="btnModifier" blendMode="HARD_LIGHT" layoutX="263.0" layoutY="418.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="123.0" text="Modifier" />
          <!-- Remplacez le champ d'état par une ComboBox -->
-         <ComboBox fx:id="comboEtat" layoutX="377.0" layoutY="400.0" prefHeight="26.0" prefWidth="123.0" promptText="État">
+         <ComboBox fx:id="comboEtat" blendMode="SOFT_LIGHT" layoutX="593.0" layoutY="187.0" prefHeight="26.0" prefWidth="86.0" promptText="État">
              <items>
                  <FXCollections fx:factory="observableArrayList">
                      <String fx:value="LIBRE" />
@@ -32,15 +32,15 @@
                  </FXCollections>
              </items>
          </ComboBox>
-         <TextField fx:id="txtDescription" layoutX="377.0" layoutY="483.0" prefHeight="26.0" prefWidth="123.0" promptText="Description" />
+         <TextField fx:id="txtDescription" layoutX="593.0" layoutY="287.0" prefHeight="26.0" prefWidth="86.0" promptText="Description" />
 
-         <TextField fx:id="txtCapacite" layoutX="377.0" layoutY="441.0" prefHeight="26.0" prefWidth="123.0" promptText="Capacité" />
+         <TextField fx:id="txtCapacite" layoutX="593.0" layoutY="239.0" prefHeight="26.0" prefWidth="86.0" promptText="Capacité" />
         <Label fx:id="lblTitleError" layoutX="305.0" layoutY="362.0" prefHeight="18.0" prefWidth="86.0" />
 
-            <ListView fx:id="listEspace" layoutX="257.0" layoutY="112.0" prefHeight="228.0" prefWidth="483.0" />
-      <Button layoutX="536.0" layoutY="510.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" />
+            <ListView fx:id="listEspace" layoutX="257.0" layoutY="112.0" prefHeight="270.0" prefWidth="284.0" />
+      <Button blendMode="HARD_LIGHT" layoutX="429.0" layoutY="478.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" />
       <Button layoutX="64.0" layoutY="165.0" mnemonicParsing="false" onAction="#gererEvenements" opacity="0.0" prefHeight="35.0" prefWidth="106.0" text="gerer les events" />
-        <Button fx:id="boutonPDF" layoutX="470.0" layoutY="462.0" mnemonicParsing="false" onAction="#genererPDF" prefHeight="26.0" prefWidth="110.0" text="Ouvrir PDF" />
+        <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" cache="true" layoutX="584.0" layoutY="418.0" mnemonicParsing="false" onAction="#genererPDF" prefHeight="26.0" prefWidth="123.0" text="PDF" />
 
 
     </children>

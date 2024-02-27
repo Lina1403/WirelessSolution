@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="471.0" prefWidth="638.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvent">
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEvent">
 
     <!-- L'image d'arrière-plan -->
     <ImageView fitHeight="476.0" fitWidth="638.0">
@@ -38,7 +38,7 @@
       <ComboBox fx:id="espaceComboBox" layoutX="361.0" layoutY="317.0" prefHeight="26.0" prefWidth="103.0">
                 <!-- Les noms d'espaces seront ajoutés dynamiquement -->
             </ComboBox>
-     <Button layoutX="327.0" layoutY="381.0" mnemonicParsing="false" onAction="#ajouterEvent" prefHeight="26.0" prefWidth="67.0" text="Ajouter" />
+     <Button blendMode="HARD_LIGHT" layoutX="327.0" layoutY="381.0" mnemonicParsing="false" onAction="#ajouterEvent" prefHeight="26.0" prefWidth="67.0" text="Ajouter" />
       <Label layoutX="231.0" layoutY="320.0" text="Espace" textFill="#fffafa">
       <font>
          <Font size="13.0" />
