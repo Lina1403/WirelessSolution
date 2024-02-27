@@ -55,9 +55,23 @@ public class AfficherEspace {
     private final IService<Espace> serviceEspace = new ServiceEspace();
 
     @FXML
+
     void initialize() {
         try {
             chargerListeEspaces();
+
+            // Configurer la façon dont les éléments sont rendus dans la ListView
+            listEspace.setCellFactory(param -> new ListCell<Espace>() {
+                @Override
+                protected void updateItem(Espace espace, boolean empty) {
+                    super.updateItem(espace, empty);
+                    if (empty || espace == null) {
+                        setText(null);
+                    } else {
+                        setText(espace.getName() + " - " + espace.getEtat());
+                    }
+                }
+            });
 
             // Ajouter un écouteur d'événements pour la sélection dans la liste
             listEspace.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -70,6 +84,7 @@ public class AfficherEspace {
             afficherAlerteErreur("Erreur lors du chargement des espaces : " + e.getMessage());
         }
     }
+
 
     private void remplirFormulaire(Espace espace) {
         txtNom.setText(espace.getName());
