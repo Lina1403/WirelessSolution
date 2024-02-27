@@ -1,6 +1,7 @@
 services\ServiceFacture.class
 controllers\AfficherFacture.class
 entities\Appartement.class
+controllers\AfficherStatistiques.class
 controllers\ModifierAppartement.class
 tests\main.class
 controllers\ModifierFacture.class

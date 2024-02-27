@@ -213,11 +213,3 @@ public class AfficherAppartement {
     }
 
 }
-
-
-
-
-
-
-
-

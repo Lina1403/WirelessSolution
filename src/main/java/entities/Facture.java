@@ -130,6 +130,7 @@ public class Facture {
     @Override
     public String toString() {
         return "Facture{" +
+                "idFacture="+ idFacture +
                 "numFacture=" + numFacture +
                 "Date=" + date +
                 ", type=" + type +

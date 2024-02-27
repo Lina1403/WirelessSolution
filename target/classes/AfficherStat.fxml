@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherStatistiques">
+    <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="CENTER">
+
+        <Label text="Afficher les statistiques :"/>
+
+        <!-- Choix unique pour date, type et étage -->
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Choisir :"/>
+            <ComboBox fx:id="choixComboBox">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Date"/>
+                        <String fx:value="Type"/>
+                        <String fx:value="Étage"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </HBox>
+
+        <!-- Options spécifiques en fonction du choix -->
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Option :"/>
+            <ComboBox fx:id="optionComboBox"/>
+            <DatePicker fx:id="datePicker" visible="false"/>
+        </HBox>
+
+        <!-- Bouton pour afficher les statistiques -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Afficher" onAction="#afficherStatistiques"/>
+        </HBox>
+
+    </VBox>
+</AnchorPane>

@@ -16,7 +16,7 @@
     <Button layoutX="305.0" layoutY="367.0" onAction="#modiferAppartement" prefHeight="26.0" prefWidth="134.0" text="Modifier Appartement" />
     <Button layoutX="189.0" layoutY="368.0" onAction="#gererFacture" text="Gerer Facture" />
     <Button layoutX="611.0" layoutY="368.0" onAction="#supprimerAppartement" text="Supprimer Appartement" />
-    <Button defaultButton="true" layoutX="645.0" layoutY="72.0" onAction="#actualiser" prefHeight="26.0" prefWidth="75.0" text="Ac" textFill="WHITE" />
+    <Button defaultButton="true" layoutX="645.0" layoutY="72.0" onAction="#actualiser" prefHeight="26.0" prefWidth="75.0" text="Ac" textFill="WHITE"/>
      <TextField fx:id="searchNumField" layoutX="437.0" layoutY="85.0" promptText="Numéro d'Appartement" />
     <TextField fx:id="searchNomResidentField" layoutX="277.0" layoutY="85.0" promptText="Nom Resident" />
 
