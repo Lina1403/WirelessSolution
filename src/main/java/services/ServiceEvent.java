@@ -129,6 +129,9 @@ public class ServiceEvent implements IService<Event> {
 
     @Override
     public void modifier(Event event) throws SQLException {
+        if (isEspaceOccupied(event.getDate(), event.getEspace().getIdEspace())) {
+            throw new IllegalArgumentException("L'espace est déjà occupé à cette date.");
+        }
         String req = "UPDATE event SET title = ?, date = ?, nbrPersonne = ?, description = ? WHERE idEvent = ?";
         try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
             pstmt.setString(1, event.getTitle());

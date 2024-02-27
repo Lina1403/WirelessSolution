@@ -13,7 +13,7 @@ public class MainFx extends Application {
   Parent root = FXMLLoader.load(getClass().getResource("/AfficherEvent.fxml"));
    //      Parent root = FXMLLoader.load(getClass().getResource("/DetailsEvent.fxml"));
 
-// Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvent.fxml"));
+ //Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvent.fxml"));
      //  Parent root = FXMLLoader.load(getClass().getResource("/AfficherEspace.fxml"));
  //  Parent root = FXMLLoader.load(getClass().getResource("/AjouterEspace.fxml"));
 
