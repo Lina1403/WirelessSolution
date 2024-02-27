@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Espace;
 import entities.Event;
+import services.ServiceEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,23 +14,16 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
-import services.ServiceEvent;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import java.awt.Desktop;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 public class AfficherEvent {
@@ -75,7 +69,7 @@ public class AfficherEvent {
             throwables.printStackTrace();
         }
         boutonPDF.setOnAction(event -> {
-            ouvrirPDFListeEvents(); // Appel de la méthode pour ouvrir le PDF
+            ouvrirPDFListeEvents();
         });
         boutonGerer.setOnAction(event -> {
             Event selectedEvent = listeEvents.getSelectionModel().getSelectedItem();
@@ -99,9 +93,6 @@ public class AfficherEvent {
         });
 
     }
-
-
-
     @FXML
     private void ouvrirPDFListeEvents() {
         Event selectedEvent = listeEvents.getSelectionModel().getSelectedItem();
@@ -114,36 +105,53 @@ public class AfficherEvent {
                 PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
                 // Charger la police Cairoplay
-                PDType0Font font = PDType0Font.load(document, new File("src/main/resources/fonts/CairoPlay-VariableFont_slnt,wght.ttf"));
+                PDType0Font font = PDType0Font.load(document, getClass().getResourceAsStream("/fonts/CairoPlay-VariableFont_slnt,wght.ttf"));
 
-                contentStream.setNonStrokingColor(Color.BLUE); // Définir la couleur de remplissage en bleu
+                float margin = 30;
 
-                float margin = 50; // Marge
-                float yStart = page.getMediaBox().getHeight() - margin;
-                float yPosition = yStart;
-                float lineHeight = font.getFontDescriptor().getFontBoundingBox().getHeight() / 1000 * 10;
+                // Charger l'image de bordure
+                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/bordure.png", document);
 
-                // Dessiner une bordure autour de la page
-                contentStream.addRect(margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);
-                contentStream.stroke();
+                // Dessiner l'image de bordure sur la page
+                contentStream.drawImage(borderImage, margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);
 
-                // Écrire le titre en gras et plus grand
-                float titleFontSize = 20;
+                // Charger l'image du logo
+                PDImageXObject logoImage = PDImageXObject.createFromFile("src/main/resources/logo.png", document);
+                float logoWidth = 125; // Largeur du logo réduite de 10 unités
+                float logoHeight = logoWidth * logoImage.getHeight() / logoImage.getWidth(); // Calculer la hauteur du logo en préservant les proportions
+
+                // Dessiner le logo légèrement à gauche et un peu plus haut
+                contentStream.drawImage(logoImage, page.getMediaBox().getWidth() - margin - logoWidth - 10, page.getMediaBox().getHeight() - margin - logoHeight - 15, logoWidth, logoHeight);
+
+                float titleFontSize = 25;
+                contentStream.setNonStrokingColor(Color.BLACK); // Couleur du texte noir
                 contentStream.setFont(font, titleFontSize);
-                writeText(contentStream, "Détail de l'événement", margin, yPosition, font);
 
-                yPosition -= titleFontSize + 2 * lineHeight; // Déplacer la position Y pour le texte suivant
+                float titleX = (page.getMediaBox().getWidth() - font.getStringWidth("Détails de l'événement") / 1000 * titleFontSize) / 2+40; // Centrer le texte sur l'axe des x
+                float titleY = page.getMediaBox().getHeight() - 3 * margin;
+                contentStream.setNonStrokingColor(new Color(0, 0, 139)); // Bleu foncé pour le lieu de l'événement
 
-                // Écrire le contenu du PDF avec une taille de police plus petite
-                float normalFontSize = 12;
+                writeText(contentStream, "Détails de l'événement", titleX , titleY , font);
+
+
+                float normalFontSize = 14;
                 contentStream.setFont(font, normalFontSize);
-                writeText(contentStream, "Titre : " + selectedEvent.getTitle(), margin, yPosition, font);
-                yPosition -= lineHeight;
-                writeText(contentStream, "Description : " + selectedEvent.getDescription(), margin, yPosition, font);
-                yPosition -= lineHeight * 2; // Augmenter l'espace entre les lignes de description
-                writeText(contentStream, "Date : " + selectedEvent.getDate(), margin, yPosition, font);
-                yPosition -= lineHeight;
-                writeText(contentStream, "Lieu : " + selectedEvent.getEspace().getName(), margin, yPosition, font);
+
+                float infoX = margin * 3;
+                float infoY = titleY - normalFontSize * 6; // Décaler un peu plus vers le haut
+                float infoSpacing = normalFontSize * 2; // Ajouter un peu d'espace entre les lignes
+
+                // Définir la couleur du texte pour les informations de l'événement
+                contentStream.setNonStrokingColor(Color.BLACK); // Noir pour les informations de l'événement
+
+                writeText(contentStream,"Titre : " + selectedEvent.getTitle(),infoX,infoY,font);
+                infoY -= infoSpacing;
+                writeText(contentStream,"Description : " + selectedEvent.getDescription(),infoX,infoY,font);
+                infoY -= infoSpacing;
+                writeText(contentStream,"Date : " + selectedEvent.getDate(),infoX,infoY,font);
+                infoY -= infoSpacing;
+
+                writeText(contentStream,"Lieu : " + selectedEvent.getEspace().getName(),infoX,infoY,font);
 
                 contentStream.close();
 
@@ -151,7 +159,6 @@ public class AfficherEvent {
                 document.save(file);
                 document.close();
 
-                // Ouvrir le fichier PDF généré
                 Desktop.getDesktop().open(file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -159,22 +166,15 @@ public class AfficherEvent {
         }
     }
 
+
     private void writeText(PDPageContentStream contentStream, String text, float x, float y, PDType0Font font) throws IOException {
         contentStream.beginText();
+        // Ajouter un décalage vers la droite (par exemple, 10 unités)
+        contentStream.newLineAtOffset(x + 10, y);
         contentStream.setFont(font, 12);
-        contentStream.newLineAtOffset(x, y);
         contentStream.showText(text);
         contentStream.endText();
     }
-
-
-    private void writeText(PDPageContentStream contentStream, String text, float x, float y) throws IOException {
-        contentStream.beginText();
-        contentStream.newLineAtOffset(x, y);
-        contentStream.showText(text);
-        contentStream.endText();
-    }
-
 
 
     @FXML
