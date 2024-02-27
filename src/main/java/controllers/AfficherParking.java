@@ -25,6 +25,10 @@ public class AfficherParking {
     @FXML
     private Button boutonAjouter;
 
+    @FXML
+    private Button boutonGererVoitures;
+
+
     private ObservableList<Parking> parkingsObservableList;
     private ServiceParking serviceParking;
 
@@ -39,9 +43,11 @@ public class AfficherParking {
             parkingsObservableList.addAll(serviceParking.getAll());
             listeParkings.setItems(parkingsObservableList);
             // Initialiser le nombre actuel de voitures à 0 pour chaque parking
-            for (Parking parking : parkingsObservableList) {
+            /*for (Parking parking : parkingsObservableList) {
                 parking.setNombreActuelles(0);
-            }
+
+
+            }*/
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -61,7 +67,9 @@ public class AfficherParking {
             }
         });
 
-        // Autres gestionnaires d'événements...
+        boutonGererVoitures.setOnAction(event -> {
+            ouvrirAffichervoiture();
+        });
 
         // Gestionnaire d'événements pour le double-clic sur un élément de la ListView
         listeParkings.setOnMouseClicked(event -> {
@@ -72,7 +80,22 @@ public class AfficherParking {
                 }
             }
         });
+
     }
+    @FXML
+    void ouvrirAffichervoiture() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherVoitureAdmin.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Liste des voitures");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void ouvrirDetailsParking(Parking parking) {
         try {

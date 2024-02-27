@@ -7,11 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
 import services.ServiceVoiture;
 
+import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -19,6 +21,8 @@ public class AfficherVoitureAdmin {
 
     @FXML
     private ListView<Voiture> listeVoitures;
+    @FXML
+    private Button boutonGererParking;
 
     private ObservableList<Voiture> voituresObservableList;
     private ServiceVoiture serviceVoiture;
@@ -46,6 +50,7 @@ public class AfficherVoitureAdmin {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        boutonGererParking.setOnAction(this::ouvrirAfficherParkingAdmin);
 
         // Gestionnaire d'événements pour le double-clic sur un élément de la ListView
         listeVoitures.setOnMouseClicked(event -> {
@@ -56,6 +61,21 @@ public class AfficherVoitureAdmin {
                 }
             }
         });
+    }
+    @FXML
+     void ouvrirAfficherParkingAdmin(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherParking.fxml"));
+            Parent root = loader.load();
+            AfficherParking controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gérer les parkings");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void ouvrirDetailsVoiture(Voiture voiture) {

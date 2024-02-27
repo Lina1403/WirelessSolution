@@ -39,12 +39,14 @@ public class AjouterVoiture {
     private AfficherVoitureAdmin afficherVoitureAdmin;
 
     public void setSelectedParking(Parking parking) {
+           System.out.println(parking.getCapacite());
         this.selectedParking = parking;
     }
 
     public void setAfficherVoitureAdmin(AfficherVoitureAdmin afficherVoitureAdmin) {
         this.afficherVoitureAdmin = afficherVoitureAdmin;
     }
+
 
     @FXML
     private void handleAjouterButton(ActionEvent event) {
@@ -63,6 +65,19 @@ public class AjouterVoiture {
             return;
         }
 
+        // Afficher la capacité actuelle du parking
+        System.out.println("Capacité du parking avant ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
+
+        // Vérification de la capacité du parking
+        if (selectedParking.getNombreActuelles() >= selectedParking.getCapacite()) {
+            afficherMessageErreur("Le parking est plein. Impossible d'ajouter plus de voitures.");
+            ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
+            return;
+        }
+
+        // Ajouter cette instruction de débogage pour afficher la capacité du parking sélectionné
+        System.out.println("Capacité du parking sélectionné : " + selectedParking.getCapacite());
+
         Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
 
         try {
@@ -72,22 +87,22 @@ public class AjouterVoiture {
             if (idVoitureAjoutee != -1) {
                 // Mettre à jour le nombre actuel de voitures dans le parking
                 selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() + 1);
-                ServiceParking serviceParking = new ServiceParking();
-                serviceParking.modifier(selectedParking);
-                supprimerButton.setDisable(false);
-                this.idVoitureAjoutee = idVoitureAjoutee;
                 afficherMessageSucces("Voiture ajoutée avec succès!");
             } else {
-                afficherMessageErreur("Impossible d'ajouter la voiture.");
+                // Traitement en cas d'échec de l'ajout de la voiture
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             // Réactiver le bouton d'ajout après le processus d'ajout
             ajouterButton.setDisable(false);
         }
+
+        // Afficher la capacité mise à jour du parking après l'ajout de la voiture
+        System.out.println("Capacité du parking après ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
     }
+
+
 
     @FXML
     private void handleSupprimerButton(ActionEvent event) {

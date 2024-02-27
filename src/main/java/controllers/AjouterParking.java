@@ -62,7 +62,7 @@ public class AjouterParking {
         int capacite;
         try {
             capacite = Integer.parseInt(capaciteText);
-            if (capacite <= 0 || capacite > 100) {
+            if (capacite <= 0 || capacite > 5) {
                 afficherMessage("Erreur", "La capacité doit être un entier entre 1 et 100.");
                 return;
             }
@@ -81,7 +81,7 @@ public class AjouterParking {
         int nombreActuelles;
         try {
             nombreActuelles = Integer.parseInt(nombreActuellesText);
-            if (nombreActuelles < 0 || nombreActuelles > 100) {
+            if (nombreActuelles < 0 || nombreActuelles > capacite) {
                 afficherMessage("Erreur", "Le nombre actuel de voitures doit être un entier entre 0 et 100.");
                 return;
             }
