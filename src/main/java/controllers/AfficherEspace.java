@@ -8,14 +8,25 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import services.IService;
 import services.ServiceEspace;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 public class AfficherEspace {
 
@@ -51,6 +62,8 @@ public class AfficherEspace {
 
     @FXML
     private Label lblDescriptionError;
+    @FXML
+    private Button boutonPDF;
 
     private final IService<Espace> serviceEspace = new ServiceEspace();
 
@@ -58,6 +71,9 @@ public class AfficherEspace {
 
     void initialize() {
         try {
+            boutonPDF.setOnAction(event -> {
+                genererPDF();
+            });
             chargerListeEspaces();
 
             // Configurer la façon dont les éléments sont rendus dans la ListView
@@ -197,6 +213,81 @@ public class AfficherEspace {
         // Afficher la liste dans la ListView
         listEspace.setItems(espaceList);
     }
+    @FXML
+    private void genererPDF() {
+        Espace selectedEspace = listEspace.getSelectionModel().getSelectedItem();
+        if (selectedEspace != null) {
+            try {
+                PDDocument document = new PDDocument();
+                PDPage page = new PDPage();
+                document.addPage(page);
+
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+                // Charger la police Cairoplay
+                PDType0Font font = PDType0Font.load(document, getClass().getResourceAsStream("/fonts/CairoPlay-VariableFont_slnt,wght.ttf"));
+
+                float margin = 30;
+
+                // Charger l'image de bordure
+                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/bordure.png", document);
+
+                // Dessiner l'image de bordure sur la page
+                contentStream.drawImage(borderImage, margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);
+                // Charger l'image du logo
+                PDImageXObject logoImage = PDImageXObject.createFromFile("src/main/resources/logo.png", document);
+                float logoWidth = 125; // Largeur du logo réduite de 10 unités
+                float logoHeight = logoWidth * logoImage.getHeight() / logoImage.getWidth(); // Calculer la hauteur du logo en préservant les proportions
+
+                // Dessiner le logo légèrement à gauche et un peu plus haut
+                contentStream.drawImage(logoImage, page.getMediaBox().getWidth() - margin - logoWidth - 10, page.getMediaBox().getHeight() - margin - logoHeight - 15, logoWidth, logoHeight);
+
+                // Dessiner le titre
+                float titleFontSize = 25;
+                contentStream.setNonStrokingColor(Color.BLACK); // Couleur du texte noir
+                contentStream.setFont(font, titleFontSize);
+                float titleX = (page.getMediaBox().getWidth() - font.getStringWidth("Détails de l'espace") / 1000 * titleFontSize) / 2 + 40; // Centrer le texte sur l'axe des x
+                float titleY = page.getMediaBox().getHeight() - 3 * margin;
+                contentStream.setNonStrokingColor(new Color(0, 0, 139)); // Bleu foncé pour le titre
+                writeText(contentStream, "Détails de l'espace", titleX, titleY, font);
+
+                float normalFontSize = 14;
+                contentStream.setFont(font, normalFontSize);
+
+                // Dessiner les informations de l'espace
+                float infoX = margin * 3;
+                float infoY = titleY - normalFontSize * 6; // Décaler un peu plus vers le haut
+                float infoSpacing = normalFontSize * 2; // Ajouter un peu d'espace entre les lignes
+                contentStream.setNonStrokingColor(Color.BLACK); // Noir pour les informations de l'espace
+                writeText(contentStream, "Nom : " + selectedEspace.getName(), infoX, infoY, font);
+                infoY -= infoSpacing;
+                writeText(contentStream, "État : " + selectedEspace.getEtat().toString(), infoX, infoY, font);
+                infoY -= infoSpacing;
+                writeText(contentStream, "Capacité : " + selectedEspace.getCapacite(), infoX, infoY, font);
+                infoY -= infoSpacing;
+                writeText(contentStream, "Description : " + selectedEspace.getDescription(), infoX, infoY, font);
+
+                contentStream.close();
+
+                File file = new File(selectedEspace.getName() + ".pdf");
+                document.save(file);
+                document.close();
+
+                Desktop.getDesktop().open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private void writeText(PDPageContentStream contentStream, String text, float x, float y, PDType0Font font) throws IOException {
+        contentStream.beginText();
+        // Ajouter un décalage vers la droite (par exemple, 10 unités)
+        contentStream.newLineAtOffset(x + 10, y);
+        contentStream.setFont(font, 12);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
+
 
     private void afficherAlerteErreur(String message) {
         showAlert(Alert.AlertType.ERROR, "Erreur", message);
