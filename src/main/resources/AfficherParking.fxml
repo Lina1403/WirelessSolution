@@ -24,7 +24,9 @@
         <ListView fx:id="listeParkings" layoutX="269.0" layoutY="160.0" prefHeight="312.0" prefWidth="458.0" />
 
         <!-- Zone de recherche -->
-        <TextField fx:id="searchField" layoutX="578.0" layoutY="119.0" promptText="Rechercher..." />
+        <TextField fx:id="searchField" layoutX="435.0" layoutY="119.0" promptText="Rechercher..." />
+
+        <Button fx:id="boutonTriCapacite" layoutX="598.0" layoutY="119.0" mnemonicParsing="false" onAction="#trierParCapacite" prefHeight="25.0" prefWidth="129.0" text="Tri Capacité ▲" />
 
         <!-- Bouton "Ajouter" -->
         <Button fx:id="boutonAjouter" layoutX="269.0" layoutY="492.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="86.0" text="Ajouter" />

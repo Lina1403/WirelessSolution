@@ -16,6 +16,8 @@ import services.ServiceParking;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Comparator;
+// import java.util.Comparator;
 
 public class AfficherParking {
 
@@ -30,6 +32,11 @@ public class AfficherParking {
 
     @FXML
     private TextField searchField;
+    @FXML
+    private Button boutonTriCapacite;
+
+    private boolean triAscendant = true; // Par défaut, tri ascendant
+
 
     private ObservableList<Parking> parkingsObservableList;
     private ServiceParking serviceParking;
@@ -46,12 +53,21 @@ public class AfficherParking {
             parkingsObservableList.addAll(serviceParking.getAll());
             listeParkings.setItems(parkingsObservableList);
 
+
+
+
             // Ajout d'un écouteur d'événements pour détecter les modifications dans le champ de recherche
             searchField.textProperty().addListener((observable, oldValue, newValue) -> rechercher());
             // Initialiser le nombre actuel de voitures à 0 pour chaque parking
             for (Parking parking : parkingsObservableList) {
                 parking.setNombreActuelles(0);
             }
+          /*  // Tri des parkings par capacité
+            parkingsObservableList.sort(Comparator.comparingInt(Parking::getCapacite));
+
+            listeParkings.setItems(parkingsObservableList);
+
+           */
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -137,5 +153,19 @@ public class AfficherParking {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    @FXML
+    void trierParCapacite() {
+        // Changer le sens du tri
+        triAscendant = !triAscendant;
+
+        // Changer le texte du bouton en fonction du sens du tri
+        boutonTriCapacite.setText(triAscendant ? "Tri Capacité ▲" : "Tri Capacité ▼");
+
+        // Tri des parkings par capacité
+        parkingsObservableList.sort(triAscendant ? Comparator.comparingInt(Parking::getCapacite) : Comparator.comparingInt(Parking::getCapacite).reversed());
+
+        // Mettre à jour la ListView
+        listeParkings.setItems(parkingsObservableList);
     }
 }
