@@ -108,9 +108,7 @@ public class Appartement {
         return "Appartement{" +
                 "numAppartement=" + numAppartement +
                 ", nomResident='" + nomResident + '\'' +
-                ", taille='" + taille + '\'' +
-                ", nbrEtage=" + nbrEtage +
-                ", statutAppartement=" + statutAppartement +
+
                 '}';
     }
 

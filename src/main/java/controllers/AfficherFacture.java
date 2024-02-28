@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Set;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 
 public class AfficherFacture {
     private final ServiceFacture serviceFacture = new ServiceFacture();
@@ -29,6 +34,8 @@ public class AfficherFacture {
     private Appartement appartementSelectionne;
     @FXML
     private ListView<Facture> listViewFacture;
+    @FXML
+    private Button boutonPDF;
 
 
     public void initData(Appartement appartement) throws SQLException {
@@ -65,8 +72,50 @@ public class AfficherFacture {
                     }
                 }
             });
+            boutonPDF.setOnAction(event -> {
+                genererPDF();
+            });
         } catch (SQLException e) {
             e.printStackTrace(); // Gérer SQLException de manière appropriée
+        }
+    }
+    @FXML
+    void genererPDF() {
+        Facture factureSelectionnee = listViewFacture.getSelectionModel().getSelectedItem();
+
+        if (factureSelectionnee != null) {
+            try {
+                Document document = new Document();
+                PdfWriter.getInstance(document, new FileOutputStream("invoice.pdf"));
+                document.open();
+
+                Font font = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.CYAN);
+                Chunk chunk = new Chunk("Invoice Details", font);
+                Paragraph p = new Paragraph(chunk);
+                p.setAlignment(Element.ALIGN_CENTER);
+                document.add(p);
+
+                document.add(new Paragraph("\n\n"));
+
+                // Display invoice details
+                document.add(new Paragraph("Invoice Number: " + factureSelectionnee.getNumFacture()));
+                document.add(new Paragraph("Date: " + new SimpleDateFormat("dd-MM-yyyy").format(factureSelectionnee.getDate())));
+                document.add(new Paragraph("Type: " + factureSelectionnee.getType()));
+                document.add(new Paragraph("Montant: " + factureSelectionnee.getMontant()));
+                document.add(new Paragraph("Description: " + factureSelectionnee.getDescriptionFacture()));
+
+                document.close();
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("PDF Generated");
+                alert.setContentText("Invoice details have been saved to invoice.pdf");
+                alert.showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Aucune facture sélectionnée.");
+            afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture pour générer le PDF.");
         }
     }
 
