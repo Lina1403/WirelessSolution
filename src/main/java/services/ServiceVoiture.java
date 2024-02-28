@@ -155,4 +155,17 @@ public class ServiceVoiture {
 
         return voitures;
     }
+    public boolean existeMatricule(String matricule) throws SQLException {
+        String query = "SELECT COUNT(*) FROM voiture WHERE matricule = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(query)) {
+            statement.setString(1, matricule);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+        return false;
+    }
+
 }

@@ -67,6 +67,14 @@ public class AjouterVoiture {
         }
 
         try {
+            // Vérifier si la matricule de la voiture existe déjà dans la base de données
+            ServiceVoiture serviceVoiture = new ServiceVoiture();
+            if (serviceVoiture.existeMatricule(matricule)) {
+                afficherMessageErreur("La matricule de la voiture existe déjà dans le parking.");
+                ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
+                return;
+            }
+
             // Récupérer le parking actuel depuis la base de données pour obtenir la capacité à jour
             ServiceParking serviceParking = new ServiceParking();
             selectedParking = serviceParking.getOneById(selectedParking.getIdParking());
@@ -86,7 +94,6 @@ public class AjouterVoiture {
 
             Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
 
-            ServiceVoiture serviceVoiture = new ServiceVoiture();
             int idVoitureAjoutee = serviceVoiture.ajouter(voiture);
 
             if (idVoitureAjoutee != -1) {
