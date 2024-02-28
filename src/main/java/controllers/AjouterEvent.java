@@ -5,6 +5,7 @@ import entities.Event;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -14,6 +15,16 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Set;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
 
 public class AjouterEvent {
 
@@ -33,6 +44,9 @@ public class AjouterEvent {
 
     @FXML
     private ComboBox<String> espaceComboBox;
+    @FXML
+    private Button boutonPDF;
+    private Event addedEvent;
 
     @FXML
     void initialize() {
@@ -42,6 +56,9 @@ public class AjouterEvent {
         } catch (SQLException e) {
             afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de la récupération des noms d'espaces : " + e.getMessage());
         }
+        boutonPDF.setOnAction(event -> {
+            genererPDF();
+        });
     }
 
     @FXML
@@ -89,6 +106,9 @@ public class AjouterEvent {
             Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, description, espaceObj);
             serviceEvent.ajouter(eventObj);
 
+            // Stocker l'événement ajouté dans la variable addedEvent
+            this.addedEvent = eventObj;
+
             // Afficher une confirmation
             afficherAlerteConfirmationEvent("Validation", "Événement ajouté avec succès");
         } catch (NumberFormatException e) {
@@ -101,6 +121,79 @@ public class AjouterEvent {
             afficherAlerteErreurEvent("Erreur", e.getMessage());
         }
     }
+
+
+
+    @FXML
+        private void genererPDF() {
+            if (addedEvent != null) {
+                try {
+                    PDDocument document = new PDDocument();
+                    PDPage page = new PDPage();
+                    document.addPage(page);
+
+
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+                PDType0Font font = PDType0Font.load(document, getClass().getResourceAsStream("/fonts/CairoPlay-VariableFont_slnt,wght.ttf"));
+
+                float margin = 0;
+
+                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/image/BORDD.png", document);
+                contentStream.drawImage(borderImage, margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);
+
+                PDImageXObject logoImage = PDImageXObject.createFromFile("src/main/resources/image/logo.png", document);
+                float logoWidth = 125;
+                float logoHeight = logoWidth * logoImage.getHeight() / logoImage.getWidth();
+
+                contentStream.drawImage(logoImage, page.getMediaBox().getWidth() - margin - logoWidth - 15, page.getMediaBox().getHeight() - margin - logoHeight - 15, logoWidth, logoHeight);
+
+                float titleFontSize = 25;
+                contentStream.setNonStrokingColor(Color.BLACK);
+                contentStream.setFont(font, titleFontSize);
+                float titleX = (page.getMediaBox().getWidth() - font.getStringWidth("Détails de l'événement") / 1000 * titleFontSize) / 2 + 40;
+                float titleY = page.getMediaBox().getHeight() - 3 * (margin + 30);
+                contentStream.setNonStrokingColor(new Color(0, 0, 139));
+                writeText(contentStream, "Détails de l'événement", titleX, titleY, font);
+
+                float normalFontSize = 14;
+                contentStream.setFont(font, normalFontSize);
+
+                float infoX = (margin + 30) * 3;
+                float infoY = titleY - normalFontSize * 6;
+                float infoSpacing = normalFontSize * 2;
+
+                contentStream.setNonStrokingColor(Color.BLACK);
+                writeText(contentStream, "Titre : " + addedEvent.getTitle(), infoX, infoY, font);
+                infoY -= infoSpacing;
+                writeText(contentStream, "Date : " + addedEvent.getDate().toString(), infoX, infoY, font);
+                infoY -= infoSpacing;
+                writeText(contentStream, "Nombre de personnes : " + addedEvent.getNbrPersonne(), infoX, infoY, font);
+                infoY -= infoSpacing;
+                writeText(contentStream, "Description : " + addedEvent.getDescription(), infoX, infoY, font);
+
+                contentStream.close();
+
+                File file = new File(addedEvent.getTitle() + ".pdf");
+                document.save(file);
+                document.close();
+
+                Desktop.getDesktop().open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void writeText(PDPageContentStream contentStream, String text, float x, float y, PDType0Font font) throws IOException {
+        contentStream.beginText();
+        contentStream.newLineAtOffset(x + 10, y);
+        contentStream.setFont(font, 14);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
+
+
     private void afficherAlerteConfirmationEvent(String titre, String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(titre);

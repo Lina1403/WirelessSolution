@@ -64,6 +64,8 @@ public class AfficherEspace {
     private Label lblDescriptionError;
     @FXML
     private Button boutonPDF;
+    @FXML
+    private TextField txtRechercheNom;
 
     private final IService<Espace> serviceEspace = new ServiceEspace();
 
@@ -98,6 +100,40 @@ public class AfficherEspace {
             });
         } catch (SQLException e) {
             afficherAlerteErreur("Erreur lors du chargement des espaces : " + e.getMessage());
+        }
+    }
+    @FXML
+    void trierParEtat() {
+        ObservableList<Espace> espaces = listEspace.getItems();
+        espaces.sort((espace1, espace2) -> {
+            // Définir l'ordre de tri en fonction de l'état
+            if (espace1.getEtat() == Espace.Etat.LIBRE && espace2.getEtat() == Espace.Etat.RESERVE) {
+                return -1; // "libre" avant "réservé"
+            } else if (espace1.getEtat() == Espace.Etat.RESERVE && espace2.getEtat() == Espace.Etat.LIBRE) {
+                return 1; // "réservé" après "libre"
+            } else {
+                return 0; // Aucun changement d'ordre
+            }
+        });
+        listEspace.setItems(espaces);
+    }
+
+
+    @FXML
+    void rechercherParNom() throws SQLException {
+        String nomRecherche = txtRechercheNom.getText().trim();
+        if (!nomRecherche.isEmpty()) {
+            // Faites la recherche et mettez à jour la liste affichée dans la ListView
+            ObservableList<Espace> resultats = FXCollections.observableArrayList();
+            for (Espace espace : listEspace.getItems()) {
+                if (espace.getName().toLowerCase().contains(nomRecherche.toLowerCase())) {
+                    resultats.add(espace);
+                }
+            }
+            listEspace.setItems(resultats);
+        } else {
+            // Si le champ de recherche est vide, affichez tous les espaces
+            chargerListeEspaces();
         }
     }
 

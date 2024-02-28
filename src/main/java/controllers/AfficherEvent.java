@@ -2,6 +2,7 @@ package controllers;
 
 import entities.Espace;
 import entities.Event;
+import javafx.scene.control.TextField;
 import services.ServiceEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,7 +38,8 @@ public class AfficherEvent {
     private Button boutonGerer;
     @FXML
     private Button boutonGererEspace;
-
+    @FXML
+    private TextField txtRechercheNom;
     private ObservableList<Event> eventsObservableList;
     private ServiceEvent serviceEvent;
 
@@ -94,6 +96,30 @@ public class AfficherEvent {
 
     }
     @FXML
+    void trierParNom() {
+        ObservableList<Event> events = listeEvents.getItems();
+        events.sort((event1, event2) -> event1.getTitle().compareToIgnoreCase(event2.getTitle()));
+        listeEvents.setItems(events);
+    }
+
+    @FXML
+    void rechercherParNom() {
+        String nomRecherche = txtRechercheNom.getText().trim();
+        if (!nomRecherche.isEmpty()) {
+            ObservableList<Event> resultats = FXCollections.observableArrayList();
+            for (Event event : eventsObservableList) {
+                if (event.getTitle().toLowerCase().contains(nomRecherche.toLowerCase())) {
+                    resultats.add(event);
+                }
+            }
+            listeEvents.setItems(resultats);
+        } else {
+            // Si le champ de recherche est vide, affichez tous les événements
+            listeEvents.setItems(eventsObservableList);
+        }
+    }
+
+    @FXML
     private void ouvrirPDFListeEvents() {
         Event selectedEvent = listeEvents.getSelectionModel().getSelectedItem();
         if (selectedEvent != null) {
@@ -110,7 +136,7 @@ public class AfficherEvent {
                 float margin = 0;
 
                 // Charger l'image de bordure
-                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/image/bordure.png", document);
+                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/image/BORDD.png", document);
 
                 // Dessiner l'image de bordure sur la page
                 contentStream.drawImage(borderImage, margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);

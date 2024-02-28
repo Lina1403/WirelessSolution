@@ -33,13 +33,16 @@
     </VBox>
       <TextField fx:id="titleField" layoutX="364.0" layoutY="124.0" prefHeight="26.0" prefWidth="103.0" />
       <DatePicker fx:id="datePicker" layoutX="364.0" layoutY="175.0" prefHeight="26.0" prefWidth="103.0" />
-      <TextField fx:id="nbrPersonneField" layoutX="361.0" layoutY="226.0" prefHeight="26.0" prefWidth="103.0" />
-      <TextField fx:id="descriptionField" layoutX="361.0" layoutY="272.0" prefHeight="26.0" prefWidth="103.0" />
-      <ComboBox fx:id="espaceComboBox" layoutX="361.0" layoutY="317.0" prefHeight="26.0" prefWidth="103.0">
+      <TextField fx:id="nbrPersonneField" layoutX="364.0" layoutY="225.0" prefHeight="26.0" prefWidth="103.0" />
+      <TextField fx:id="descriptionField" layoutX="364.0" layoutY="274.0" prefHeight="26.0" prefWidth="103.0" />
+      <ComboBox fx:id="espaceComboBox" layoutX="365.0" layoutY="317.0" prefHeight="26.0" prefWidth="103.0">
                 <!-- Les noms d'espaces seront ajoutés dynamiquement -->
             </ComboBox>
+
      <Button blendMode="HARD_LIGHT" layoutX="327.0" layoutY="381.0" mnemonicParsing="false" onAction="#ajouterEvent" prefHeight="26.0" prefWidth="67.0" text="Ajouter" />
-      <Label layoutX="231.0" layoutY="320.0" text="Espace" textFill="#fffafa">
+    <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" layoutX="428.0" layoutY="381.0" onAction="#genererPDF" prefHeight="26.0" prefWidth="67.0" text="  PDF" />
+
+    <Label layoutX="231.0" layoutY="320.0" text="Espace" textFill="#fffafa">
       <font>
          <Font size="13.0" />
       </font>

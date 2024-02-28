@@ -14,7 +14,7 @@ public class ServiceEspace implements IService<Espace> {
     public void ajouter(Espace espace) {
         String req = "INSERT INTO `espace` (`name`, `etat`, `capacite`, `description`) " +
                 "VALUES (?, ?, ?, ?)";
-        try {
+        try { //prep stat exclu sql injections
             PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, espace.getName());
             st.setString(2, espace.getEtat().name()); // Utiliser le nom de l'état de l'énumération
