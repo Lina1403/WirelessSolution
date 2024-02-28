@@ -94,7 +94,7 @@ public class AjouterVoiture {
 
             Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
 
-            int idVoitureAjoutee = serviceVoiture.ajouter(voiture);
+            idVoitureAjoutee = serviceVoiture.ajouter(voiture); // Mise à jour de la variable de classe
 
             if (idVoitureAjoutee != -1) {
                 // Mettre à jour le nombre actuel de voitures dans le parking
@@ -104,6 +104,9 @@ public class AjouterVoiture {
                 serviceParking.modifier(selectedParking);
 
                 afficherMessageSucces("Voiture ajoutée avec succès!");
+
+                // Réactiver le bouton de suppression
+                supprimerButton.setDisable(false);
             } else {
                 // Traitement en cas d'échec de l'ajout de la voiture
             }
@@ -118,8 +121,6 @@ public class AjouterVoiture {
         System.out.println("Capacité du parking après ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
     }
 
-
-
     @FXML
     private void handleSupprimerButton(ActionEvent event) {
         if (idVoitureAjoutee != -1) {
@@ -127,10 +128,21 @@ public class AjouterVoiture {
                 ServiceVoiture serviceVoiture = new ServiceVoiture();
                 serviceVoiture.supprimer(idVoitureAjoutee);
                 afficherMessageSucces("Voiture supprimée avec succès!");
+
+                // Mettre à jour l'affichage du nombre actuel de voitures dans le parking
+                selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() - 1);
+
+                // Mettre à jour le nombre actuel de voitures dans la base de données
+                ServiceParking serviceParking = new ServiceParking();
+                serviceParking.modifier(selectedParking);
+
+                // Réinitialiser les champs du formulaire
                 marqueField.clear();
                 modeleField.clear();
                 couleurField.clear();
                 matriculeField.clear();
+
+                // Désactiver le bouton de suppression
                 supprimerButton.setDisable(true);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -139,6 +151,7 @@ public class AjouterVoiture {
             afficherMessageErreur("Aucune voiture ajoutée récemment pour être supprimée.");
         }
     }
+
 
     private void afficherMessageErreur(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
