@@ -7,32 +7,65 @@
 .vbox {
     -fx-spacing: 10.0; /* Espacement entre les éléments */
 }
-
-/* Buttons */
-.button {
-    -fx-background-color: dodgerblue; /* Couleur de fond */
-    -fx-text-fill: white; /* Couleur du texte */
+/* Apply styles to the root AnchorPane */
+AnchorPane {
+    -fx-background-color: #000080;
 }
 
-/* TextField */
-.text-field {
-    -fx-prompt-text-fill: #0000FF; /* Couleur du texte de rappel */
+/* Apply styles to the ButtonBar inside the first AnchorPane */
+ButtonBar {
+    -fx-background-color: #4682b4;
 }
 
-/* ComboBox */
-.combo-box {
-    -fx-background-color: #ffffff; /* Couleur de fond */
+/* Apply styles to the ImageView inside the first AnchorPane */
+ImageView {
+    -fx-background-color: #191970;
 }
 
-/* ListView */
-.list-view {
-    -fx-background-color: skyblue; /* Couleur de fond */
+/* Apply styles to the ListView inside the second AnchorPane */
+#listView {
+    -fx-background-color: #3d56ab;
+    -fx-control-inner-background: #3d56ab; /* Change the inner background color */
 }
 
-/* ImageView */
-.image-view {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0); /* Effet d'ombre portée */
+/* Apply styles to the Buttons inside the second AnchorPane */
+Button {
+    -fx-background-color: #4682b4;
+    -fx-text-fill: white;
 }
+
+/* Apply styles to the TextField elements inside the second AnchorPane */
+TextField {
+    -fx-background-color: #4682b4;
+}
+
+/* Apply styles to the ComboBox inside the second AnchorPane */
+ComboBox {
+    -fx-background-color: #4682b4;
+}
+
+/* Apply styles to the Images inside the second AnchorPane */
+ImageView {
+    -fx-background-color: #3d56ab;
+}
+
+/* Additional styles for the Images based on their layout */
+ImageView[layoutX="167.0"] {
+    -fx-background-color: #4682b4;
+}
+
+ImageView[layoutX="50.0"] {
+    -fx-background-color: #000080;
+}
+
+ImageView[layoutX="109.0"] {
+    -fx-background-color: #191970;
+}
+
+ImageView[layoutX="239.0"] {
+    -fx-background-color: #3d56ab;
+}
+
 /* Ajout des styles pour la ListView */
 .list-view .list-cell:odd {
     -fx-background-color: white; /* Couleur de fond pour les lignes impaires */

@@ -57,6 +57,7 @@ public class AfficherAppartement {
         List<Appartement> appartementList = new ArrayList<>(appartements);
         ObservableList<Appartement> observableList = FXCollections.observableList(appartementList);
         listView.setItems(observableList);
+        listView.refresh();
     }
 
     @FXML
@@ -66,6 +67,7 @@ public class AfficherAppartement {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQLException appropriately
         }
+        listView.refresh();
 
     }
 
@@ -95,7 +97,7 @@ public class AfficherAppartement {
         } else {
             System.out.println("Aucun appartement sélectionné.");
         }
-        actualiser();
+listView.refresh();
     }
 
 
@@ -120,7 +122,7 @@ public class AfficherAppartement {
         } catch (IOException e) {
             e.printStackTrace(); // Handle exception appropriately
         }
-        actualiser();
+listView.refresh();
     }
 
 
@@ -235,6 +237,7 @@ public class AfficherAppartement {
             e.printStackTrace();
         }
     }
+
 
 
 }

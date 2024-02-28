@@ -1,45 +1,91 @@
-/* Apply styles to the TableView */
-#tableFactures {
-    -fx-pref-width: 100%; /* Corrected to fit the container */
-    -fx-max-height: 500px;
+/* AnchorPane */
+.root {
+    -fx-background-color: lightsteelblue; /* Couleur de fond */
 }
 
-/* Apply styles to the TableColumn headers */
-.table-view .column-header-background {
-    -fx-background-color: #6495ED;
+/* VBox */
+.vbox {
+    -fx-spacing: 10.0; /* Espacement entre les éléments */
+}
+/* Apply styles to the root AnchorPane */
+AnchorPane {
+    -fx-background-color: #000080;
 }
 
-.table-view .column-header {
+/* Apply styles to the ButtonBar inside the first AnchorPane */
+ButtonBar {
+    -fx-background-color: #4682b4;
+}
+
+/* Apply styles to the ImageView inside the first AnchorPane */
+ImageView {
+    -fx-background-color: #191970;
+}
+
+/* Apply styles to the ListView inside the second AnchorPane */
+#listView {
+    -fx-background-color: #3d56ab;
+    -fx-control-inner-background: #3d56ab; /* Change the inner background color */
+}
+
+/* Apply styles to the Buttons inside the second AnchorPane */
+Button {
+    -fx-background-color: #4682b4;
     -fx-text-fill: white;
-    -fx-font-size: 14px; /* Corrected for better readability */
-    -fx-padding: 2px; /* Corrected for a cleaner look */
-    -fx-border-color: white;
-    -fx-border-width: 1px;
 }
 
-/* Apply styles to the TableView rows */
-.table-row-cell {
-    -fx-background-color: #F0F8FF;
-    -fx-border-color: lightgrey;
+/* Apply styles to the TextField elements inside the second AnchorPane */
+TextField {
+    -fx-background-color: #4682b4;
 }
 
-.table-row-cell:odd {
-    -fx-background-color: #E6E6FA;
+/* Apply styles to the ComboBox inside the second AnchorPane */
+ComboBox {
+    -fx-background-color: #4682b4;
 }
 
-/* Apply styles to the Buttons */
-.button {
-    -fx-font-size: 14px;
-    -fx-pref-width: auto;
-    -fx-pref-height: 30px;
-    -fx-background-color: #87CEFA; /* Changed to a lighter color - LightSkyBlue */
-    -fx-text-fill: white;
-    -fx-border-color: #3454B4;
-    -fx-border-width: 2px;
+/* Apply styles to the Images inside the second AnchorPane */
+ImageView {
+    -fx-background-color: #3d56ab;
 }
 
-.button:hover {
-    -fx-background-color: #3454B4;
-    -fx-text-fill: #F0F8FF;
-    -fx-border-color: #4169E1;
+/* Additional styles for the Images based on their layout */
+ImageView[layoutX="167.0"] {
+    -fx-background-color: #4682b4;
+}
+
+ImageView[layoutX="50.0"] {
+    -fx-background-color: #000080;
+}
+
+ImageView[layoutX="109.0"] {
+    -fx-background-color: #191970;
+}
+
+ImageView[layoutX="239.0"] {
+    -fx-background-color: #3d56ab;
+}
+
+/* Ajout des styles pour la ListView */
+.list-view .list-cell:odd {
+    -fx-background-color: white; /* Couleur de fond pour les lignes impaires */
+}
+
+.list-view .list-cell:even {
+    -fx-background-color: #8f8; /* Couleur de fond pour les lignes paires */
+}
+
+.list-view .list-cell:filled:selected:focused,
+.list-view .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%); /* Couleur de fond pour les éléments sélectionnés */
+    -fx-text-fill: white; /* Couleur du texte pour les éléments sélectionnés */
+}
+
+.list-view .list-cell {
+    -fx-text-fill: black; /* Couleur du texte par défaut */
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-background-color: #00f; /* Couleur de fond au survol */
+    -fx-text-fill: white; /* Couleur du texte au survol */
 }
