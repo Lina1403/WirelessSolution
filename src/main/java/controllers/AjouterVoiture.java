@@ -34,9 +34,10 @@ public class AjouterVoiture {
     private Button ajouterButton;
 
     private Parking selectedParking;
-    private int idVoitureAjoutee;
 
     private AfficherVoitureAdmin afficherVoitureAdmin;
+
+    private int idVoitureAjoutee;
 
     public void setSelectedParking(Parking parking) {
            System.out.println(parking.getCapacite());
@@ -65,28 +66,36 @@ public class AjouterVoiture {
             return;
         }
 
-        // Afficher la capacité actuelle du parking
-        System.out.println("Capacité du parking avant ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
-
-        // Vérification de la capacité du parking
-        if (selectedParking.getNombreActuelles() >= selectedParking.getCapacite()) {
-            afficherMessageErreur("Le parking est plein. Impossible d'ajouter plus de voitures.");
-            ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
-            return;
-        }
-
-        // Ajouter cette instruction de débogage pour afficher la capacité du parking sélectionné
-        System.out.println("Capacité du parking sélectionné : " + selectedParking.getCapacite());
-
-        Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
-
         try {
+            // Récupérer le parking actuel depuis la base de données pour obtenir la capacité à jour
+            ServiceParking serviceParking = new ServiceParking();
+            selectedParking = serviceParking.getOneById(selectedParking.getIdParking());
+
+            // Afficher la capacité actuelle du parking
+            System.out.println("Capacité du parking avant ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
+
+            // Vérification de la capacité du parking
+            if (selectedParking.getNombreActuelles() >= selectedParking.getCapacite()) {
+                afficherMessageErreur("Le parking est plein. Impossible d'ajouter plus de voitures.");
+                ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
+                return;
+            }
+
+            // Ajouter cette instruction de débogage pour afficher la capacité du parking sélectionné
+            System.out.println("Capacité du parking sélectionné : " + selectedParking.getCapacite());
+
+            Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
+
             ServiceVoiture serviceVoiture = new ServiceVoiture();
             int idVoitureAjoutee = serviceVoiture.ajouter(voiture);
 
             if (idVoitureAjoutee != -1) {
                 // Mettre à jour le nombre actuel de voitures dans le parking
                 selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() + 1);
+
+                // Mettre à jour le nombre actuel de voitures dans la base de données
+                serviceParking.modifier(selectedParking);
+
                 afficherMessageSucces("Voiture ajoutée avec succès!");
             } else {
                 // Traitement en cas d'échec de l'ajout de la voiture

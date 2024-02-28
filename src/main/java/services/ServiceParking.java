@@ -14,7 +14,7 @@ public class ServiceParking implements IService<Parking> {
 
     @Override
     public int ajouter(Parking p) throws SQLException {
-        String req = "INSERT INTO parking (nom,capacite , type, nombreActuelles) VALUES (?, ?, ?, ?)";
+        String req = "INSERT INTO parking (nom, capacite, type, nombreActuelles) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, p.getNom());
@@ -26,15 +26,18 @@ public class ServiceParking implements IService<Parking> {
             if (rowsAffected == 1) {
                 ResultSet rs = st.getGeneratedKeys();
                 if (rs.next()) {
-                    p.setIdParking(rs.getInt(1));
+                    int id = rs.getInt(1);
+                    System.out.println("Parking ajouté avec l'identifiant : " + id);
+                    return id;
                 }
-                System.out.println("Parking ajouté !");
-            } else {
-                System.out.println("Échec de l'ajout du parking.");
             }
+            System.out.println("Échec de l'ajout du parking.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return 0;
+        return -1; // Retourner -1 en cas d'échec de l'ajout
     }
+
 
     @Override
     public void modifier(Parking p) throws SQLException {
