@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
 import services.ServiceParking;
@@ -27,6 +28,9 @@ public class AfficherParking {
 
     @FXML
     private Button boutonGererVoitures;
+    @FXML
+    private TextField searchField;
+
 
 
     private ObservableList<Parking> parkingsObservableList;
@@ -40,8 +44,13 @@ public class AfficherParking {
     @FXML
     public void initialize() {
         try {
+            // Initialisation de la liste des parkings...
             parkingsObservableList.addAll(serviceParking.getAll());
             listeParkings.setItems(parkingsObservableList);
+
+            // Ajout d'un écouteur d'événements pour détecter les modifications dans le champ de recherche
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> rechercher());
+
             // Initialiser le nombre actuel de voitures à 0 pour chaque parking
             for (Parking parking : parkingsObservableList) {
                 parking.setNombreActuelles(0);
@@ -95,7 +104,17 @@ public class AfficherParking {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    void rechercher() {
+        String recherche = searchField.getText().toLowerCase();
+        ObservableList<Parking> parkingsFiltres = FXCollections.observableArrayList();
+        for (Parking parking : parkingsObservableList) {
+            if (parking.getNom().toLowerCase().contains(recherche)) {
+                parkingsFiltres.add(parking);
+            }
+        }
+        listeParkings.setItems(parkingsFiltres);
+    }
 
     private void ouvrirDetailsParking(Parking parking) {
         try {

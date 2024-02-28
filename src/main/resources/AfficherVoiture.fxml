@@ -15,10 +15,10 @@
    </ImageView>
    <Button layoutX="50.0" layoutY="123.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="95.0" text="gerer les parking" visible="false" />
 
-    <ComboBox fx:id="comboBoxType" layoutX="318.0" layoutY="123.0" promptText="Sélectionner un type" />
+    <ComboBox fx:id="comboBoxType" layoutX="274.0" layoutY="123.0" prefHeight="40.0" prefWidth="156.0" promptText="Sélectionner un type" />
 
-    <ListView fx:id="listViewParkings" layoutX="318.0" layoutY="187.0" prefHeight="213.0" prefWidth="389.0" />
+    <ListView fx:id="listViewParkings" layoutX="274.0" layoutY="193.0" prefHeight="280.0" prefWidth="454.0" />
 
-    <Button fx:id="ajouterButton" layoutX="453.0" layoutY="454.0" onAction="#handleAjouterButton" text="Ajouter une voiture" />
+    <Button fx:id="ajouterButton" layoutX="274.0" layoutY="502.0" onAction="#handleAjouterButton" prefHeight="40.0" prefWidth="156.0" text="Ajouter une voiture" />
 
 </AnchorPane>

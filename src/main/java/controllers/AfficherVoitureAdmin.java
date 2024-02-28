@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
 import services.ServiceVoiture;
@@ -23,6 +24,8 @@ public class AfficherVoitureAdmin {
     private ListView<Voiture> listeVoitures;
     @FXML
     private Button boutonGererParking;
+    @FXML
+    private TextField searchField;
 
     private ObservableList<Voiture> voituresObservableList;
     private ServiceVoiture serviceVoiture;
@@ -47,6 +50,9 @@ public class AfficherVoitureAdmin {
         try {
             voituresObservableList.addAll(serviceVoiture.getAll());
             listeVoitures.setItems(voituresObservableList);
+            // Ajout d'un écouteur d'événements pour détecter les modifications dans le champ de recherche
+            searchField.textProperty().addListener((observable, oldValue, newValue) -> rechercher());
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -61,6 +67,17 @@ public class AfficherVoitureAdmin {
                 }
             }
         });
+    }
+    @FXML
+    void rechercher() {
+        String recherche = searchField.getText().toLowerCase();
+        ObservableList<Voiture> voituresFiltrees = FXCollections.observableArrayList();
+        for (Voiture voiture : voituresObservableList) {
+            if (voiture.getMarque().toLowerCase().contains(recherche)) {
+                voituresFiltrees.add(voiture);
+            }
+        }
+        listeVoitures.setItems(voituresFiltrees);
     }
     @FXML
      void ouvrirAfficherParkingAdmin(ActionEvent event) {

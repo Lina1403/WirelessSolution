@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import services.ServiceParking;
 
@@ -45,6 +46,7 @@ public class AfficherVoiture {
                 // Ouvrir l'interface d'ajout de voiture en passant le parking sélectionné
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
                 Parent root = loader.load();
+
                 AjouterVoiture controller = loader.getController();
                 controller.setSelectedParking(parking); // Définir le parking sélectionné dans le contrôleur AjouterVoiture
 
@@ -66,6 +68,7 @@ public class AfficherVoiture {
     public void initialize() {
         // Charger les types de parking disponibles dans la ComboBox
         chargerTypes();
+
 
         // Ajouter un gestionnaire d'événements pour le changement de sélection dans la ComboBox
         comboBoxType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

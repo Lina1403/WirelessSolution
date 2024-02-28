@@ -32,8 +32,10 @@ public class AjouterVoiture {
 
     @FXML
     private Button ajouterButton;
+    @FXML
 
     private Parking selectedParking;
+
 
     private AfficherVoitureAdmin afficherVoitureAdmin;
 
