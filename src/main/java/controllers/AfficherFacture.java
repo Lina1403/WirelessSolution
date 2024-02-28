@@ -1,5 +1,8 @@
 package controllers;
 
+import com.itextpdf.text.pdf.GrayColor;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import entities.Appartement;
 import entities.Facture;
 import javafx.beans.value.ChangeListener;
@@ -85,30 +88,50 @@ public class AfficherFacture {
 
         if (factureSelectionnee != null) {
             try {
-                Document document = new Document();
+                Document document = new Document(PageSize.A4, 50, 50, 50, 50);
                 PdfWriter.getInstance(document, new FileOutputStream("invoice.pdf"));
                 document.open();
 
-                Font font = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.CYAN);
-                Chunk chunk = new Chunk("Invoice Details", font);
-                Paragraph p = new Paragraph(chunk);
-                p.setAlignment(Element.ALIGN_CENTER);
-                document.add(p);
+                // Ajouter l'image de fond
+                Image background = Image.getInstance("C:\\Users\\Ali\\IdeaProjects\\GestionEnergie\\src\\main\\resources\\src\\Facturepdf.png");
+                background.setAbsolutePosition(0, 0);
+                background.scaleToFit(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+                background.setBorder(Image.BOX);
+                background.setBorderWidth(0);
+                background.setBorderColor(new GrayColor(0));
+                document.add(background);
 
-                document.add(new Paragraph("\n\n"));
+                // Ajout du titre
+                Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 24);
+                Paragraph title = new Paragraph("Facture", titleFont);
+                title.setAlignment(Element.ALIGN_CENTER);
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph(" "));
+                document.add(new Paragraph(" "));
 
-                // Display invoice details
-                document.add(new Paragraph("Invoice Number: " + factureSelectionnee.getNumFacture()));
-                document.add(new Paragraph("Date: " + new SimpleDateFormat("dd-MM-yyyy").format(factureSelectionnee.getDate())));
-                document.add(new Paragraph("Type: " + factureSelectionnee.getType()));
-                document.add(new Paragraph("Montant: " + factureSelectionnee.getMontant()));
-                document.add(new Paragraph("Description: " + factureSelectionnee.getDescriptionFacture()));
+                document.add(title);
+                document.add(new Paragraph(" "));
+
+                // Ajouter les détails de la facture
+                Font contentFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.NORMAL, BaseColor.BLACK);
+                document.add(new Paragraph("Numéro de facture : " + factureSelectionnee.getNumFacture(), contentFont));
+                document.add(new Paragraph("Date : " + new SimpleDateFormat("dd-MM-yyyy").format(factureSelectionnee.getDate()), contentFont));
+                document.add(new Paragraph("Type : " + factureSelectionnee.getType().toString(), contentFont));
+                document.add(new Paragraph("Montant : " + factureSelectionnee.getMontant(), contentFont));
+                document.add(new Paragraph("Description : " + factureSelectionnee.getDescriptionFacture(), contentFont));
+
+                // Ajouter la signature
+                Paragraph signature = new Paragraph("Signature : _______________________", contentFont);
+                signature.setAlignment(Element.ALIGN_RIGHT);
+                signature.setSpacingBefore(20f);
+                document.add(signature);
 
                 document.close();
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("PDF Generated");
-                alert.setContentText("Invoice details have been saved to invoice.pdf");
+                alert.setTitle("PDF généré");
+                alert.setContentText("Les détails de la facture ont été enregistrés dans invoice.pdf");
                 alert.showAndWait();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -118,6 +141,9 @@ public class AfficherFacture {
             afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture pour générer le PDF.");
         }
     }
+
+
+
 
     @FXML
     void retournerPagePrecedente(ActionEvent actionEvent) {

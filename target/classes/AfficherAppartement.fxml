@@ -12,11 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="590.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherAppartement">
-    <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@src/Appart.png" />
-        </image>
-    </ImageView>
+
 
     <VBox layoutX="47.0" layoutY="98.0" spacing="10.0" />
             <children>
