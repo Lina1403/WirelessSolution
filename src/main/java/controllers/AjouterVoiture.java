@@ -42,7 +42,7 @@ public class AjouterVoiture {
     private int idVoitureAjoutee;
 
     public void setSelectedParking(Parking parking) {
-           System.out.println(parking.getCapacite());
+        System.out.println(parking.getCapacite());
         this.selectedParking = parking;
     }
 
@@ -73,7 +73,9 @@ public class AjouterVoiture {
             ServiceVoiture serviceVoiture = new ServiceVoiture();
             if (serviceVoiture.existeMatricule(matricule)) {
                 afficherMessageErreur("La matricule de la voiture existe déjà dans le parking.");
-                ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
+               // ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
+                // Réactiver le bouton de suppression
+                supprimerButton.setDisable(false);
                 return;
             }
 
