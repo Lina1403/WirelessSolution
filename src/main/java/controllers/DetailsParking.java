@@ -13,6 +13,7 @@ import services.ServiceParking;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+
 public class DetailsParking {
 
     @FXML
@@ -34,22 +35,24 @@ public class DetailsParking {
     public void setAfficherParking(AfficherParking afficherParking) {
         this.afficherParking = afficherParking;
     }
+
     @FXML
     private void modifierParking() {
         if (parking != null) {
+
             try {
                 String nom = textFieldNom.getText().trim();
                 String capaciteText = textFieldCapacite.getText();
                 String type = comboBoxType.getValue();
                 String nombreActuellesText = textFieldNombreActuelles.getText();
 
-                // Validation du champ Nom
+                // Validation des champs
+
                 if (nom.isEmpty()) {
                     afficherMessage("Erreur", "Veuillez entrer un nom pour le parking.");
                     return;
                 }
 
-                // Validation du champ Capacité
                 int capacite;
                 try {
                     capacite = Integer.parseInt(capaciteText);
@@ -62,13 +65,11 @@ public class DetailsParking {
                     return;
                 }
 
-                // Validation du champ Type
                 if (type == null) {
                     afficherMessage("Erreur", "Veuillez sélectionner un type de parking.");
                     return;
                 }
 
-                // Validation du champ Nombre Actuelles
                 int nombreActuelles;
                 try {
                     nombreActuelles = Integer.parseInt(nombreActuellesText);
@@ -101,7 +102,6 @@ public class DetailsParking {
             }
         }
     }
-
 
     @FXML
     private void supprimerParking() {
@@ -146,6 +146,7 @@ public class DetailsParking {
         Stage stage = (Stage) textFieldNom.getScene().getWindow();
         stage.close();
     }
+
     private void afficherMessage(String titre, String contenu) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titre);
@@ -153,5 +154,4 @@ public class DetailsParking {
         alert.setContentText(contenu);
         alert.showAndWait();
     }
-
 }

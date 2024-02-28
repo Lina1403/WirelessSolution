@@ -1,4 +1,3 @@
-// AfficherParking.java
 package controllers;
 
 import entities.Parking;
@@ -28,10 +27,9 @@ public class AfficherParking {
 
     @FXML
     private Button boutonGererVoitures;
+
     @FXML
     private TextField searchField;
-
-
 
     private ObservableList<Parking> parkingsObservableList;
     private ServiceParking serviceParking;
@@ -50,12 +48,9 @@ public class AfficherParking {
 
             // Ajout d'un écouteur d'événements pour détecter les modifications dans le champ de recherche
             searchField.textProperty().addListener((observable, oldValue, newValue) -> rechercher());
-
             // Initialiser le nombre actuel de voitures à 0 pour chaque parking
             for (Parking parking : parkingsObservableList) {
                 parking.setNombreActuelles(0);
-
-
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -91,6 +86,7 @@ public class AfficherParking {
         });
 
     }
+
     @FXML
     void ouvrirAffichervoiture() {
         try {
@@ -104,6 +100,7 @@ public class AfficherParking {
             e.printStackTrace();
         }
     }
+
     @FXML
     void rechercher() {
         String recherche = searchField.getText().toLowerCase();

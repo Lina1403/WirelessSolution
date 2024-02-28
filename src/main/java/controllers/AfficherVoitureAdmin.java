@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
 import services.ServiceVoiture;
@@ -20,10 +18,15 @@ import java.sql.SQLException;
 
 public class AfficherVoitureAdmin {
 
+
+
+
     @FXML
     private ListView<Voiture> listeVoitures;
+
     @FXML
     private Button boutonGererParking;
+
     @FXML
     private TextField searchField;
 
@@ -44,7 +47,6 @@ public class AfficherVoitureAdmin {
         voituresObservableList = FXCollections.observableArrayList();
     }
 
-
     @FXML
     public void initialize() {
         try {
@@ -52,7 +54,6 @@ public class AfficherVoitureAdmin {
             listeVoitures.setItems(voituresObservableList);
             // Ajout d'un écouteur d'événements pour détecter les modifications dans le champ de recherche
             searchField.textProperty().addListener((observable, oldValue, newValue) -> rechercher());
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -68,6 +69,7 @@ public class AfficherVoitureAdmin {
             }
         });
     }
+
     @FXML
     void rechercher() {
         String recherche = searchField.getText().toLowerCase();
@@ -79,8 +81,9 @@ public class AfficherVoitureAdmin {
         }
         listeVoitures.setItems(voituresFiltrees);
     }
+
     @FXML
-     void ouvrirAfficherParkingAdmin(ActionEvent event) {
+    void ouvrirAfficherParkingAdmin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherParking.fxml"));
             Parent root = loader.load();
@@ -111,7 +114,6 @@ public class AfficherVoitureAdmin {
         }
     }
 
-
     public void refreshList() {
         try {
             voituresObservableList.clear();
@@ -120,4 +122,5 @@ public class AfficherVoitureAdmin {
             throwables.printStackTrace();
         }
     }
+
 }

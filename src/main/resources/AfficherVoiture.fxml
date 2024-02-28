@@ -8,17 +8,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVoiture">
-   <ImageView fitHeight="600.0" fitWidth="800.0">
-      <image>
-         <Image url="@image/v.png" />
-      </image>
-   </ImageView>
-   <Button layoutX="50.0" layoutY="123.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="95.0" text="gerer les parking" visible="false" />
+    <!-- Image de fond -->
+    <ImageView fitHeight="600.0" fitWidth="800.0">
+        <image>
+            <Image url="@image/v.png" />
+        </image>
+    </ImageView>
 
+    <!-- Bouton "Gérer les parkings" -->
+    <Button layoutX="50.0" layoutY="123.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="95.0" text="Gérer les parkings" visible="false" />
+
+    <!-- ComboBox pour sélectionner le type de parking -->
     <ComboBox fx:id="comboBoxType" layoutX="274.0" layoutY="123.0" prefHeight="40.0" prefWidth="156.0" promptText="Sélectionner un type" />
 
+    <!-- Liste des voitures -->
     <ListView fx:id="listViewParkings" layoutX="274.0" layoutY="193.0" prefHeight="280.0" prefWidth="454.0" />
 
+    <!-- Bouton "Ajouter une voiture" -->
     <Button fx:id="ajouterButton" layoutX="274.0" layoutY="502.0" onAction="#handleAjouterButton" prefHeight="40.0" prefWidth="156.0" text="Ajouter une voiture" />
-
 </AnchorPane>

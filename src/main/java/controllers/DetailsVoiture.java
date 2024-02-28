@@ -48,20 +48,36 @@ public class DetailsVoiture {
             String nouveauMatricule = textFieldMatricule.getText().trim();
 
             if (validerChamps(nouvelleMarque, nouveauModele, nouvelleCouleur, nouveauMatricule)) {
-                voiture.setMarque(nouvelleMarque);
-                voiture.setModel(nouveauModele);
-                voiture.setCouleur(nouvelleCouleur);
-                voiture.setMatricule(nouveauMatricule);
+                // Créer une boîte de dialogue de confirmation
+                Alert confirmationDialog = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmationDialog.setTitle("Confirmation");
+                confirmationDialog.setHeaderText("Modifier la voiture ?");
+                confirmationDialog.setContentText("Êtes-vous sûr de vouloir modifier cette voiture ?");
 
-                try {
-                    serviceVoiture.modifier(voiture);
-                    afficherVoitureAdmin.refreshList();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                // Afficher la boîte de dialogue et attendre la réponse de l'utilisateur
+                confirmationDialog.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        // L'utilisateur a cliqué sur OK, modifier la voiture
+                        voiture.setMarque(nouvelleMarque);
+                        voiture.setModel(nouveauModele);
+                        voiture.setCouleur(nouvelleCouleur);
+                        voiture.setMatricule(nouveauMatricule);
+
+                        try {
+                            serviceVoiture.modifier(voiture);
+                            afficherVoitureAdmin.refreshList();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // L'utilisateur a annulé, ne rien faire
+                    }
+                });
             }
         }
     }
+
+
 
     private boolean validerChamps(String marque, String modele, String couleur, String matricule) {
         return validerMarque(marque) && validerModele(modele) && validerCouleur(couleur) && validerMatricule(matricule);

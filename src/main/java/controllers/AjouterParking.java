@@ -6,9 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import services.ServiceParking;
+
 import java.sql.SQLException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
 public class AjouterParking {
     @FXML
     private TextField nomTextField;
@@ -39,7 +41,6 @@ public class AjouterParking {
         nombreActuellesTextField.setText("0");
         // Rendre le champ "Nombre Actuelles" non modifiable
         nombreActuellesTextField.setEditable(false);
-
     }
 
     public void setAfficherParking(AfficherParking afficherParking) {

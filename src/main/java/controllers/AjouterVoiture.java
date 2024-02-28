@@ -65,6 +65,8 @@ public class AjouterVoiture {
 
         // Validation des champs
         if (!validateMarque(marque) || !validateModele(modele) || !validateCouleur(couleur) || !validateMatricule(matricule)) {
+            // Réactiver le bouton d'ajout avant de quitter la méthode
+            ajouterButton.setDisable(false);
             return;
         }
 
@@ -73,9 +75,8 @@ public class AjouterVoiture {
             ServiceVoiture serviceVoiture = new ServiceVoiture();
             if (serviceVoiture.existeMatricule(matricule)) {
                 afficherMessageErreur("La matricule de la voiture existe déjà dans le parking.");
-               // ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
-                // Réactiver le bouton de suppression
-                supprimerButton.setDisable(false);
+                // Réactiver le bouton d'ajout
+                ajouterButton.setDisable(false);
                 return;
             }
 
@@ -202,6 +203,7 @@ public class AjouterVoiture {
             afficherMessageErreur("Le modèle doit contenir uniquement des lettres, des espaces ou des chiffres.");
             return false;
         }
+
         return true;
     }
 

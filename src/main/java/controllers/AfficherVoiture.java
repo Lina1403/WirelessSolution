@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import services.ServiceParking;
 
@@ -62,13 +61,10 @@ public class AfficherVoiture {
         }
     }
 
-
-
     @FXML
     public void initialize() {
         // Charger les types de parking disponibles dans la ComboBox
         chargerTypes();
-
 
         // Ajouter un gestionnaire d'événements pour le changement de sélection dans la ComboBox
         comboBoxType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -95,7 +91,6 @@ public class AfficherVoiture {
         });
     }
 
-
     private void chargerTypes() {
         // Vous pouvez obtenir les types à partir de votre source de données, ici je les ai définis manuellement
         List<String> types = null;
@@ -113,5 +108,4 @@ public class AfficherVoiture {
         listViewParkings.getItems().clear();
         listViewParkings.getItems().addAll(parkings);
     }
-
 }
