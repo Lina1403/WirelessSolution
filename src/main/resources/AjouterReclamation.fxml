@@ -27,6 +27,8 @@
         </Pane>
         <Button fx:id="modifier" layoutX="294.0" layoutY="272.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
         <Button fx:id="supprimer" layoutX="46.0" layoutY="472.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
+        <Button fx:id="buttonAjouterReponse" text="Ajouter Réponse" onAction="#goToAjouterReponse" />
+
         <Label fx:id="cate" layoutX="46.0" layoutY="246.0" prefHeight="18.0" prefWidth="98.0" text="Categorie :" />
         <Label fx:id="desc" layoutX="46.0" layoutY="315.0" text="Description :" />
     </children>

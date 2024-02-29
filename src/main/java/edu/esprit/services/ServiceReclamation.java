@@ -16,6 +16,13 @@ public class ServiceReclamation implements IService<Reclamation> {
     public ServiceReclamation() {
         cnx = DataSource.getInstance().getCnx();
     }
+    public static ServiceReclamation getInstance() {
+        ServiceReclamation instance = new ServiceReclamation();
+        if (instance == null) {
+            instance = new ServiceReclamation();
+        }
+        return instance;
+    }
 
     @Override
     public void ajouter(Reclamation r) throws SQLException {
