@@ -49,4 +49,6 @@
         </VBox>
     </VBox>
      <Button blendMode="HARD_LIGHT" layoutX="386.0" layoutY="373.0" mnemonicParsing="false" onAction="#AjouterAppartement" text="Ajouter" />
+    <Button blendMode="HARD_LIGHT" layoutX="468.0" layoutY="373.0" onAction="#retournerPagePrecedente" prefHeight="0.0" prefWidth="52.0" text="Exit" />
+
 </AnchorPane>

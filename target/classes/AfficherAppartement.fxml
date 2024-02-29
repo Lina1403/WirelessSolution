@@ -11,8 +11,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="590.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherAppartement">
-
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherAppartement">
+    <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@src/Appart.png" />
+        </image>
+    </ImageView>
 
     <VBox layoutX="47.0" layoutY="98.0" spacing="10.0" />
             <children>
@@ -28,17 +32,10 @@
                 <Button blendMode="HARD_LIGHT" layoutX="27.0" layoutY="155.0" onAction="#gererFacture" opacity="0.0" prefHeight="34.0" prefWidth="182.0" text="Gerer Facture" />
                 <Button blendMode="HARD_LIGHT" layoutX="528.0" layoutY="405.0" onAction="#supprimerAppartement" prefHeight="26.0" prefWidth="110.0" text="Supprimer " />
 
-                <TextField fx:id="searchTailleField" layoutX="550.0" layoutY="110.0" promptText="Taille" />
-                <TextField fx:id="searchNbrEtageField" layoutX="273.0" layoutY="110.0" promptText="Nombre d'étages" />
-            
-                <ComboBox fx:id="searchStatutComboBox" blendMode="HARD_LIGHT" layoutX="442.0" layoutY="110.0">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Occupee" />
-                            <String fx:value="Libre" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <TextField fx:id="searchTF" layoutX="273.0" layoutY="110.0" promptText="Taper " />
+
+
+
             </children>
 
 

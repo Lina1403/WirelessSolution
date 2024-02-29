@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AfficherAppartement {
 
@@ -31,34 +32,29 @@ public class AfficherAppartement {
 
 
     @FXML
-    private TextField searchNumField;
+    private ListView<Appartement> listView;
 
     @FXML
-    private TextField searchNomResidentField;
+    private TextField searchTF;
 
-    @FXML
-    private TextField searchTailleField;
-
-    @FXML
-    private TextField searchNbrEtageField;
-
-    @FXML
-    private ComboBox<Appartement.statutAppartement> searchStatutComboBox;
+    private List<Appartement> appartementList;
 
 
 
 
 
-    @FXML
-    public ListView<Appartement> listView;
+
 
     private void afficherAppartements() throws SQLException {
         Set<Appartement> appartements = serviceAppartemment.getAll();
-        List<Appartement> appartementList = new ArrayList<>(appartements);
+        appartementList = new ArrayList<>(appartements); // Initialiser la liste appartementList
         ObservableList<Appartement> observableList = FXCollections.observableList(appartementList);
         listView.setItems(observableList);
+        listView.setItems(FXCollections.observableList(appartementList));
+
         listView.refresh();
     }
+
 
     @FXML
     void initialize() {
@@ -69,6 +65,14 @@ public class AfficherAppartement {
         }
         listView.refresh();
 
+        // Ajout d'un écouteur de changement de texte pour le champ de recherche
+        searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                searchAppartement(newValue); // Appel de la méthode de recherche avec le nouveau texte
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
@@ -103,8 +107,6 @@ listView.refresh();
 
     @FXML
     public void ajouterAppartement(ActionEvent actionEvent) {
-
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterAppartement.fxml"));
             Parent root = loader.load();
@@ -118,7 +120,6 @@ listView.refresh();
             stage.show();
 
             // Close the current stage (optional)
-            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
         } catch (IOException e) {
             e.printStackTrace(); // Handle exception appropriately
         }
@@ -209,33 +210,18 @@ listView.refresh();
     }
 
 
-    @FXML
-    void rechercherAppartements() {
-        try {
-            int numAppartement = 0; // Valeur par défaut
-            if (!searchNumField.getText().isEmpty()) {
-                numAppartement = Integer.parseInt(searchNumField.getText());
-            }
 
-            String nomResident = searchNomResidentField.getText();
-            String taille = searchTailleField.getText();
-            int nbrEtage = 0; // Valeur par défaut
-            if (!searchNbrEtageField.getText().isEmpty()) {
-                nbrEtage = Integer.parseInt(searchNbrEtageField.getText());
-            }
-            Appartement.statutAppartement statut = null; // Valeur par défaut
-            if (searchStatutComboBox.getValue() != null) {
-                statut = searchStatutComboBox.getValue();
-            }
 
-            Set<Appartement> appartements = serviceAppartemment.rechercherAppartements(numAppartement, nomResident, taille, nbrEtage, statut);
-            ObservableList<Appartement> observableList = FXCollections.observableArrayList(new ArrayList<>(appartements));
-            listView.setItems(observableList);
-        } catch (NumberFormatException e) {
-            System.out.println("Veuillez saisir des valeurs valides pour les champs numériques.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private void searchAppartement(String searchText) throws SQLException {
+        List<Appartement> searchResult = appartementList.stream()
+                .filter(appartement -> {
+                    String numAppartementString = String.valueOf(appartement.getNumAppartement());
+                    return numAppartementString.contains(searchText.toLowerCase()) ||
+                            appartement.getNomResident().toLowerCase().contains(searchText.toLowerCase());
+                })
+                .collect(Collectors.toList());
+
+        listView.setItems(FXCollections.observableArrayList(searchResult));
     }
 
 

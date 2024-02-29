@@ -3,8 +3,12 @@ package controllers;
 import entities.Appartement;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import services.ServiceAppartemment;
 
 import java.sql.SQLException;
@@ -40,14 +44,30 @@ public class ModifierAppartement {
 
     }
 
+
     @FXML
     void modifierAppartement(ActionEvent event) {
         if (appartementSelectionne != null) {
             try {
-                // Récupérer les nouvelles valeurs des champs de texte et de ComboBox
-                String nomResident = id_NomResident_modifier.getText();
-                String taille = id_taille_modifier.getText();
-                Appartement.statutAppartement statut = Appartement.statutAppartement.valueOf(typeComboBox.getValue());
+                // Récupérer les valeurs des champs
+                String nomResident = id_NomResident_modifier.getText().trim();
+                String taille = id_taille_modifier.getText().trim();
+                String statutValue = typeComboBox.getValue();
+
+                // Vérifier que les champs obligatoires ne sont pas vides
+                if (nomResident.isEmpty() || taille.isEmpty() || statutValue == null) {
+                    afficherAlerteErreur("Erreur de saisie", "Veuillez remplir tous les champs.");
+                    return;
+                }
+
+                // Vérifier que le statut est valide
+                Appartement.statutAppartement statut;
+                try {
+                    statut = Appartement.statutAppartement.valueOf(statutValue);
+                } catch (IllegalArgumentException e) {
+                    afficherAlerteErreur("Erreur de saisie", "Statut d'appartement invalide.");
+                    return;
+                }
 
                 // Mettre à jour les attributs de l'appartement sélectionné
                 appartementSelectionne.setNomResident(nomResident);
@@ -57,12 +77,46 @@ public class ModifierAppartement {
                 // Appeler la méthode pour modifier l'appartement dans la base de données
                 serviceAppartement.modifier(appartementSelectionne);
 
-                System.out.println("Appartement modifié avec succès !");
+                // Afficher une alerte d'information pour signaler le succès de la modification
+                afficherAlerteInformation("Modification réussie", "L'appartement a été modifié avec succès !");
             } catch (SQLException e) {
-                e.printStackTrace(); // Gérer SQLException de manière appropriée
+                // Afficher une alerte d'erreur pour toute erreur lors de la modification de l'appartement
+                afficherAlerteErreur("Erreur SQL", "Une erreur SQL est survenue lors de la modification de l'appartement : " + e.getMessage());
             }
         } else {
-            System.out.println("Aucun appartement sélectionné.");
+            // Afficher une alerte d'erreur si aucun appartement n'est sélectionné
+            afficherAlerteErreur("Aucune sélection", "Aucun appartement sélectionné.");
         }
+
+    }
+
+    // Méthode pour afficher une alerte d'erreur
+    private void afficherAlerteErreur(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Méthode pour afficher une alerte d'information
+    private void afficherAlerteInformation(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    void retournerPagePrecedente(ActionEvent actionEvent) {
+        // Récupérer la source de l'événement
+        Node source = (Node) actionEvent.getSource();
+        // Récupérer la scène de la source
+        Scene scene = source.getScene();
+        // Récupérer la fenêtre parente de la scène
+        Stage stage = (Stage) scene.getWindow();
+        // Fermer la fenêtre parente pour revenir à la page précédente
+        stage.close();
     }
 }

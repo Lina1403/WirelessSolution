@@ -3,9 +3,13 @@ package controllers;
 import entities.Facture;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import services.ServiceFacture;
 
 import java.sql.Date;
@@ -55,27 +59,72 @@ public class ModifierFacture {
                 String description = id_description_modifier.getText();
                 Facture.Type type = Facture.Type.valueOf(typeComboBox.getValue());
 
-                System.out.println("Description before modification: " + selectedFacture.getDescriptionFacture());
+                // Vérifier que les champs obligatoires ne sont pas vides
+                if (numFacture == 0 || montant == 0 || date == null || description.isEmpty() ) {
+                    afficherAlerteErreur("Erreur de saisie", "Veuillez remplir tous les champs.");
+                    return;
+                }
 
+                // Vérifier la validité des données
+                if (numFacture <= 0 || montant <= 0) {
+                    afficherAlerteErreur("Erreur de saisie", "Veuillez saisir des valeurs numériques positives pour les champs numériques.");
+                    return;
+                }
+
+                // Mettre à jour la facture
                 selectedFacture.setNumFacture(numFacture);
                 selectedFacture.setMontant(montant);
                 selectedFacture.setDate(Date.valueOf(date));
                 selectedFacture.setDescriptionFacture(description);
                 selectedFacture.setType(type);
 
-                System.out.println("Description after modification: " + selectedFacture.getDescriptionFacture());
-
+                // Modifier la facture dans la base de données
                 serviceFacture.modifier(selectedFacture);
 
-                System.out.println("Facture modifiée avec succès !");
+                // Afficher une alerte d'information pour signaler le succès de la modification
+                afficherAlerteInformation("Modification réussie", "La facture a été modifiée avec succès !");
+
             } catch (NumberFormatException e) {
-                System.out.println("Veuillez saisir des valeurs valides pour les champs numériques !");
+                // Afficher une alerte d'erreur pour les valeurs numériques invalides
+                afficherAlerteErreur("Erreur de saisie", "Veuillez saisir des valeurs valides pour les champs numériques !");
             } catch (SQLException e) {
-                System.out.println("Erreur lors de la modification de la facture : " + e.getMessage());
+                // Afficher une alerte d'erreur pour toute erreur lors de la modification de la facture
+                afficherAlerteErreur("Erreur de modification", "Une erreur est survenue lors de la modification de la facture : " + e.getMessage());
             }
         } else {
-            System.out.println("Aucune facture sélectionnée.");
+            // Afficher une alerte d'erreur si aucune facture n'est sélectionnée
+            afficherAlerteErreur("Aucune facture sélectionnée", "Veuillez sélectionner une facture à modifier.");
         }
     }
 
+    // Méthode pour afficher une alerte d'erreur
+    private void afficherAlerteErreur(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // Méthode pour afficher une alerte d'information
+    private void afficherAlerteInformation(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    void retournerPagePrecedente(ActionEvent actionEvent) {
+        // Récupérer la source de l'événement
+        Node source = (Node) actionEvent.getSource();
+        // Récupérer la scène de la source
+        Scene scene = source.getScene();
+        // Récupérer la fenêtre parente de la scène
+        Stage stage = (Stage) scene.getWindow();
+        // Fermer la fenêtre parente pour revenir à la page précédente
+        stage.close();
+    }
 }
+

@@ -32,17 +32,10 @@
                 <Button blendMode="HARD_LIGHT" layoutX="27.0" layoutY="155.0" onAction="#gererFacture" opacity="0.0" prefHeight="34.0" prefWidth="182.0" text="Gerer Facture" />
                 <Button blendMode="HARD_LIGHT" layoutX="528.0" layoutY="405.0" onAction="#supprimerAppartement" prefHeight="26.0" prefWidth="110.0" text="Supprimer " />
 
-                <TextField fx:id="searchTailleField" layoutX="550.0" layoutY="110.0" promptText="Taille" />
-                <TextField fx:id="searchNbrEtageField" layoutX="273.0" layoutY="110.0" promptText="Nombre d'étages" />
-            
-                <ComboBox fx:id="searchStatutComboBox" blendMode="HARD_LIGHT" layoutX="442.0" layoutY="110.0">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Occupee" />
-                            <String fx:value="Libre" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
+                <TextField fx:id="searchTF" layoutX="273.0" layoutY="110.0" promptText="Taper " />
+
+
+
             </children>
 
 

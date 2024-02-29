@@ -18,18 +18,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.ServiceFacture;
+import java.util.List;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.stream.Collectors;
 
 public class AfficherFacture {
+    private ObservableList<Facture> factureList; // Correction 1
+
     private final ServiceFacture serviceFacture = new ServiceFacture();
     @FXML
     private TextField searchNumField;
@@ -58,7 +63,9 @@ public class AfficherFacture {
         }
         Set<Facture> factures = serviceFacture.getAllForAppartement(appartementSelectionne);
         ObservableList<Facture> observableList = FXCollections.observableArrayList(factures);
-        listViewFacture.setItems(observableList);
+        listViewFacture.setItems(observableList); // Correction 3
+        factureList = FXCollections.observableArrayList(factures); // Correction 1
+       listViewFacture.refresh();
     }
 
 
@@ -81,6 +88,7 @@ public class AfficherFacture {
         } catch (SQLException e) {
             e.printStackTrace(); // Gérer SQLException de manière appropriée
         }
+        listViewFacture.refresh();
     }
     @FXML
     void genererPDF() {
@@ -135,6 +143,7 @@ public class AfficherFacture {
                 alert.showAndWait();
             } catch (Exception e) {
                 e.printStackTrace();
+                afficherAlerteErreur("Erreur lors de la génération du PDF", "Une erreur s'est produite lors de la génération du PDF : " + e.getMessage()); // Correction 4
             }
         } else {
             System.out.println("Aucune facture sélectionnée.");
@@ -245,7 +254,7 @@ public class AfficherFacture {
         } else {
             System.out.println("No Appartement selected.");
         }
-        listViewFacture.refresh();;
+        listViewFacture.refresh();
     }
 
 
@@ -268,25 +277,31 @@ public class AfficherFacture {
         }
     }
 
-    @FXML
-    void rechercherFactures() {
-        try {
-            int numFacture = 0; // Valeur par défaut
-            if (!searchNumField.getText().isEmpty()) {
-                numFacture = Integer.parseInt(searchNumField.getText());
-            }
+    private void searchFacture(String searchText) throws SQLException {
 
-            // Supprimez la partie liée à la recherche par date
+        List<Facture> searchResult = factureList.stream()
+                .filter(facture -> {
+                    String numFactureString = String.valueOf(facture.getNumFacture());
+                    String montantString = String.valueOf(facture.getMontant());
+                    return numFactureString.contains(searchText.toLowerCase()) ||
+                            montantString.contains(searchText.toLowerCase()) ||
+                            facture.getDescriptionFacture().toLowerCase().contains(searchText.toLowerCase()) ||
+                            facture.getType().toString().toLowerCase().contains(searchText.toLowerCase()) ||
+                            facture.getDate().toString().toLowerCase().contains(searchText.toLowerCase());
+                })
+                .collect(Collectors.toList());
 
-            Set<Facture> factures = serviceFacture.rechercherFactures(numFacture);
-            ObservableList<Facture> observableList = FXCollections.observableArrayList(new ArrayList<>(factures));
-            listViewFacture.setItems(observableList);
-        } catch (NumberFormatException e) {
-            System.out.println("Veuillez saisir un numéro de facture valide.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        listViewFacture.setItems(FXCollections.observableArrayList(searchResult));
     }
 
+    @FXML
+    void searchFacture(ActionEvent event) {
+        String searchText = searchNumField.getText();
+        try {
+            searchFacture(searchText);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Gérer SQLException de manière appropriée
+        }
+    }
 
 }

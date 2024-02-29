@@ -4,11 +4,14 @@ import entities.Appartement;
 import entities.Facture;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import services.ServiceAppartemment;
 import services.ServiceFacture;
 import java.sql.Date;
@@ -114,4 +117,15 @@ public class AjouterFacture {
     }
 
 
+    public   @FXML
+    void retournerPagePrecedente(ActionEvent actionEvent) {
+        // Récupérer la source de l'événement
+        Node source = (Node) actionEvent.getSource();
+        // Récupérer la scène de la source
+        Scene scene = source.getScene();
+        // Récupérer la fenêtre parente de la scène
+        Stage stage = (Stage) scene.getWindow();
+        // Fermer la fenêtre parente pour revenir à la page précédente
+        stage.close();
+    }
 }
