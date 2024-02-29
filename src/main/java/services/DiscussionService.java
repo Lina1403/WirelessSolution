@@ -18,15 +18,15 @@ public class DiscussionService implements IService<Discussion> {
 
     @Override
     public void ajouter(Discussion discussion) throws SQLException {
-        String req = "INSERT INTO `discussion` (`titre`, `date_creation`, `createur_id`)"
-                + "VALUES (?,?,?)";
+        String req = "INSERT INTO `discussion` (`titre`, `date_creation`, `createur_id`,`description`)"
+                + "VALUES (?,?,?,?)";
         try{
             PreparedStatement pst = connexion.prepareStatement(req);
             pst.setString(1, discussion.getTitre());
             Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
-
             pst.setTimestamp(2, currentTimestamp);
             pst.setInt(3, discussion.getCreateur().getId());
+            pst.setString(4,discussion.getDescription());
             pst.executeUpdate();
 
 
@@ -38,12 +38,13 @@ public class DiscussionService implements IService<Discussion> {
     @Override
     public void modifier(Discussion p) throws SQLException {
         String req = "UPDATE discussion" +
-                " SET titre = ? " +
-                "WHERE id = ?";
+                " SET titre = ?, description = ?" +
+                "WHERE id = ?;";
         try{
             PreparedStatement ps = connexion.prepareStatement(req);
             ps.setString(1,p.getTitre());
-            ps.setInt(2,p.getId());
+            ps.setInt(3,p.getId());
+            ps.setString(2,p.getDescription());
             ps.executeUpdate();
 
         }catch(SQLException e ){
@@ -68,20 +69,30 @@ public class DiscussionService implements IService<Discussion> {
 
     @Override
     public Discussion getOneById(int id) throws SQLException {
-        String req = "Select discussion.titre,discussion.date_creation " +
-                "                from discussion" +
-                "               where discussion.id = ?";
+        String req = "SELECT discussion.titre, discussion.date_creation, discussion.description, discussion.id, user.nom , user.id" +
+                " FROM discussion" +
+                " INNER JOIN user ON discussion.createur_id = user.id" +
+                " WHERE discussion.id = ?";
         PreparedStatement pst = connexion.prepareStatement(req);
         pst.setInt(1,id);
         ResultSet rst = pst.executeQuery();
-        if(rst.next()){
+        Discussion discussion = new Discussion();
+
+        while(rst.next()){
             String titre = rst.getString(1);
             Timestamp date = rst.getTimestamp(2);
-            Discussion discussion = new Discussion(titre,date);
-            return discussion;
-
+            String description = rst.getString(3);
+            int identifiant = rst.getInt(4);
+            String nom =  rst.getString(5);
+            int ident = rst.getInt(6);
+            User user = new User(ident,nom);
+            discussion.setId(identifiant);
+            discussion.setTitre(titre);
+            discussion.setTimeStampCreation(date);
+            discussion.setDescription(description);
+            discussion.setCreateur(user);
         }
-        return null ;
+        return discussion;
     }
 
 

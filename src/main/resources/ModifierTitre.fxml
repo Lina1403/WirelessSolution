@@ -3,18 +3,60 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierTitre">
+<VBox prefHeight="274.0" prefWidth="601.0" styleClass="back" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierTitre">
    <children>
-      <Button layoutX="260.0" layoutY="206.0" mnemonicParsing="false" onAction="#modifierTitre" text="modifier" />
-      <TextField fx:id="titreMod" layoutX="75.0" layoutY="139.0" prefHeight="25.0" prefWidth="422.0" />
-      <Label layoutX="94.0" layoutY="45.0" text="modifier le titre de la discussion">
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Label text="modifier la discussion" textFill="WHITE">
+               <font>
+                  <Font name="System Bold Italic" size="28.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
+      <Label text="Titre :" textFill="WHITE">
          <font>
-            <Font size="28.0" />
+            <Font name="System Italic" size="19.0" />
          </font>
       </Label>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="titreMod" prefHeight="25.0" prefWidth="422.0" styleClass="text-field1" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="error" prefHeight="17.0" prefWidth="437.0" textFill="RED" />
+         </children>
+      </StackPane>
+      <Label text="Description :" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="19.0" />
+         </font>
+      </Label>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="descriptionMod" prefHeight="59.0" prefWidth="495.0" styleClass="text-field1" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="error2" prefHeight="17.0" prefWidth="495.0" textFill="RED" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#modifierTitre" styleClass="button" text="modifier" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#retour" text="Retour" />
+         </children>
+      </StackPane>
    </children>
-</AnchorPane>
+</VBox>

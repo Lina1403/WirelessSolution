@@ -38,6 +38,17 @@ public class Message {
         this.TimeStamp_envoi = TimeStamp_envoi;
         this.emetteur = emetteur;
     }
+    public Message(int id, String contenu, Timestamp TimeStamp_envoi, User emetteur) {
+        this.id = id;
+        this.contenu = contenu;
+        this.TimeStamp_envoi = TimeStamp_envoi;
+        this.emetteur = emetteur;
+    }
+    public Message(int id, String contenu) {
+        this.id = id;
+        this.contenu = contenu;
+
+    }
 
     public int getId() {
         return id;

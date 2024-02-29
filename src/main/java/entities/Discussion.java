@@ -5,6 +5,16 @@ import java.sql.Timestamp;
 public class Discussion {
     private int id;
     private String titre;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     private Timestamp TimeStampCreation;
     private User createur;
 
@@ -16,10 +26,19 @@ public class Discussion {
         this.TimeStampCreation = TimeStampCreation;
         this.createur = createur;
     }
-    public Discussion(String titre, Timestamp TimeStampCreation, User createur) {
+    public Discussion(int id, String titre, Timestamp TimeStampCreation, User createur,String description) {
+        this.id = id;
         this.titre = titre;
         this.TimeStampCreation = TimeStampCreation;
         this.createur = createur;
+        this.description = description;
+    }
+    public Discussion(String titre, Timestamp TimeStampCreation, User createur,String description) {
+        this.titre = titre;
+        this.TimeStampCreation = TimeStampCreation;
+        this.createur = createur;
+        this.description = description;
+
     }
     public Discussion(int id,String titre, Timestamp TimeStampCreation) {
         this.id = id;
@@ -27,9 +46,16 @@ public class Discussion {
         this.TimeStampCreation = TimeStampCreation;
 
     }
-    public Discussion(String titre, Timestamp TimeStampCreation) {
+    public Discussion(int id,String titre,String description) {
+        this.id = id;
+        this.titre = titre;
+        this.description = description;
+
+    }
+    public Discussion(String titre, Timestamp TimeStampCreation,String description) {
         this.titre = titre;
         this.TimeStampCreation = TimeStampCreation;
+        this.description = description;
 
     }
     public Discussion(int id,String titre) {

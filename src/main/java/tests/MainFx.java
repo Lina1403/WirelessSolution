@@ -14,6 +14,7 @@ public class MainFx extends Application {
 
         // Créer une nouvelle scène avec le contenu du fichier FXML
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
         // Définir la scène sur la scène principale
         primaryStage.setScene(scene);

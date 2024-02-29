@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import services.DiscussionService;
@@ -21,32 +23,66 @@ public class AjoutDiscussion {
 
         @FXML
         private TextField titre ;
+        @FXML
+        private ColorPicker color;
+
+        @FXML
+        private TextField description;
+        @FXML
+        private Label errorMessage;
+
+        @FXML
+        private Label errorMessage2;
+
 
         User user1 = new User(2,"koussay");
+
+        boolean isTitreValid = true;
+        boolean isDescriptionValid = true;
         @FXML
         void ajouterEvent() throws SQLException {
                 String title = titre.getText();
+                String desc = description.getText();
                 Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
-                Discussion discussion = new Discussion(title,currentTimestamp,user1);
-                if(titreValide(title) && !titreExist(title) ){
-                        try {
-                                DiscussionService ds = new DiscussionService();
-                                ds.ajouter(discussion);
-                                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                                alert.setTitle("Success");
-                                alert.setContentText("Discussion added successfully!");
-
-                                alert.showAndWait();
-                                changeScene();
-                        }catch(Exception e){
-                                System.out.println(e.getMessage());
-                        }
+                Discussion discussion = new Discussion(title,currentTimestamp,user1,desc);
+                if (title.isEmpty()) {
+                        errorMessage.setText("Le champ titre est vide !");
+                        isTitreValid = false;
+                } else if (title.length() > 10) {
+                        errorMessage.setText("Le titre ne doit pas dépasser 10 caractères !");
+                        isTitreValid = false;
                 }else{
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("error");
-                        alert.setContentText("check title validations");
-                        alert.showAndWait();
+                        errorMessage.setText("");
+                        isTitreValid = true;
                 }
+                if (desc.isEmpty()) {
+                        errorMessage2.setText("Le champ description est vide !");
+                        isDescriptionValid = false;
+                }else{
+                        errorMessage2.setText("");
+                        isDescriptionValid = true;
+                }
+
+
+                        if(titreValide(title) && !titreExist(title) && isTitreValid && isDescriptionValid){
+                                try {
+
+                                        DiscussionService ds = new DiscussionService();
+                                        ds.ajouter(discussion);
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Success");
+                                        alert.setContentText("Discussion added successfully!");
+
+                                        alert.showAndWait();
+                                        changeScene();
+
+
+                                }catch(Exception e){
+                                        System.out.println(e.getMessage());
+                                }
+
+                }
+
 
 
         }
@@ -59,7 +95,7 @@ public class AjoutDiscussion {
                         e.printStackTrace();
                 }
         }
-        public boolean titreValide(String titre) {
+        public static boolean titreValide(String titre) {
                 List<String> motsInterdits = null;
                 try {
                         motsInterdits = Files.readAllLines(Paths.get("src/main/java/utils/motsinap.txt"));
@@ -93,5 +129,6 @@ public class AjoutDiscussion {
                 return false;
 
         }
+
 
 }

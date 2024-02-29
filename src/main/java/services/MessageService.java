@@ -54,6 +54,13 @@ public class MessageService implements IService<Message>{
 
     @Override
     public void modifier(Message p) throws SQLException {
+        String req = "UPDATE message" +
+                "                SET contenu = ?" +
+                "               WHERE id = ?";
+        PreparedStatement pst = connexion.prepareStatement(req);
+        pst.setString(1,p.getContenu());
+        pst.setInt(2,p.getId());
+        pst.executeUpdate();
 
     }
 
@@ -101,7 +108,7 @@ public class MessageService implements IService<Message>{
     }
     public List<Message> afficherByDiscussionId(int id) throws SQLException {
         List<Message> messages  = new ArrayList<>();
-        String req = "SELECT message.contenu, message.date_envoi, user.nom AS emetteur  " +
+        String req = "SELECT message.contenu, message.date_envoi, user.nom AS emetteur ,message.id  " +
                 "FROM message" +
                 " JOIN user ON message.emetteur_id = user.id " +
                 "Where message.discussion_id = ?;";
@@ -113,7 +120,8 @@ public class MessageService implements IService<Message>{
             String contenu =  rst.getString(1);
             Timestamp date = rst.getTimestamp(2);
             User user1 = new User(rst.getString(3));
-            Message message = new Message(contenu,date,user1);
+            int ident = rst.getInt(4);
+            Message message = new Message(ident,contenu,date,user1);
             messages.add(message);
         }
 

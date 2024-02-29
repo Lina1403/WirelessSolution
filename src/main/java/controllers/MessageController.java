@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -35,6 +36,8 @@ public class MessageController {
     private Button sendButton;
     @FXML
     private Button emojiButton;
+    @FXML
+    private Label error;
 
     public void setMessageField(TextField messageField) {
         this.messageField = messageField;
@@ -44,6 +47,7 @@ public class MessageController {
     public static String emojis = "";
 
     User user1 = new User(2,"chiheb");
+    User user2 = new User(3,"dhia");
     MessageService ms = new MessageService();
     DiscussionService ds = new DiscussionService();
 
@@ -51,7 +55,7 @@ public class MessageController {
         ObservableList<Message> messages = FXCollections.observableList(ms.afficherByDiscussionId(discuId));
         messageList.setItems(messages);
         messageList.setCellFactory(param -> new MessageCell());
-
+        System.out.println(messages);
         sendButton.setOnAction(e -> {
             try {
                 sendMessage();
@@ -59,6 +63,7 @@ public class MessageController {
                 throw new RuntimeException(ex);
             }
         });
+        attachContextMenuToListView(messageList);
 
 
     }
@@ -94,18 +99,28 @@ public class MessageController {
         }
     }
     private void sendMessage() throws SQLException {
-        // Get the text from the messageField
-        String text = messageField.getText();
-        Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
-        // Create a new Message object
-        Message message = new Message(text,currentTimestamp,user1);
-        // add message to the database
-        ms.ajouter(message);
-        // Add the message to the messageList
-        messageList.getItems().add(message);
+        String mess = messageField.getText();
+        if(mess.isEmpty()){
+            error.setText("Le message est vide !");
 
-        // Clear the messageField
-        messageField.clear();
+        }else{
+            // Get the text from the messageField
+            error.setText("");
+
+            String text = messageField.getText();
+            Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
+            // Create a new Message object
+            Message message = new Message(text,currentTimestamp,user1);
+            // add message to the database
+            ms.ajouter(message);
+            // Add the message to the messageList
+            messageList.getItems().add(message);
+            initialize();
+
+            // Clear the messageField
+            messageField.clear();
+        }
+
     }
     public void modifierTitre(){
         changeScene("/ModifierTitre.fxml");
@@ -127,6 +142,71 @@ public class MessageController {
                 emojis = "";
             }
         });
+    }
+
+    private void attachContextMenuToListView(ListView<Message> listView) {
+        listView.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) { // Right-click detected
+                Message selectedItem = listView.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    int messageId = selectedItem.getId();
+
+                    // Create the context menu
+                    ContextMenu contextMenu = new ContextMenu();
+
+                    // Create menu items
+                    MenuItem updateMenuItem = new MenuItem("Update");
+                    MenuItem deleteMenuItem = new MenuItem("Delete");
+
+                    // Handle update menu item
+                    updateMenuItem.setOnAction(updateEvent -> {
+                        int id = selectedItem.getId();
+                        String contenu = selectedItem.getContenu();
+                        messageField.setText(contenu);
+                        sendButton.setOnAction(actionEvent -> {
+                            if(messageField.getText().isEmpty()){
+                                error.setText("Le message est vide !");
+                            }else {
+                                Message message = new Message(id, messageField.getText());
+                                try {
+                                    ms.modifier(message);
+                                    messageField.clear();
+                                    initialize();
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                        System.out.println("Update message with ID: " + messageId);
+                    });
+
+                    // Handle delete menu item
+                    deleteMenuItem.setOnAction(deleteEvent -> {
+                        try {
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Confirmation ");
+                            alert.setHeaderText("Look, a Confirmation Dialog");
+                            alert.setContentText("Are you ok with deleting the message?");
+                            Optional<ButtonType> result = alert.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                ms.supprimer(messageId);
+                                listView.getItems().remove(selectedItem);
+                            }
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                        System.out.println("Delete message with ID: " + messageId);
+                    });
+
+                    // Add menu items to context menu
+                    contextMenu.getItems().addAll(updateMenuItem, deleteMenuItem);
+
+                    // Show context menu at the mouse location
+                    contextMenu.show(listView, event.getScreenX(), event.getScreenY());
+                }
+            }
+        });
+
     }
 
 
