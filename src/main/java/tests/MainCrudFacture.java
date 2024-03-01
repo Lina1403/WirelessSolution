@@ -6,131 +6,39 @@ import services.ServiceFacture;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 public class MainCrudFacture {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
+        testEnergyConsumption();
+        // Ajoutez d'autres méthodes de test ici si nécessaire
+    }
+
+    public static void testEnergyConsumption() {
         ServiceFacture serviceFacture = new ServiceFacture();
-      /*
-        Facture factureExistante = new Facture();
-        factureExistante.setIdFacture(28); // ID de la facture existante
-        factureExistante.setNumFacture(123456);
-        factureExistante.setDate(new Date());
-        factureExistante.setType(Facture.Type.Eau);
-        factureExistante.setMontant(100.0f);
-        factureExistante.setDescriptionFacture("Facture d'eau");
-        Appartement appartement = new Appartement(100); // Appartement existant
-        factureExistante.setAppartement(appartement);
 
-        try {
-            // Modifier la facture existante
-            serviceFacture.modifier(factureExistante);
+        // Supposons que les dates de début et de fin soient le 1er janvier 2024 et le 1er février 2024
+        Date startDate = new Date(2024, 0, 1); // 0 représente janvier
+        Date endDate = new Date(2024, 12, 1); // 1 représente février
 
-            // Vérifier si la facture a été mise à jour correctement en récupérant la facture modifiée
-            Facture factureModifiee = serviceFacture.getOneById(factureExistante.getIdFacture());
-
-        } catch (SQLException e) {
-            System.out.println("An exception occurred while modifying the facture: " + e.getMessage());
-        }
-
-       /* try {
-            // Créer un objet Facture avec des données appropriées
-            Facture facture = new Facture();
-            facture.setNumFacture(123);
-            facture.setType(Facture.Type.Electricite);
-            facture.setMontant(100.0f);
-            facture.setDescriptionFacture("Facture d'électricité");
-            facture.setDate(new Date());
-
-            // Créer un objet Appartement associé à la facture
-            Appartement appartement = new Appartement();
-            appartement.setNumAppartement(12); // Numéro d'appartement existant dans votre base de données
-            // Vous pouvez définir d'autres propriétés de l'appartement si nécessaire
-
-            // Associer l'appartement à la facture
-            facture.setAppartement(appartement);
-
-            // Appeler la méthode ajouter() pour insérer la facture dans la base de données
-            serviceFacture.ajouter(facture);
-        } catch (
-                SQLException e) {
-            e.printStackTrace();
-            // Gérer l'exception, par exemple en affichant un message d'erreur
-            System.err.println("Erreur lors de l'ajout de la facture dans la base de données.");
-        }
+        java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
+        java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
 
 
         try {
-            // Appeler la méthode getAll() pour récupérer toutes les factures avec les informations sur les appartements associés
-            Set<Facture> factures = serviceFacture.getAll();
+            // Test de la consommation d'énergie par étage
+            System.out.println("Energy consumption by floor:");
+            Map<String, Float> resultByFloor = serviceFacture.getEnergyConsumption("etage", sqlStartDate, sqlEndDate);
+            System.out.println(resultByFloor);
 
-            // Parcourir les factures et afficher les détails de chaque facture
-            for (Facture facture : factures) {
-                System.out.println("Numéro de facture: " + facture.getNumFacture());
-                System.out.println("Date: " + facture.getDate());
-                System.out.println("Type: " + facture.getType());
-                System.out.println("Montant: " + facture.getMontant());
-                System.out.println("Description: " + facture.getDescriptionFacture());
-                System.out.println("Numéro d'appartement associé: " + facture.getAppartement().getNumAppartement());
-                System.out.println("-------------------------------------------");
-            }
+            // Test de la consommation d'énergie totale
+            System.out.println("Total energy consumption:");
+            Map<String, Float> resultTotal = serviceFacture.getEnergyConsumption("all", sqlStartDate, sqlEndDate);
+            System.out.println(resultTotal);
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gérer l'exception, par exemple en affichant un message d'erreur
-            System.err.println("Erreur lors de la récupération des factures depuis la base de données.");
         }
-
-        try {
-            Set<Facture> factures = serviceFacture.getAllForAppartement(appartement);
-
-            if (factures.isEmpty()) {
-                System.out.println("Aucune facture n'a été trouvée.");
-            } else {
-                System.out.println("Liste des factures :");
-                for (Facture facture : factures) {
-                    System.out.println(facture);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Une erreur s'est produite lors de la récupération des factures : " + e.getMessage());
-        }
-        try {
-            Facture facture = serviceFacture.getOneById(19); // ID de la facture existant dans votre base de données de test
-            System.out.println(facture);
-            // Vous pouvez ajouter d'autres assertions pour vérifier les valeurs de la facture récupérée si nécessaire
-        } catch (SQLException e) {
-            System.out.println("Une exception SQL s'est produite : " + e.getMessage());
-        }
-
-
-
-
-        Facture facture = new Facture();
-        // Initialisez la facture avec les valeurs appropriées pour les tests
-        facture.setIdFacture(19);
-        facture.setNumFacture(40);
-        facture.setDescriptionFacture("Alii");
-        facture.setType(Facture.Type.Gaz);
-        facture.setDate(new Date());
-        facture.getAppartement().setIdAppartement(7);
-        // ID de la facture existant dans votre base de données de test
-        // Initialisez d'autres valeurs de la facture si nécessaire
-
-        try {
-            serviceFacture.modifier(facture);
-            // Si aucune exception n'est levée, cela signifie que la modification a réussi
-            System.out.println(true);
-        } catch (SQLException e) {
-            System.out.println("Une exception SQL s'est produite : " + e.getMessage());
-        }
-        */
-
-        int idFactureASupprimer = 19;
-
-
-        serviceFacture.supprimer(idFactureASupprimer);
-
     }
 }
-
 

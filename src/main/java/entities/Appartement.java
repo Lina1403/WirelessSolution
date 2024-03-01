@@ -12,6 +12,9 @@ public class Appartement {
     private int nbrEtage;
     private statutAppartement statutAppartement;
     private List<Facture> factures = new ArrayList<>();
+
+
+
     public enum statutAppartement{
         Occupee , Libre
     }

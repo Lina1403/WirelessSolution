@@ -5,24 +5,12 @@ import entities.Facture;
 import utils.DataSource;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.Set;
 public class ServiceAppartemment implements IService<Appartement> {
+    private List<Facture> factures = new ArrayList<>();
     Connection cnx = DataSource.getInstance().getCnx();
-  /*  public Appartement get(int numAppartement) throws SQLException {
-        String req = "SELECT * FROM appartement WHERE numAppartement = " + numAppartement;
-        Statement st = cnx.createStatement();
-        ResultSet rs = st.executeQuery(req);
-        if (rs.next()) {
-            // Créer et retourner l'appartement à partir des résultats de la requête
-            Appartement appartement = new Appartement();
-            // Définir les propriétés de l'appartement ici...
-            return appartement;
-        } else {
-            throw new IllegalArgumentException("No apartment found with numAppartement: " + numAppartement);
-        }
-    }*/
+
 
     @Override
     public void ajouter(Appartement p) throws SQLException {
@@ -115,50 +103,9 @@ public class ServiceAppartemment implements IService<Appartement> {
         }
         return appartements;
     }
-    public Set<Appartement> rechercherAppartements(int numAppartement, String nomResident, String taille, int nbrEtage, Appartement.statutAppartement statut) throws SQLException {
-        Set<Appartement> appartements = new HashSet<>();
-        StringBuilder reqBuilder = new StringBuilder("SELECT * FROM `appartement` WHERE 1=1");
 
-        if (numAppartement != 0) {
-            reqBuilder.append(" AND `numAppartement` = ").append(numAppartement);
-        }
 
-        if (!nomResident.isEmpty()) {
-            reqBuilder.append(" AND `nomResident` = '").append(nomResident).append("'");
-        }
 
-        if (!taille.isEmpty()) {
-            reqBuilder.append(" AND `taille` = '").append(taille).append("'");
-        }
-
-        if (nbrEtage != 0) {
-            reqBuilder.append(" AND `nbrEtage` = ").append(nbrEtage);
-        }
-
-        if (statut != null) {
-            reqBuilder.append(" AND `statutAppartement` = '").append(statut.toString()).append("'");
-        }
-
-        String req = reqBuilder.toString();
-
-        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(req)) {
-            while (rs.next()) {
-                Appartement appartement = new Appartement();
-                appartement.setIdAppartement(rs.getInt("idAppartement"));
-                appartement.setNumAppartement(rs.getInt("numAppartement"));
-                appartement.setNomResident(rs.getString("nomResident"));
-                appartement.setTaille(rs.getString("taille"));
-                appartement.setNbrEtage(rs.getInt("nbrEtage"));
-
-                Appartement.statutAppartement stat = Appartement.statutAppartement.valueOf(rs.getString("statutAppartement"));
-                appartement.setStatutAppartement(stat);
-
-                appartements.add(appartement);
-            }
-        }
-
-        return appartements;
-    }
 
 
 

@@ -1,91 +1,69 @@
-/* AnchorPane */
-.root {
-    -fx-background-color: lightsteelblue; /* Couleur de fond */
+.back {
+    -fx-background-image: url("/src/b.jpg") ;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
 }
 
-/* VBox */
-.vbox {
-    -fx-spacing: 10.0; /* Espacement entre les éléments */
-}
-/* Apply styles to the root AnchorPane */
-AnchorPane {
-    -fx-background-color: #000080;
-}
-
-/* Apply styles to the ButtonBar inside the first AnchorPane */
-ButtonBar {
-    -fx-background-color: #4682b4;
+.button {
+    -fx-background-color: #007bff; /* Couleur de fond */
+    -fx-text-fill: white; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
+    -fx-padding: 2px 3px; /* Espacement interne */
+    -fx-border-radius: 5px; /* Rayon de bordure */
+    -fx-border-color: #007bff; /* Couleur de bordure */
 }
 
-/* Apply styles to the ImageView inside the first AnchorPane */
-ImageView {
-    -fx-background-color: #191970;
+.button:hover {
+    -fx-background-color: #007bff; /* Couleur de fond au survol */
+    -fx-border-color: #007bff; /* Couleur de bordure au survol */
 }
 
-/* Apply styles to the ListView inside the second AnchorPane */
-#listView {
-    -fx-background-color: #3d56ab;
-    -fx-control-inner-background: #3d56ab; /* Change the inner background color */
-}
-
-/* Apply styles to the Buttons inside the second AnchorPane */
-Button {
-    -fx-background-color: #4682b4;
+.text-field1 {
+    -fx-background-color: transparent; /* Couleur de fond */
+    -fx-border-color: #007bff; /* Couleur de bordure */
+    -fx-border-width: 1px; /* Largeur de la bordure */
+    -fx-border-radius: 15px; /* Rayon de bordure */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
     -fx-text-fill: white;
 }
 
-/* Apply styles to the TextField elements inside the second AnchorPane */
-TextField {
-    -fx-background-color: #4682b4;
+.text-field1:focused {
+    -fx-pref-width: 500px;
 }
 
-/* Apply styles to the ComboBox inside the second AnchorPane */
-ComboBox {
-    -fx-background-color: #4682b4;
+.text-field2 {
+    -fx-background-color: #f2f2f2; /* Couleur de fond */
+    -fx-border-color: #007bff; /* Couleur de bordure */
+    -fx-border-width: 1px; /* Largeur de la bordure */
+    -fx-border-radius: 15px; /* Rayon de bordure */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
 }
 
-/* Apply styles to the Images inside the second AnchorPane */
-ImageView {
-    -fx-background-color: #3d56ab;
+.label, .textfield, .button, .colorpicker {
+    -fx-alignment: center; /* Centrer le contenu horizontalement */
 }
 
-/* Additional styles for the Images based on their layout */
-ImageView[layoutX="167.0"] {
-    -fx-background-color: #4682b4;
+.anchor-pane {
+    -fx-background-color: #f0f0f0; /* Couleur de fond */
 }
 
-ImageView[layoutX="50.0"] {
-    -fx-background-color: #000080;
+.label {
+    -fx-font-family: Bold;
 }
 
-ImageView[layoutX="109.0"] {
-    -fx-background-color: #191970;
+.colorpicker {
+    -fx-pref-width: 100px; /* Largeur préférée du ColorPicker */
 }
 
-ImageView[layoutX="239.0"] {
-    -fx-background-color: #3d56ab;
+.text-field .text {
+    -fx-text-fill: white;
 }
 
-/* Ajout des styles pour la ListView */
-.list-view .list-cell:odd {
-    -fx-background-color: white; /* Couleur de fond pour les lignes impaires */
-}
-
-.list-view .list-cell:even {
-    -fx-background-color: #8f8; /* Couleur de fond pour les lignes paires */
-}
-
-.list-view .list-cell:filled:selected:focused,
-.list-view .list-cell:filled:selected {
-    -fx-background-color: linear-gradient(#333 0%, #777 25%, #aaa 75%, #eee 100%); /* Couleur de fond pour les éléments sélectionnés */
-    -fx-text-fill: white; /* Couleur du texte pour les éléments sélectionnés */
-}
-
-.list-view .list-cell {
-    -fx-text-fill: black; /* Couleur du texte par défaut */
-}
-
-.list-view .list-cell:filled:hover {
-    -fx-background-color: #00f; /* Couleur de fond au survol */
-    -fx-text-fill: white; /* Couleur du texte au survol */
+.vbox {
+    -fx-alignment: center;
 }

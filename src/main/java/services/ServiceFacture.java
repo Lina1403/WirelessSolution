@@ -10,12 +10,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 public class ServiceFacture implements IService<Facture>{
@@ -93,50 +92,6 @@ public class ServiceFacture implements IService<Facture>{
     }
 
 
-    /*
-   @Override
-    public void modifier(Facture p) throws SQLException {
-        if (p == null) {
-            throw new IllegalArgumentException("Facture object is null");
-        }
-
-        if (p.getDate() == null) {
-            throw new IllegalArgumentException("Date is null in the provided Facture object");
-        }
-
-        // Vérifier si la facture existe dans la base de données en utilisant son ID
-        Facture existingFacture = getOneById(p.getIdFacture());
-        if (existingFacture == null) {
-            throw new IllegalArgumentException("Facture with ID " + p.getIdFacture() + " does not exist.");
-        }
-
-        // Récupérer l'idAppartement correspondant au numAppartement de la facture
-        int idAppartement = getIdAppartementByNumAppartement(p.getAppartement().getNumAppartement());
-
-        if (idAppartement == -1) {
-            throw new IllegalArgumentException("Appartement with numAppartement " + p.getAppartement().getNumAppartement() + " does not exist.");
-        }
-
-        String sql = "UPDATE facture SET numFacture=?, type=?, montant=?, descriptionFacture=?, date=?, idAppartement=? WHERE idFacture=?";
-
-        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
-            statement.setInt(1, p.getNumFacture());
-            statement.setString(2, p.getType().toString());
-            statement.setFloat(3, p.getMontant());
-            statement.setString(4, p.getDescriptionFacture());
-            statement.setDate(5, new java.sql.Date(p.getDate().getTime()));
-            statement.setInt(6, idAppartement);
-            statement.setInt(7, p.getIdFacture());
-
-            int rowsAffected = statement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Facture updated successfully.");
-            } else {
-                System.out.println("Failed to update Facture.");
-            }
-        }
-    }
- */
     @Override
     public void supprimer(int id) throws SQLException {
         String req = "DELETE FROM facture WHERE idFacture = ?";
@@ -219,31 +174,7 @@ public class ServiceFacture implements IService<Facture>{
         return factures;
     }
 
-    public Set<Facture> rechercherFactures(int numFacture) throws SQLException {
-        Set<Facture> factures = new HashSet<>();
-        String req = "SELECT * FROM `facture` WHERE `numFacture` = ? ";
 
-
-        try (PreparedStatement statement = cnx.prepareStatement(req)) {
-            statement.setInt(1, numFacture);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    Facture facture = new Facture();
-                    facture.setIdFacture(rs.getInt("idFacture"));
-                    facture.setNumFacture(rs.getInt("numFacture"));
-                    facture.setDate(rs.getDate("date"));
-                    facture.setType(Facture.Type.valueOf(rs.getString("type")));
-                    facture.setMontant(rs.getFloat("montant"));
-                    facture.setDescriptionFacture(rs.getString("descriptionFacture"));
-
-                    factures.add(facture);
-                }
-            }
-        }
-
-        return factures;
-    }
     public Set<Facture> getAllForAppartement(Appartement appartement) throws SQLException {
         Set<Facture> factures = new HashSet<>();
         // Assurez-vous que l'objet appartement n'est pas null avant de l'utiliser
@@ -284,85 +215,118 @@ public class ServiceFacture implements IService<Facture>{
 
         return factures;
     }
-    public void telechargerFacture(Facture facture) throws IOException, IOException {
-        // Vérifier si la facture est null
-        if (facture == null) {
-            throw new IllegalArgumentException("La facture est null.");
+    public Set<Facture> getAllForAppartementId(int appartementId) throws SQLException {
+        Set<Facture> factures = new HashSet<>();
+        String req = "SELECT * FROM `facture` WHERE `idAppartement` = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, appartementId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Facture facture = new Facture();
+                    facture.setIdFacture(rs.getInt("idFacture"));
+                    facture.setNumFacture(rs.getInt("numFacture"));
+                    facture.setDate(rs.getDate("date"));
+                    Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
+                    facture.setType(typeFacture);
+                    facture.setMontant(rs.getFloat("montant"));
+                    facture.setDescriptionFacture(rs.getString("descriptionFacture"));
+
+                    Appartement appartement = new Appartement();
+                    appartement.setIdAppartement(rs.getInt("idAppartement"));
+                    // Notez que vous n'avez pas besoin de charger toutes les informations de l'appartement
+                    // Vous pouvez simplement affecter l'identifiant de l'appartement à la facture
+                    facture.setAppartement(appartement);
+
+                    factures.add(facture);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            // Gérer l'exception selon vos besoins
         }
 
-        // Générer le contenu du fichier de facture
-        String contenuFacture = "Numéro de facture : " + facture.getNumFacture() + "\n"
-                + "Date : " + facture.getDate().toString() + "\n"
-                + "Type : " + facture.getType().toString() + "\n"
-                + "Montant : " + facture.getMontant() + "\n"
-                + "Description : " + facture.getDescriptionFacture() + "\n";
-
-        // Créer un fichier temporaire pour la facture
-        File fichierFacture = File.createTempFile("facture_" + facture.getType(), ".txt");
-
-        // Écrire le contenu de la facture dans le fichier
-        try (FileOutputStream fos = new FileOutputStream(fichierFacture)) {
-            fos.write(contenuFacture.getBytes());
-        }
-
-        // Vérifier si le bureau est pris en charge
-        if (Desktop.isDesktopSupported()) {
-            // Ouvrir le fichier de facture avec l'application par défaut
-            Desktop.getDesktop().open(fichierFacture);
-        } else {
-            throw new UnsupportedOperationException("Desktop is not supported.");
-        }
+        return factures;
     }
 
-    public void afficherStatistiquesParDate(Date date) throws SQLException {
-        String sql = "SELECT COUNT(*), SUM(montant) FROM facture WHERE date = ?";
+
+    public float getConsommationEnergieParType(int idAppartement, Facture.Type typeFacture) throws SQLException {
+        String sql = "SELECT SUM(montant) FROM facture WHERE idAppartement = ? AND type = ?";
         try (PreparedStatement statement = cnx.prepareStatement(sql)) {
-            statement.setDate(1, new java.sql.Date(date.getTime()));
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int count = resultSet.getInt(1);
-                float totalMontant = resultSet.getFloat(2);
-                System.out.println("Nombre de factures pour la date " + date + " : " + count);
-                System.out.println("Montant total pour la date " + date + " : " + totalMontant);
+            statement.setInt(1, idAppartement);
+            statement.setString(2, typeFacture.toString());
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat(1);
             } else {
-                System.out.println("Aucune facture trouvée pour la date " + date);
+                return 0;
             }
         }
     }
-
-    public void afficherStatistiquesParType(String type) throws SQLException {
-        String sql = "SELECT COUNT(*), SUM(montant) FROM facture WHERE type = ?";
+ /*   public float getConsommationEnergieParPlageDates(Date dateDebut, Date dateFin) throws SQLException {
+        String sql = "SELECT SUM(montant) FROM facture WHERE date BETWEEN ? AND ?";
         try (PreparedStatement statement = cnx.prepareStatement(sql)) {
-            statement.setString(1, type);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int count = resultSet.getInt(1);
-                float totalMontant = resultSet.getFloat(2);
-                System.out.println("Nombre de factures pour le type " + type + " : " + count);
-                System.out.println("Montant total pour le type " + type + " : " + totalMontant);
+            statement.setDate(1, new java.sql.Date(dateDebut.getTime()));
+            statement.setDate(2, new java.sql.Date(dateFin.getTime()));
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat(1);
             } else {
-                System.out.println("Aucune facture trouvée pour le type " + type);
+                return 0;
             }
         }
-    }
+    } */
+ public Map<String, Float> getEnergyConsumption(String criteria, Date startDate, Date endDate) throws SQLException {
+     Map<String, Float> energyConsumption = new HashMap<>();
 
-    public void afficherStatistiquesParEtage(int etage) throws SQLException {
-        String sql = "SELECT COUNT(*), SUM(montant) FROM facture " +
-                "INNER JOIN appartement ON facture.idAppartement = appartement.idAppartement " +
-                "WHERE appartement.etage = ?";
-        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
-            statement.setInt(1, etage);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int count = resultSet.getInt(1);
-                float totalMontant = resultSet.getFloat(2);
-                System.out.println("Nombre de factures pour l'étage " + etage + " : " + count);
-                System.out.println("Montant total pour l'étage " + etage + " : " + totalMontant);
-            } else {
-                System.out.println("Aucune facture trouvée pour l'étage " + etage);
-            }
-        }
-    }
+     String sql = "SELECT ";
+     if (criteria.equals("etage")) {
+         sql += "a.nbrEtage, ";
+     } else if (criteria.equals("all")) {
+         sql += "SUM(f.montant) AS total_energy, ";
+     }
+     sql += "SUM(f.montant) AS total_energy FROM facture f ";
+     if (criteria.equals("etage")) {
+         sql += "JOIN appartement a ON f.idAppartement = a.idAppartement ";
+     }
+     sql += "WHERE date BETWEEN ? AND ? ";
+     if (!criteria.equals("all")) {
+         sql += "GROUP BY ";
+         if (criteria.equals("etage")) {
+             sql += "a.nbrEtage";
+         } else {
+             sql += "f.type";
+         }
+     }
+
+     try (PreparedStatement statement = cnx.prepareStatement(sql)) {
+         statement.setDate(1, new java.sql.Date(startDate.getTime()));
+         statement.setDate(2, new java.sql.Date(endDate.getTime()));
+         ResultSet rs = statement.executeQuery();
+         while (rs.next()) {
+             String key;
+             if (criteria.equals("all")) {
+                 key = "total";
+             } else {
+                 key = criteria.equals("etage") ? rs.getString("nbrEtage") : rs.getString("type");
+             }
+             float totalEnergy = rs.getFloat("total_energy");
+             energyConsumption.put(key, totalEnergy);
+         }
+     }
+
+     return energyConsumption;
+ }
+
+
+
+
+
+
+
+
+
 
 
 }

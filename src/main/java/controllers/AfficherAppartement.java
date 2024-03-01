@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Appartement;
+import entities.Facture;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,21 +15,23 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import services.ServiceAppartemment;
 import services.ServiceFacture;
+import services.StatistiquesService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AfficherAppartement {
 
-    private AfficherAppartement afficherAppartementController;
+
     private final ServiceAppartemment serviceAppartemment = new ServiceAppartemment();
 
     private final ServiceFacture serviceFacture = new ServiceFacture();
-    AjouterFacture controler;
+
 
 
     @FXML
@@ -39,6 +42,8 @@ public class AfficherAppartement {
 
     private List<Appartement> appartementList;
 
+    @FXML
+    private ComboBox typeFactureComboBox ;
 
 
 
@@ -61,22 +66,23 @@ public class AfficherAppartement {
         try {
             afficherAppartements();
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle SQLException appropriately
+            e.printStackTrace();
         }
-        listView.refresh();
+
+        // Vous pouvez retirer listView.refresh() ici, car cela est déjà inclus dans la méthode afficherAppartements()
 
         // Ajout d'un écouteur de changement de texte pour le champ de recherche
         searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                searchAppartement(newValue); // Appel de la méthode de recherche avec le nouveau texte
+            try {searchAppartement(newValue);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
     }
 
+
     @FXML
-    void modiferAppartement(ActionEvent actionEvent) {
+    void modiferAppartement(ActionEvent actionEvent) throws SQLException {
         Appartement appartementSelectionne = listView.getSelectionModel().getSelectedItem();
         System.out.println("Appartement sélectionné pour modifier : " + appartementSelectionne);
         if (appartementSelectionne != null) {
@@ -101,12 +107,13 @@ public class AfficherAppartement {
         } else {
             System.out.println("Aucun appartement sélectionné.");
         }
-listView.refresh();
+//listView.refresh();
+        afficherAppartements();
     }
 
 
     @FXML
-    public void ajouterAppartement(ActionEvent actionEvent) {
+    public void ajouterAppartement(ActionEvent actionEvent) throws SQLException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterAppartement.fxml"));
             Parent root = loader.load();
@@ -123,7 +130,7 @@ listView.refresh();
         } catch (IOException e) {
             e.printStackTrace(); // Handle exception appropriately
         }
-listView.refresh();
+        afficherAppartements();
     }
 
 
@@ -208,8 +215,6 @@ listView.refresh();
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 
 
     private void searchAppartement(String searchText) throws SQLException {

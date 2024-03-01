@@ -6,28 +6,29 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Facture {
-    public int idFacture ;
+    public int idFacture;
     private int numFacture;
-    private Date date ;
+    private Date date;
     private Type type;
     private float montant;
     private String descriptionFacture;
 
     // La clé étrangère
-    private Appartement appartement ;
-
-
+    private Appartement appartement;
 
 
     public enum Type {
-        Eau, Gaz, Electricite, Dechets
+        Eau, Gaz, Electricite,  Dechets
     }
-    public Facture(){
+
+    public Facture() {
 
     }
+
     public Facture(int idFacture) {
         this.idFacture = idFacture;
     }
+
     public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture, Appartement appartement) {
         this.idFacture = idFacture;
         this.numFacture = numFacture;
@@ -48,7 +49,8 @@ public class Facture {
 
 
     }
-    public Facture(int idFacture,int numFacture, Date date, Type type, float montant, String descriptionFacture) {
+
+    public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture) {
         this.idFacture = idFacture;
         this.numFacture = numFacture;
         this.date = date;
@@ -58,13 +60,14 @@ public class Facture {
 
 
     }
+
     public Facture(int numFacture, Date date, Type type, float montant, String descriptionFacture, Appartement appartement) {
         this.numFacture = numFacture;
         this.date = date;
         this.type = type;
         this.montant = montant;
         this.descriptionFacture = descriptionFacture;
-        this.appartement = appartement ;
+        this.appartement = appartement;
 
     }
 
@@ -143,11 +146,11 @@ public class Facture {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Facture facture = (Facture) o;
-        return numFacture == facture.numFacture &&  type == facture.type;
+        return numFacture == facture.numFacture && type == facture.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numFacture,  type);
+        return Objects.hash(numFacture, type);
     }
 }
