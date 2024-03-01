@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import services.ServiceEvent;
 import java.sql.Date;
@@ -31,7 +32,7 @@ public class AjouterEvent {
 
 
     @FXML private DatePicker datePicker;
-    @FXML private TextField listeInvitesField;
+    @FXML private TextArea listInvitesField;
     @FXML private TextField nbrPersonneField;
     @FXML private TextField titleField;
     @FXML private ComboBox<String> espaceComboBox;
@@ -72,7 +73,7 @@ public class AjouterEvent {
                 throw new IllegalArgumentException("Le nombre de personnes doit être un entier compris entre 1 et 50.");
             }
 
-            String listeInvites = listeInvitesField.getText().trim();
+            String listeInvites = listInvitesField.getText().trim();
             if (listeInvites.isEmpty()) {
                 throw new IllegalArgumentException("La liste des invités ne peut pas être vide.");
             }
@@ -91,8 +92,6 @@ public class AjouterEvent {
             if (espaceObj == null) {
                 throw new IllegalArgumentException("L'espace sélectionné n'existe pas.");
             }
-
-            // Créer l'objet Event et l'ajouter
             // Créer l'objet Event et l'ajouter
             Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, listeInvites, espaceObj);
             serviceEvent.ajouter(eventObj);
@@ -114,13 +113,12 @@ public class AjouterEvent {
     }
 
     @FXML
-        private void genererPDF() {
-            if (addedEvent != null) {
-                try {
-                    PDDocument document = new PDDocument();
-                    PDPage page = new PDPage();
-                    document.addPage(page);
-
+    private void genererPDF() {
+        if (addedEvent != null) {
+            try {
+                PDDocument document = new PDDocument();
+                PDPage page = new PDPage();
+                document.addPage(page);
 
                 PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
@@ -155,14 +153,13 @@ public class AjouterEvent {
                 contentStream.setNonStrokingColor(Color.BLACK);
                 writeText(contentStream, "Titre : " + addedEvent.getTitle(), infoX, infoY, font);
                 infoY -= infoSpacing;
-                writeText(contentStream, "Date : " + addedEvent.getDate().toString(), infoX, infoY, font);
+                writeText(contentStream, "Espace : " + addedEvent.getEspace().getName(), infoX, infoY, font);
                 infoY -= infoSpacing;
-                writeText(contentStream, "Nombre de personnes : " + addedEvent.getNbrPersonne(), infoX, infoY, font);
-                infoY -= infoSpacing;
-                writeText(contentStream, "listeInvites : " + addedEvent.getListeInvites(), infoX, infoY, font);
+                writeText(contentStream, "Liste des invités : " + addedEvent.getListeInvites(), infoX, infoY, font);
 
                 contentStream.close();
 
+                // Utiliser le nom de l'événement pour nommer le fichier PDF
                 File file = new File(addedEvent.getTitle() + ".pdf");
                 document.save(file);
                 document.close();
@@ -174,13 +171,24 @@ public class AjouterEvent {
         }
     }
 
+
     private void writeText(PDPageContentStream contentStream, String text, float x, float y, PDType0Font font) throws IOException {
+        String[] lines = text.split("\n");
+        float fontSize = 14; // Adjust the font size as needed
+        float leading = 1.5f * fontSize; // Adjust the line spacing as needed
+
         contentStream.beginText();
-        contentStream.newLineAtOffset(x + 10, y);
-        contentStream.setFont(font, 14);
-        contentStream.showText(text);
+        contentStream.setFont(font, fontSize);
+        contentStream.newLineAtOffset(x, y);
+
+        for (String line : lines) {
+            contentStream.showText(line);
+            contentStream.newLineAtOffset(0, -leading);
+        }
+
         contentStream.endText();
     }
+
 
 
     private void afficherAlerteConfirmationEvent(String titre, String message) {
