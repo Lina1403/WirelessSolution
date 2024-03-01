@@ -1,6 +1,4 @@
 package controllers;
-
-import controllers.AfficherEvent;
 import entities.Event;
 import entities.Espace;
 
@@ -14,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import services.ServiceEspace;
 import services.ServiceEvent;
+import javafx.scene.control.TextArea;
+
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -23,29 +23,35 @@ import java.util.Set;
 
 public class DetailsEvent {
 
-    @FXML
-    private TextField textFieldTitre;
+    @FXML private TextField textFieldTitre;
+    @FXML private TextField textFieldNbrPersonne;
+    @FXML private ComboBox<Espace> comboBoxEspace;
+    @FXML private TextArea textFieldListeInvites; // Modifier le type en TextArea
+    @FXML private TextField textFieldDate;
 
-    @FXML
-    private TextField textFieldNbrPersonne;
-
-    @FXML
-    private ComboBox<Espace> comboBoxEspace;
-
-    @FXML
-    private TextField textFieldDescription;
-
-    @FXML
-    private TextField textFieldDate; // Ajout de l'attribut date
-
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Format de date
-
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private AfficherEvent afficherEvent;
     private Event event;
     private ServiceEvent serviceEvent;
 
     public void setAfficherEvent(AfficherEvent afficherEvent) {
         this.afficherEvent = afficherEvent;
+    }
+
+    public void initData(Event event) {
+        this.event = event;
+        textFieldTitre.setText(event.getTitle());
+        textFieldNbrPersonne.setText(Integer.toString(event.getNbrPersonne()));
+        textFieldListeInvites.setText(event.getListeInvites());
+
+        // Conversion de la date en texte
+        textFieldDate.setText(dateFormat.format(event.getDate()));
+
+        chargerEspaces();
+
+        comboBoxEspace.setValue(event.getEspace());
+
+        serviceEvent = new ServiceEvent();
     }
 
     @FXML
@@ -68,10 +74,10 @@ public class DetailsEvent {
                     throw new IllegalArgumentException("Le nombre de personnes doit être compris entre 1 et 50.");
                 }
 
-                // Contrôle de saisie pour la description
-                String description = textFieldDescription.getText().trim();
-                if (description.isEmpty()) {
-                    throw new IllegalArgumentException("La description ne peut pas être vide.");
+                // Contrôle de saisie pour la listeInvites
+                String listeInvites = textFieldListeInvites.getText().trim();
+                if (listeInvites.isEmpty()) {
+                    throw new IllegalArgumentException("La listeInvites ne peut pas être vide.");
                 }
 
                 // Contrôle de saisie pour la date
@@ -92,7 +98,7 @@ public class DetailsEvent {
                 event.setTitle(titre);
                 event.setNbrPersonne(nbrPersonne);
                 event.setEspace(espace);
-                event.setDescription(description);
+                event.setListeInvites(listeInvites);
                 event.setDate(date);
 
                 serviceEvent.modifier(event);
@@ -111,13 +117,6 @@ public class DetailsEvent {
             }
         }
     }
-    private void afficherAlerteErreurEvent(String titre, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(titre);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
 
     @FXML
@@ -133,23 +132,13 @@ public class DetailsEvent {
             }
         }
     }
-
-    public void initData(Event event) {
-        this.event = event;
-        textFieldTitre.setText(event.getTitle());
-        textFieldNbrPersonne.setText(Integer.toString(event.getNbrPersonne()));
-        textFieldDescription.setText(event.getDescription());
-
-        // Conversion de la date en texte
-        textFieldDate.setText(dateFormat.format(event.getDate()));
-
-        chargerEspaces();
-
-        comboBoxEspace.setValue(event.getEspace());
-
-        serviceEvent = new ServiceEvent();
+    private void afficherAlerteErreurEvent(String titre, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
-
 
     private void chargerEspaces() {
         try {

@@ -16,13 +16,13 @@ public class ServiceEvent implements IService<Event> {
             throw new IllegalArgumentException("L'espace est déjà occupé à cette date.");
         }
 
-        String req = "INSERT INTO `event` (`title`, `date`, `nbrPersonne`, `description`, `idEspace`) VALUES (?, ?, ?, ?, ?)";
+        String req = "INSERT INTO `event` (`title`, `date`, `nbrPersonne`, `listeInvites`, `idEspace`) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, event.getTitle());
             pstmt.setTimestamp(2, new java.sql.Timestamp(event.getDate().getTime()));
             pstmt.setInt(3, event.getNbrPersonne());
-            pstmt.setString(4, event.getDescription());
+            pstmt.setString(4, event.getListeInvites());
             pstmt.setInt(5, event.getEspace().getIdEspace());
 
             int rowsAffected = pstmt.executeUpdate();
@@ -112,7 +112,7 @@ public class ServiceEvent implements IService<Event> {
                 event.setTitle(rs.getString("title"));
                 event.setDate(rs.getDate("date")); // Utilisation directe de rs.getDate()
                 event.setNbrPersonne(rs.getInt("nbrPersonne"));
-                event.setDescription(rs.getString("description"));
+                event.setListeInvites(rs.getString("listeInvites"));
 
                 // Création de l'objet Espace et assignation au nouvel événement
                 Espace espace = new Espace();
@@ -132,12 +132,12 @@ public class ServiceEvent implements IService<Event> {
         if (isEspaceOccupied(event.getDate(), event.getEspace().getIdEspace())) {
             throw new IllegalArgumentException("L'espace est déjà occupé à cette date.");
         }
-        String req = "UPDATE event SET title = ?, date = ?, nbrPersonne = ?, description = ? WHERE idEvent = ?";
+        String req = "UPDATE event SET title = ?, date = ?, nbrPersonne = ?, listeInvites = ? WHERE idEvent = ?";
         try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
             pstmt.setString(1, event.getTitle());
             pstmt.setTimestamp(2, new Timestamp(event.getDate().getTime())); // Utilisation de Timestamp pour java.sql.Date
             pstmt.setInt(3, event.getNbrPersonne());
-            pstmt.setString(4, event.getDescription());
+            pstmt.setString(4, event.getListeInvites());
             pstmt.setInt(5, event.getIdEvent());
 
             int rowsAffected = pstmt.executeUpdate();
@@ -182,7 +182,7 @@ public class ServiceEvent implements IService<Event> {
                     event.setTitle(rs.getString("title"));
                     event.setDate(rs.getDate("date"));
                     event.setNbrPersonne(rs.getInt("nbrPersonne"));
-                    event.setDescription(rs.getString("description"));
+                    event.setListeInvites(rs.getString("listeInvites"));
 
                     // Création de l'objet Espace et assignation à l'événement
                     Espace espace = new Espace();

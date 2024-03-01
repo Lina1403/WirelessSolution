@@ -2,8 +2,6 @@ package controllers;
 
 import entities.Espace;
 import entities.Event;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,50 +11,33 @@ import javafx.stage.Stage;
 import services.IService;
 import services.ServiceEspace;
 import services.ServiceEvent;
-
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class AjouterEspace {
 
-    @FXML
-    private ListView<Espace> listEspace;
-
-    @FXML
-    private TextField txtNom;
-
-    @FXML
-    private ComboBox<Espace.Etat> cbEtat;
-
-    @FXML
-    private TextField txtCapacite;
-
-    @FXML
-    private TextField txtDescription;
-
-    @FXML
-    private Button btnSave;
-
-    @FXML
-    private Button btnAdd;
-
-
-    @FXML
-    private Label lblNomError, lblCapaciteError, lblDescriptionError, lblEtatError;
+    @FXML private TextField txtNom;
+    @FXML private ComboBox<Espace.Etat> cbEtat;
+    @FXML private TextField txtCapacite;
+    @FXML private TextField txtDescription;
 
     private Espace espace;
-
     private final IService<Espace> serviceEspace = new ServiceEspace();
 
     @FXML
     void initialize() {
         cbEtat.getItems().addAll(Espace.Etat.LIBRE, Espace.Etat.RESERVE);
+        cbEtat.setValue(Espace.Etat.LIBRE); // Définir l'état par défaut comme "Libre"
+    }
 
-        // Définir l'état par défaut comme "Libre"
-        cbEtat.setValue(Espace.Etat.LIBRE);
+    // Méthode appelée pour initialiser les données de l'espace à modifier
+    public void initData(Espace espace) {
+        this.espace = espace;
+        remplirChamps(espace);
     }
 
     private void remplirChamps(Espace espace) {
@@ -65,63 +46,6 @@ public class AjouterEspace {
         txtCapacite.setText(String.valueOf(espace.getCapacite()));
         txtDescription.setText(espace.getDescription());
     }
-
-    @FXML
-    void saveChanges() {
-        if (espace != null) {
-            try {
-                // Contrôle de saisie pour le nom
-                String nom = txtNom.getText().trim();
-                if (nom.isEmpty()) {
-                    throw new IllegalArgumentException("Le nom de l'espace ne peut pas être vide.");
-                }
-                if (!nom.matches("[a-zA-Z ]+")) {
-                    throw new IllegalArgumentException("Le nom doit contenir uniquement des lettres et des espaces.");
-                }
-
-                // Contrôle de saisie pour la capacité
-                int capacite = Integer.parseInt(txtCapacite.getText().trim());
-                if (capacite <= 0 || capacite > 50) {
-                    throw new IllegalArgumentException("La capacité de l'espace doit être un entier compris entre 1 et 50.");
-                }
-
-                // Contrôle de saisie pour la description
-                String description = txtDescription.getText().trim();
-                if (description.isEmpty()) {
-                    throw new IllegalArgumentException("La description ne peut pas être vide.");
-                }
-
-                // Mettre à jour les propriétés de l'espace avec les nouvelles valeurs
-                espace.setName(nom);
-                espace.setEtat(cbEtat.getValue());
-                espace.setCapacite(capacite);
-                espace.setDescription(description);
-
-                // Appeler la méthode pour mettre à jour l'espace dans la base de données
-                serviceEspace.modifier(espace);
-                listEspace.refresh(); // Rafraîchir l'affichage de la liste
-
-                afficherAlerteConfirmationEvent("Validation", "Espace modifié avec succès !");
-            } catch (NumberFormatException e) {
-                afficherAlerteErreurEvent("Erreur de format", "Veuillez saisir un nombre valide pour la capacité.");
-            } catch (IllegalArgumentException e) {
-                afficherAlerteErreurEvent("Erreur de saisie", e.getMessage());
-            } catch (SQLException e) {
-                afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de la modification de l'espace : " + e.getMessage());
-            } catch (Exception e) {
-                afficherAlerteErreurEvent("Erreur", e.getMessage());
-            }
-        } else {
-            afficherAlerteErreurEvent("Erreur", "Veuillez sélectionner un espace à modifier.");
-        }
-    }
-
-    public void initData(Espace espace) {
-        this.espace = espace;
-        remplirChamps(espace);
-    }
-
-
 
     // ouvrir fenetre afficherespace
     @FXML
@@ -160,9 +84,6 @@ public class AjouterEspace {
         txtDescription.clear();
     }
 
-    private void afficherErreurChamp(Label champErreur, String message) {
-        champErreur.setText(message);
-    }
     @FXML
     void ajouterEspace() {
         try {
@@ -211,16 +132,6 @@ public class AjouterEspace {
     }
 
 
-
-
-
-    private void afficherErreur(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 
     private void afficherAlerteConfirmationEvent(String titre, String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

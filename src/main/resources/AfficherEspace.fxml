@@ -11,6 +11,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ChoiceBox?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherEspace">
 
     <children>
@@ -32,7 +34,7 @@
                 </FXCollections>
             </items>
         </ComboBox>
-        <TextField fx:id="txtDescription" layoutX="593.0" layoutY="326.0" prefHeight="26.0" prefWidth="86.0" promptText="Description" />
+        <TextArea fx:id="txtDescription" layoutX="593.0" layoutY="326.0" prefHeight="26.0" prefWidth="86.0" promptText="Description" />
 
         <TextField fx:id="txtCapacite" layoutX="593.0" layoutY="273.0" prefHeight="26.0" prefWidth="86.0" promptText="Capacité" />
         <Label fx:id="lblTitleError" layoutX="305.0" layoutY="362.0" prefHeight="18.0" prefWidth="86.0" />
@@ -40,10 +42,8 @@
         <ListView fx:id="listEspace" layoutX="264.0" layoutY="143.0" prefHeight="244.0" prefWidth="272.0" />
         <Button blendMode="HARD_LIGHT" layoutX="429.0" layoutY="478.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" />
         <Button layoutX="64.0" layoutY="165.0" mnemonicParsing="false" onAction="#gererEvenements" opacity="0.0" prefHeight="35.0" prefWidth="106.0" text="gerer les events" />
-        <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" cache="true" layoutX="584.0" layoutY="418.0" mnemonicParsing="false" onAction="#genererPDF" prefHeight="26.0" prefWidth="123.0" text="PDF" />
         <TextField fx:id="txtRechercheNom" layoutX="400.0" layoutY="102.0" promptText="Rechercher par nom" />
-        <Button blendMode="HARD_LIGHT" layoutX="552.0" layoutY="102.0" onAction="#rechercherParNom" prefHeight="18.0" prefWidth="75.0" text="Rechercher" />
-        <Button blendMode="HARD_LIGHT" layoutX="266.0" layoutY="102.0" onAction="#trierParEtat" text="Trier par état" />
+        <ChoiceBox fx:id="choixTri" layoutX="34.0" layoutY="30.0" prefWidth="150.0" />
 
     </children>
 

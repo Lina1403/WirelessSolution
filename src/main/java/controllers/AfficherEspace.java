@@ -3,6 +3,7 @@ package controllers;
 import entities.Espace;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import java.util.function.Predicate;
+import javafx.collections.transformation.FilteredList;
+
+
 import javafx.stage.Stage;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import services.IService;
@@ -20,6 +26,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -46,36 +53,40 @@ public class AfficherEspace {
     private TextField txtCapacite;
 
     @FXML
-    private TextField txtDescription;
+    private TextArea txtDescription;
 
     @FXML
     private ComboBox<String> comboEtat;
 
     @FXML
-    private Label lblTitleError;
+    private ChoiceBox<String> choixTri;
 
-    @FXML
-    private Label lblDateError;
-
-    @FXML
-    private Label lblNbrPersonneError;
-
-    @FXML
-    private Label lblDescriptionError;
-    @FXML
-    private Button boutonPDF;
     @FXML
     private TextField txtRechercheNom;
 
     private final IService<Espace> serviceEspace = new ServiceEspace();
 
     @FXML
-
     void initialize() {
         try {
-            boutonPDF.setOnAction(event -> {
-                genererPDF();
+            ObservableList<String> optionsTri = FXCollections.observableArrayList("Nom", "État", "Capacité");
+            choixTri.setItems(optionsTri);
+            choixTri.setValue("Nom");
+
+            // Ajouter un écouteur sur les changements de sélection dans le ChoiceBox
+            choixTri.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                // Appeler la méthode de tri lorsque l'utilisateur change l'option de tri
+                trier(newValue);
             });
+            txtRechercheNom.textProperty().addListener((observable, oldValue, newValue) -> {
+                try {
+                    rechercherParNom(); // Appeler la méthode rechercherParNom lorsque le texte dans le champ de recherche change
+                } catch (SQLException e) {
+                    afficherAlerteErreur("Erreur lors de la recherche : " + e.getMessage());
+                }
+            });
+
+
             chargerListeEspaces();
 
             // Configurer la façon dont les éléments sont rendus dans la ListView
@@ -102,37 +113,57 @@ public class AfficherEspace {
             afficherAlerteErreur("Erreur lors du chargement des espaces : " + e.getMessage());
         }
     }
+
     @FXML
-    void trierParEtat() {
+    void trier(String methodeTri) {
         ObservableList<Espace> espaces = listEspace.getItems();
-        espaces.sort((espace1, espace2) -> {
-            // Définir l'ordre de tri en fonction de l'état
-            if (espace1.getEtat() == Espace.Etat.LIBRE && espace2.getEtat() == Espace.Etat.RESERVE) {
-                return -1; // "libre" avant "réservé"
-            } else if (espace1.getEtat() == Espace.Etat.RESERVE && espace2.getEtat() == Espace.Etat.LIBRE) {
-                return 1; // "réservé" après "libre"
-            } else {
-                return 0; // Aucun changement d'ordre
-            }
-        });
+
+        // Utiliser une expression switch pour définir l'ordre de tri en fonction de la méthode sélectionnée
+        switch (methodeTri) {
+            case "Nom":
+                espaces.sort((espace1, espace2) -> espace1.getName().compareTo(espace2.getName()));
+                break;
+            case "État":
+                espaces.sort(this::trierParEtat);
+                break;
+            case "Capacité":
+                espaces.sort(Comparator.comparingInt(Espace::getCapacite));
+                break;
+            default:
+                // Aucun changement d'ordre par défaut
+        }
+
         listEspace.setItems(espaces);
+    }
+
+
+    // Méthode pour trier par état (libre puis réservé)
+    private int trierParEtat(Espace espace1, Espace espace2) {
+        if (espace1.getEtat() == Espace.Etat.LIBRE && espace2.getEtat() == Espace.Etat.RESERVE) {
+            return -1; // "libre" avant "réservé"
+        } else if (espace1.getEtat() == Espace.Etat.RESERVE && espace2.getEtat() == Espace.Etat.LIBRE) {
+            return 1; // "réservé" après "libre"
+        } else {
+            return 0; // Aucun changement d'ordre
+        }
     }
 
 
     @FXML
     void rechercherParNom() throws SQLException {
-        String nomRecherche = txtRechercheNom.getText().trim();
+        String nomRecherche = txtRechercheNom.getText().trim().toLowerCase();
+
         if (!nomRecherche.isEmpty()) {
-            // Faites la recherche et mettez à jour la liste affichée dans la ListView
-            ObservableList<Espace> resultats = FXCollections.observableArrayList();
-            for (Espace espace : listEspace.getItems()) {
-                if (espace.getName().toLowerCase().contains(nomRecherche.toLowerCase())) {
-                    resultats.add(espace);
-                }
-            }
-            listEspace.setItems(resultats);
+            // Créer un prédicat pour filtrer les espaces dont le nom contient la chaîne de recherche
+            Predicate<Espace> nomPredicate = espace -> espace.getName().toLowerCase().contains(nomRecherche);
+
+            // Créer un FilteredList avec le prédicat
+            FilteredList<Espace> filteredList = new FilteredList<>(listEspace.getItems(), nomPredicate);
+
+            // Mettre à jour la liste affichée dans la ListView avec le FilteredList filtré
+            listEspace.setItems(filteredList);
         } else {
-            // Si le champ de recherche est vide, affichez tous les espaces
+            // Si le champ de recherche est vide, afficher tous les espaces
             chargerListeEspaces();
         }
     }
@@ -249,81 +280,6 @@ public class AfficherEspace {
         // Afficher la liste dans la ListView
         listEspace.setItems(espaceList);
     }
-    @FXML
-    private void genererPDF() {
-        Espace selectedEspace = listEspace.getSelectionModel().getSelectedItem();
-        if (selectedEspace != null) {
-            try {
-                PDDocument document = new PDDocument();
-                PDPage page = new PDPage();
-                document.addPage(page);
-
-                PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
-                // Charger la police Cairoplay
-                PDType0Font font = PDType0Font.load(document, getClass().getResourceAsStream("/fonts/CairoPlay-VariableFont_slnt,wght.ttf"));
-
-                float margin = 0;
-
-                // Charger l'image de bordure
-                PDImageXObject borderImage = PDImageXObject.createFromFile("src/main/resources/image/BORDD.png", document);
-
-                // Dessiner l'image de bordure sur la page
-                contentStream.drawImage(borderImage, margin, margin, page.getMediaBox().getWidth() - 2 * margin, page.getMediaBox().getHeight() - 2 * margin);
-                // Charger l'image du logo
-                PDImageXObject logoImage = PDImageXObject.createFromFile("src/main/resources/image/logo.png", document);
-                float logoWidth = 125; // Largeur du logo réduite de 10 unités
-                float logoHeight = logoWidth * logoImage.getHeight() / logoImage.getWidth(); // Calculer la hauteur du logo en préservant les proportions
-
-                // Dessiner le logo légèrement à gauche et un peu plus haut
-                contentStream.drawImage(logoImage, page.getMediaBox().getWidth() - margin - logoWidth - 15, page.getMediaBox().getHeight() - margin - logoHeight - 15, logoWidth, logoHeight);
-
-                // Dessiner le titre
-                float titleFontSize = 25;
-                contentStream.setNonStrokingColor(Color.BLACK); // Couleur du texte noir
-                contentStream.setFont(font, titleFontSize);
-                float titleX = (page.getMediaBox().getWidth() - font.getStringWidth("Détails de l'espace") / 1000 * titleFontSize) / 2 + 40; // Centrer le texte sur l'axe des x
-                float titleY = page.getMediaBox().getHeight() - 3 * (margin+30);
-                contentStream.setNonStrokingColor(new Color(0, 0, 139)); // Bleu foncé pour le titre
-                writeText(contentStream, "Détails de l'espace", titleX, titleY, font);
-
-                float normalFontSize = 14;
-                contentStream.setFont(font, normalFontSize);
-
-                // Dessiner les informations de l'espace
-                float infoX = (margin+30) * 3;
-                float infoY = titleY - normalFontSize * 6; // Décaler un peu plus vers le haut
-                float infoSpacing = normalFontSize * 2; // Ajouter un peu d'espace entre les lignes
-                contentStream.setNonStrokingColor(Color.BLACK); // Noir pour les informations de l'espace
-                writeText(contentStream, "Nom : " + selectedEspace.getName(), infoX, infoY, font);
-                infoY -= infoSpacing;
-                writeText(contentStream, "État : " + selectedEspace.getEtat().toString(), infoX, infoY, font);
-                infoY -= infoSpacing;
-                writeText(contentStream, "Capacité : " + selectedEspace.getCapacite(), infoX, infoY, font);
-                infoY -= infoSpacing;
-                writeText(contentStream, "Description : " + selectedEspace.getDescription(), infoX, infoY, font);
-
-                contentStream.close();
-
-                File file = new File(selectedEspace.getName() + ".pdf");
-                document.save(file);
-                document.close();
-
-                Desktop.getDesktop().open(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private void writeText(PDPageContentStream contentStream, String text, float x, float y, PDType0Font font) throws IOException {
-        contentStream.beginText();
-        // Ajouter un décalage vers la droite (par exemple, 10 unités)
-        contentStream.newLineAtOffset(x + 10, y);
-        contentStream.setFont(font, 14);
-        contentStream.showText(text);
-        contentStream.endText();
-    }
-
 
     private void afficherAlerteErreur(String message) {
         showAlert(Alert.AlertType.ERROR, "Erreur", message);

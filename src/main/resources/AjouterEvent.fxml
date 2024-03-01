@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -31,41 +32,41 @@
         <VBox spacing="10.0" />
         <VBox spacing="10.0" />
     </VBox>
-      <TextField fx:id="titleField" layoutX="364.0" layoutY="124.0" prefHeight="26.0" prefWidth="103.0" />
-      <DatePicker fx:id="datePicker" layoutX="364.0" layoutY="175.0" prefHeight="26.0" prefWidth="103.0" />
-      <TextField fx:id="nbrPersonneField" layoutX="364.0" layoutY="225.0" prefHeight="26.0" prefWidth="103.0" />
-      <TextField fx:id="descriptionField" layoutX="364.0" layoutY="274.0" prefHeight="26.0" prefWidth="103.0" />
-      <ComboBox fx:id="espaceComboBox" layoutX="365.0" layoutY="317.0" prefHeight="26.0" prefWidth="103.0">
-                <!-- Les noms d'espaces seront ajoutés dynamiquement -->
-            </ComboBox>
+    <TextField fx:id="titleField" layoutX="380.0" layoutY="90.0" prefHeight="26.0" prefWidth="103.0" />
+    <DatePicker fx:id="datePicker" layoutX="380.0" layoutY="141.0" prefHeight="26.0" prefWidth="103.0" />
+    <TextField fx:id="nbrPersonneField" layoutX="380.0" layoutY="191.0" prefHeight="26.0" prefWidth="103.0" />
+    <ComboBox fx:id="espaceComboBox" layoutX="382.0" layoutY="238.0" prefHeight="26.0" prefWidth="103.0">
+        <!-- Les noms d'espaces seront ajoutés dynamiquement -->
+    </ComboBox>
 
-     <Button blendMode="HARD_LIGHT" layoutX="327.0" layoutY="381.0" mnemonicParsing="false" onAction="#ajouterEvent" prefHeight="26.0" prefWidth="67.0" text="Ajouter" />
-    <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" layoutX="428.0" layoutY="381.0" onAction="#genererPDF" prefHeight="26.0" prefWidth="67.0" text="  PDF" />
+    <Button blendMode="HARD_LIGHT" layoutX="398.0" layoutY="407.0" mnemonicParsing="false" onAction="#ajouterEvent" prefHeight="26.0" prefWidth="67.0" text="Ajouter" />
+    <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" layoutX="497.0" layoutY="407.0" onAction="#genererPDF" prefHeight="26.0" prefWidth="67.0" text="  PDF" />
 
-    <Label layoutX="231.0" layoutY="320.0" text="Espace" textFill="#fffafa">
-      <font>
-         <Font size="13.0" />
-      </font>
-   </Label>
-      <Label layoutX="226.0" layoutY="278.0" text="Description" textFill="WHITE">
-      <font>
-         <Font size="13.0" />
-      </font>
-   </Label>
-      <Label layoutX="222.0" layoutY="227.0" text="Nombre de personnes" textFill="#f2e5e5">
-      <font>
-         <Font size="13.0" />
-      </font>
-   </Label>
+    <Label layoutX="238.0" layoutY="241.0" text="Espace" textFill="#fffafa">
+        <font>
+            <Font size="13.0" />
+        </font>
+    </Label>
+    <Label layoutX="243.0" layoutY="291.0" text="Liste Invités" textFill="WHITE">
+        <font>
+            <Font size="13.0" />
+        </font>
+    </Label>
+    <Label layoutX="238.0" layoutY="193.0" text="Nombre de personnes" textFill="#f2e5e5">
+        <font>
+            <Font size="13.0" />
+        </font>
+    </Label>
 
-      <Label layoutX="226.0" layoutY="178.0" text="Date" textFill="#fffbfb">
-      <font>
-         <Font size="13.0" />
-      </font>
-   </Label>
-      <Label layoutX="229.0" layoutY="127.0" prefHeight="18.0" prefWidth="42.0" text="Titre" textFill="WHITE">
-      <font>
-         <Font size="13.0" />
-      </font>
-   </Label>
+    <Label layoutX="242.0" layoutY="144.0" text="Date" textFill="#fffbfb">
+        <font>
+            <Font size="13.0" />
+        </font>
+    </Label>
+    <Label layoutX="245.0" layoutY="93.0" prefHeight="18.0" prefWidth="42.0" text="Titre" textFill="WHITE">
+        <font>
+            <Font size="13.0" />
+        </font>
+    </Label>
+   <TextArea fx:id="listInvitesField" layoutX="382.0" layoutY="288.0" prefHeight="95.0" prefWidth="190.0" />
 </AnchorPane>

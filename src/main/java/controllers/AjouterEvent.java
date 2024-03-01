@@ -10,7 +10,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import services.ServiceEvent;
-
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -30,24 +29,14 @@ public class AjouterEvent {
 
     private final ServiceEvent serviceEvent = new ServiceEvent();
 
-    @FXML
-    private DatePicker datePicker;
 
-    @FXML
-    private TextField descriptionField;
-
-    @FXML
-    private TextField nbrPersonneField;
-
-    @FXML
-    private TextField titleField;
-
-    @FXML
-    private ComboBox<String> espaceComboBox;
-    @FXML
-    private Button boutonPDF;
+    @FXML private DatePicker datePicker;
+    @FXML private TextField listeInvitesField;
+    @FXML private TextField nbrPersonneField;
+    @FXML private TextField titleField;
+    @FXML private ComboBox<String> espaceComboBox;
+    @FXML private Button boutonPDF;
     private Event addedEvent;
-
     @FXML
     void initialize() {
         try {
@@ -56,6 +45,7 @@ public class AjouterEvent {
         } catch (SQLException e) {
             afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de la récupération des noms d'espaces : " + e.getMessage());
         }
+
         boutonPDF.setOnAction(event -> {
             genererPDF();
         });
@@ -82,11 +72,11 @@ public class AjouterEvent {
                 throw new IllegalArgumentException("Le nombre de personnes doit être un entier compris entre 1 et 50.");
             }
 
-            // Contrôle de saisie pour la description
-            String description = descriptionField.getText().trim();
-            if (description.isEmpty()) {
-                throw new IllegalArgumentException("La description ne peut pas être vide.");
+            String listeInvites = listeInvitesField.getText().trim();
+            if (listeInvites.isEmpty()) {
+                throw new IllegalArgumentException("La liste des invités ne peut pas être vide.");
             }
+
 
             // Récupérer le nom de l'espace sélectionné
             String espaceName = espaceComboBox.getValue();
@@ -103,7 +93,8 @@ public class AjouterEvent {
             }
 
             // Créer l'objet Event et l'ajouter
-            Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, description, espaceObj);
+            // Créer l'objet Event et l'ajouter
+            Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, listeInvites, espaceObj);
             serviceEvent.ajouter(eventObj);
 
             // Stocker l'événement ajouté dans la variable addedEvent
@@ -121,8 +112,6 @@ public class AjouterEvent {
             afficherAlerteErreurEvent("Erreur", e.getMessage());
         }
     }
-
-
 
     @FXML
         private void genererPDF() {
@@ -170,7 +159,7 @@ public class AjouterEvent {
                 infoY -= infoSpacing;
                 writeText(contentStream, "Nombre de personnes : " + addedEvent.getNbrPersonne(), infoX, infoY, font);
                 infoY -= infoSpacing;
-                writeText(contentStream, "Description : " + addedEvent.getDescription(), infoX, infoY, font);
+                writeText(contentStream, "listeInvites : " + addedEvent.getListeInvites(), infoX, infoY, font);
 
                 contentStream.close();
 

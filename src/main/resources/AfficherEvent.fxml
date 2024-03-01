@@ -19,7 +19,6 @@
         <HBox layoutX="46.0" layoutY="366.0" spacing="20.0" /> <!-- Vous pouvez ajouter d'autres éléments ici si nécessaire -->
         <Button fx:id="boutonGerer" blendMode="HARD_LIGHT" layoutX="288.0" layoutY="501.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="147.0" text="Gerer les évènements" />
         <Button fx:id="boutonGererEspace" layoutX="59.0" layoutY="103.0" mnemonicParsing="false" onAction="#ouvrirAjouterEspace" opacity="0.0" prefHeight="35.0" prefWidth="110.0" text="Gerer les espaces " />
-        <Button fx:id="boutonPDF" blendMode="HARD_LIGHT" layoutX="477.0" layoutY="501.0" mnemonicParsing="false" onAction="#ouvrirPDFListeEvents" prefHeight="26.0" prefWidth="110.0" text=" PDF" />
         <TextField fx:id="txtRechercheNom" layoutX="504.0" layoutY="120.0" prefHeight="26.0" prefWidth="138.0" promptText="Rechercher par nom" />
         <Button layoutX="646.0" layoutY="121.0" onAction="#rechercherParNom" prefHeight="26.0" prefWidth="80.0" text="Rechercher" />
         <Button layoutX="274.0" layoutY="121.0" onAction="#trierParNom" text="Trier par nom" />

@@ -8,26 +8,26 @@ public class Event {
     private String title;
     private Date date;
     private int nbrPersonne;
-    private String description;
+    private String listeInvites; // Renamed variable
     private Espace espace;
 
     public Event() {
     }
 
-    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String description, Espace espace) {
+    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String listeInvites, Espace espace) {
         this.idEvent = idEvent;
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
-        this.description = description;
+        this.listeInvites = listeInvites;
         this.espace = espace;
     }
 
-    public Event(String title, Date date, int nbrPersonne, String description, Espace espace) {
+    public Event(String title, Date date, int nbrPersonne, String listeInvites, Espace espace) {
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
-        this.description = description;
+        this.listeInvites = listeInvites;
         this.espace = espace;
     }
 
@@ -63,14 +63,13 @@ public class Event {
         this.nbrPersonne = nbrPersonne;
     }
 
-    public String getDescription() {
-        return description;
+    public String getListeInvites() { // Getter renamed
+        return listeInvites;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setListeInvites(String listeInvites) { // Setter renamed
+        this.listeInvites = listeInvites;
     }
-
     public Espace getEspace() {
         return espace;
     }
@@ -85,7 +84,7 @@ public class Event {
                 ", title='" + title + '\'' +
                 ", date=" + date +
                 ", nbrPersonne=" + nbrPersonne +
-                ", description='" + description + '\'' +
+                ", listeInvites='" + listeInvites + '\'' + // Updated variable name in the output
                 ", espace=" + espace +
                 '}';
     }
@@ -99,12 +98,12 @@ public class Event {
                 Objects.equals(idEvent, event.idEvent) &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(date, event.date) &&
-                Objects.equals(description, event.description) &&
+                Objects.equals(listeInvites, event.listeInvites) && // Updated variable name
                 Objects.equals(espace, event.espace);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, title, date, nbrPersonne, description, espace);
+        return Objects.hash(idEvent, title, date, nbrPersonne, listeInvites, espace);
     }
 }
