@@ -99,7 +99,7 @@ public class Discussion {
     @Override
     public String toString() {
         return "Discussion{" +
-                "id=" + id +
+
                 ", titre='" + titre + '\'' +
                 ", TimeStampCreation=" + TimeStampCreation +
                 ", createur=" + createur +

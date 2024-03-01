@@ -62,6 +62,17 @@ public class AjoutDiscussion {
                         errorMessage2.setText("");
                         isDescriptionValid = true;
                 }
+                if(titreExist(title)){
+                        errorMessage.setText("Le titre exist !");
+
+                }
+                if(!titreValide(desc)){
+                        errorMessage2.setText(" la description contient des mots inapropriés");
+                }
+                if(!titreValide(title)){
+                        errorMessage.setText("Le titre contient des mots inapropriés !");
+
+                }
 
 
                         if(titreValide(title) && !titreExist(title) && isTitreValid && isDescriptionValid){
@@ -124,8 +135,10 @@ public class AjoutDiscussion {
                 List<Discussion> discussions = ds.afficher();
                 for(Discussion discussion:discussions){
                         if(discussion.getTitre().equalsIgnoreCase(titre))
+
                                 return true ;
                 }
+
                 return false;
 
         }

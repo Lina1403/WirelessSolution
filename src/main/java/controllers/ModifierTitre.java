@@ -53,6 +53,17 @@ public class ModifierTitre {
                 error2.setText("");
                 isDescriptionValid = true;
             }
+            if(AjoutDiscussion.titreExist(titre)){
+                error.setText("Le titre exist !");
+
+            }
+            if(!AjoutDiscussion.titreValide(description)){
+                error2.setText(" la description contient des mots inapropriés");
+            }
+            if(!AjoutDiscussion.titreValide(titre)){
+                error.setText("Le titre contient des mots inapropriés !");
+
+            }
             if(AjoutDiscussion.titreValide(titre) && !AjoutDiscussion.titreExist(titre) && isTitreValid && isDescriptionValid) {
                 Discussion discussion = new Discussion(id, titre, description);
                 try {

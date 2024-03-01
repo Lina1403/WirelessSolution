@@ -101,7 +101,7 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + id +
+
                 ", contenu='" + contenu + '\'' +
                 ", TimeStamp_envoi=" + TimeStamp_envoi +
                 ", emetteur=" + emetteur +

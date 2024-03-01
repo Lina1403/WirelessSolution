@@ -6,12 +6,16 @@ import entities.Message;
 import entities.User;
 import utils.DataSource;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageService implements IService<Message>{
     Connection connexion;
+    private FileInputStream fis ;
+    public static File file ;
     public MessageService(){
         connexion = DataSource.getInstance().getConnexion();
     }
@@ -46,6 +50,8 @@ public class MessageService implements IService<Message>{
             pst.setTimestamp(2, message.getTimeStamp_envoi());
             pst.setInt(3,message.getEmetteur().getId());
             pst.setInt(4, MessageController.discuId);
+
+
             pst.executeUpdate();
         }catch(SQLException e){
             System.out.println(e.getMessage());
@@ -128,4 +134,5 @@ public class MessageService implements IService<Message>{
         return messages;
 
     }
+
 }

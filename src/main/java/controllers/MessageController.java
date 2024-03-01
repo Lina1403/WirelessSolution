@@ -9,7 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -17,6 +20,8 @@ import services.DiscussionService;
 import services.MessageService;
 import utils.MessageCell;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -38,6 +43,8 @@ public class MessageController {
     private Button emojiButton;
     @FXML
     private Label error;
+    @FXML
+    private ImageView imageView;
 
     public void setMessageField(TextField messageField) {
         this.messageField = messageField;
@@ -46,10 +53,12 @@ public class MessageController {
     public static int discuId ;
     public static String emojis = "";
 
+
     User user1 = new User(2,"chiheb");
     User user2 = new User(3,"dhia");
     MessageService ms = new MessageService();
     DiscussionService ds = new DiscussionService();
+    File file ;
 
     public void initialize() throws SQLException {
         ObservableList<Message> messages = FXCollections.observableList(ms.afficherByDiscussionId(discuId));
@@ -63,6 +72,41 @@ public class MessageController {
                 throw new RuntimeException(ex);
             }
         });
+        Stage stage = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        attachButton.setOnAction(e->{
+            file = fileChooser.showOpenDialog(stage);
+            if(file!=null){
+                System.out.println(file);
+
+                Image image = new Image(file.toURI().toString(),100,150,true,true);
+                System.out.println(image);
+                imageView.setImage(image);
+                imageView.setFitWidth(100);
+                imageView.setFitHeight(150);
+                imageView.setPreserveRatio(true);
+
+            }
+
+        });
+        imageView.setOnMouseClicked(event -> {
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        ContextMenu contextMenu = new ContextMenu();
+
+                        // Create menu items
+                        MenuItem deleteMenuItem = new MenuItem("Delete");
+                        deleteMenuItem.setOnAction(e->{
+                            imageView.setImage(null);
+                            imageView.setFitWidth(0);
+                            imageView.setFitHeight(0);
+                        });
+                        contextMenu.getItems().addAll( deleteMenuItem);
+
+                        // Show context menu at the mouse location
+                        contextMenu.show(messageList, event.getScreenX(), event.getScreenY());
+
+                    }
+                });
         attachContextMenuToListView(messageList);
 
 
@@ -208,6 +252,7 @@ public class MessageController {
         });
 
     }
+
 
 
 }
