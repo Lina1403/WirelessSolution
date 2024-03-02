@@ -1,1 +1,3 @@
+controllers\Statistique.class
+controllers\Graph.class
 controllers\AppartementCell.class

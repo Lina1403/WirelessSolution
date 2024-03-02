@@ -3,6 +3,8 @@ package services;
 import entities.Appartement;
 import entities.Facture;
 import utils.DataSource;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.management.Query;
 import java.awt.*;
@@ -215,121 +217,110 @@ public class ServiceFacture implements IService<Facture>{
 
         return factures;
     }
-    public Set<Facture> getAllForAppartementId(int appartementId) throws SQLException {
-        Set<Facture> factures = new HashSet<>();
-        String req = "SELECT * FROM `facture` WHERE `idAppartement` = ?";
+    public float calculerConsommationEnergieAppartementParTypeEtPeriode(int idAppartement, Facture.Type typeFacture, LocalDate dateDebut, LocalDate dateFin) throws SQLException {
+        // Convertir les LocalDate en java.sql.Date
+        Date sqlDateDebut = convertToLocalDateViaSqlDate(dateDebut);
+        Date sqlDateFin = convertToLocalDateViaSqlDate(dateFin);
 
-        try (PreparedStatement ps = cnx.prepareStatement(req)) {
-            ps.setInt(1, appartementId);
+        float consommation = 0;
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Facture facture = new Facture();
-                    facture.setIdFacture(rs.getInt("idFacture"));
-                    facture.setNumFacture(rs.getInt("numFacture"));
-                    facture.setDate(rs.getDate("date"));
-                    Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
-                    facture.setType(typeFacture);
-                    facture.setMontant(rs.getFloat("montant"));
-                    facture.setDescriptionFacture(rs.getString("descriptionFacture"));
-
-                    Appartement appartement = new Appartement();
-                    appartement.setIdAppartement(rs.getInt("idAppartement"));
-                    // Notez que vous n'avez pas besoin de charger toutes les informations de l'appartement
-                    // Vous pouvez simplement affecter l'identifiant de l'appartement à la facture
-                    facture.setAppartement(appartement);
-
-                    factures.add(facture);
-                }
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            // Gérer l'exception selon vos besoins
-        }
-
-        return factures;
-    }
-
-
-    public float getConsommationEnergieParType(int idAppartement, Facture.Type typeFacture) throws SQLException {
-        String sql = "SELECT SUM(montant) FROM facture WHERE idAppartement = ? AND type = ?";
-        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
+        // Requête pour récupérer les factures d'un type spécifique pour un appartement donné dans une période donnée
+        String req = "SELECT montant FROM facture WHERE idAppartement = ? AND type = ? AND date BETWEEN ? AND ?";
+        try (PreparedStatement statement = cnx.prepareStatement(req)) {
             statement.setInt(1, idAppartement);
             statement.setString(2, typeFacture.toString());
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getFloat(1);
-            } else {
-                return 0;
+            statement.setDate(3, sqlDateDebut);
+            statement.setDate(4, sqlDateFin);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    consommation += rs.getFloat("montant");
+                }
             }
         }
+        return consommation;
     }
- /*   public float getConsommationEnergieParPlageDates(Date dateDebut, Date dateFin) throws SQLException {
-        String sql = "SELECT SUM(montant) FROM facture WHERE date BETWEEN ? AND ?";
-        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
-            statement.setDate(1, new java.sql.Date(dateDebut.getTime()));
-            statement.setDate(2, new java.sql.Date(dateFin.getTime()));
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return rs.getFloat(1);
-            } else {
-                return 0;
+    public float calculerConsommationEnergieTotaleParTypeEtPeriode(Facture.Type typeFacture, LocalDate dateDebut, LocalDate dateFin) throws SQLException {
+        // Convertir les LocalDate en java.sql.Date
+        Date sqlDateDebut = convertToLocalDateViaSqlDate(dateDebut);
+        Date sqlDateFin = convertToLocalDateViaSqlDate(dateFin);
+
+        float consommationTotale = 0;
+
+        // Requête pour récupérer les factures d'un type spécifique pour tous les appartements dans une période donnée
+        String req = "SELECT montant FROM facture WHERE type = ? AND date BETWEEN ? AND ?";
+        try (PreparedStatement statement = cnx.prepareStatement(req)) {
+            statement.setString(1, typeFacture.toString());
+            statement.setDate(2, sqlDateDebut);
+            statement.setDate(3, sqlDateFin);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    consommationTotale += rs.getFloat("montant");
+                }
             }
         }
-    } */
- public Map<String, Float> getEnergyConsumption(String criteria, Date startDate, Date endDate) throws SQLException {
-     Map<String, Float> energyConsumption = new HashMap<>();
+        return consommationTotale;
+    }
+    public float calculerConsommationEnergieTotaleParEtageEtType(int numeroEtage, Facture.Type typeFacture) throws SQLException {
+        float consommationEtage = 0;
 
-     String sql = "SELECT ";
-     if (criteria.equals("etage")) {
-         sql += "a.nbrEtage, ";
-     } else if (criteria.equals("all")) {
-         sql += "SUM(f.montant) AS total_energy, ";
-     }
-     sql += "SUM(f.montant) AS total_energy FROM facture f ";
-     if (criteria.equals("etage")) {
-         sql += "JOIN appartement a ON f.idAppartement = a.idAppartement ";
-     }
-     sql += "WHERE date BETWEEN ? AND ? ";
-     if (!criteria.equals("all")) {
-         sql += "GROUP BY ";
-         if (criteria.equals("etage")) {
-             sql += "a.nbrEtage";
-         } else {
-             sql += "f.type";
-         }
-     }
+        // Requête pour récupérer les appartements dans un étage spécifique
+        String req = "SELECT idAppartement FROM appartement WHERE nbrEtage = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(req)) {
+            statement.setInt(1, numeroEtage);
 
-     try (PreparedStatement statement = cnx.prepareStatement(sql)) {
-         statement.setDate(1, new java.sql.Date(startDate.getTime()));
-         statement.setDate(2, new java.sql.Date(endDate.getTime()));
-         ResultSet rs = statement.executeQuery();
-         while (rs.next()) {
-             String key;
-             if (criteria.equals("all")) {
-                 key = "total";
-             } else {
-                 key = criteria.equals("etage") ? rs.getString("nbrEtage") : rs.getString("type");
-             }
-             float totalEnergy = rs.getFloat("total_energy");
-             energyConsumption.put(key, totalEnergy);
-         }
-     }
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    int idAppartement = rs.getInt("idAppartement");
+                    consommationEtage += calculerConsommationEnergieAppartementParType(idAppartement, typeFacture);
+                }
+            }
+        }
+        return consommationEtage;
+    }
+    public float calculerConsommationEnergieAppartementParType(int idAppartement, Facture.Type typeFacture) throws SQLException {
+        float consommation = 0;
 
-     return energyConsumption;
- }
+        // Requête pour récupérer les factures d'un type spécifique pour un appartement donné
+        String req = "SELECT montant FROM facture WHERE idAppartement = ? AND type = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(req)) {
+            statement.setInt(1, idAppartement);
+            statement.setString(2, typeFacture.toString());
 
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    consommation += rs.getFloat("montant");
+                }
+            }
+        }
+        return consommation;
+    }
 
-
-
-
-
-
+    private Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
+        return java.sql.Date.valueOf(dateToConvert);
+    }
 
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

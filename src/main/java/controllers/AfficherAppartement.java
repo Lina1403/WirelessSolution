@@ -1,26 +1,21 @@
 package controllers;
 
 import entities.Appartement;
-import entities.Facture;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import services.ServiceAppartemment;
 import services.ServiceFacture;
-import services.StatistiquesService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,6 +58,7 @@ public class AfficherAppartement {
 
     @FXML
     void initialize() {
+
         try {
             afficherAppartements();
         } catch (SQLException e) {
@@ -228,6 +224,30 @@ public class AfficherAppartement {
 
         listView.setItems(FXCollections.observableArrayList(searchResult));
     }
+    @FXML
+    void afficherStatistiques(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Statistique.fxml"));
+            Parent root = loader.load();
+
+            // Obtenez le contrôleur de l'interface Statistique
+            Statistique controller = loader.getController();
+
+            // Initialiser et afficher les statistiques dans l'interface Statistique
+            controller.initialiserStatistiques();
+
+            // Créez une nouvelle scène
+            Stage stage = new Stage();
+            stage.setTitle("Statistiques");
+            stage.setScene(new Scene(root));
+
+            // Affichez la nouvelle scène
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace(); // Gérez l'exception correctement
+        }
+    }
+
 
 
 
