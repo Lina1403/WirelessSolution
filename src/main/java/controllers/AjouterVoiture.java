@@ -1,17 +1,38 @@
 package controllers;
 
+import com.google.zxing.common.BitMatrix;
 import entities.Parking;
 import entities.Voiture;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 import services.ServiceParking;
 import services.ServiceVoiture;
 
 import java.sql.SQLException;
 import java.util.regex.Pattern;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.ProgressBar;
 
 public class AjouterVoiture {
 
@@ -32,10 +53,18 @@ public class AjouterVoiture {
 
     @FXML
     private Button ajouterButton;
-    @FXML
 
+    @FXML
     private Parking selectedParking;
 
+    @FXML
+    private ImageView qrCodeImageView;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    @FXML
+    private Timeline timeline;
 
     private AfficherVoitureAdmin afficherVoitureAdmin;
 
@@ -50,80 +79,127 @@ public class AjouterVoiture {
         this.afficherVoitureAdmin = afficherVoitureAdmin;
     }
 
+    @FXML
+    public void initialize() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+            progressBar.setVisible(false);
+            generateQRCode(matriculeField.getText());
+        }));
+        timeline.setCycleCount(1);
+    }
 
     @FXML
     private void handleAjouterButton(ActionEvent event) {
-        // Désactiver le bouton de suppression avant d'ajouter la voiture
-        supprimerButton.setDisable(true);
-        // Désactiver le bouton d'ajout pour éviter les clics multiples
-        ajouterButton.setDisable(true);
-
         String marque = marqueField.getText();
         String modele = modeleField.getText();
         String couleur = couleurField.getText();
         String matricule = matriculeField.getText();
 
-        // Validation des champs
         if (!validateMarque(marque) || !validateModele(modele) || !validateCouleur(couleur) || !validateMatricule(matricule)) {
-            // Réactiver le bouton d'ajout avant de quitter la méthode
             ajouterButton.setDisable(false);
             return;
         }
 
-        try {
-            // Vérifier si la matricule de la voiture existe déjà dans la base de données
-            ServiceVoiture serviceVoiture = new ServiceVoiture();
-            if (serviceVoiture.existeMatricule(matricule)) {
-                afficherMessageErreur("La matricule de la voiture existe déjà dans le parking.");
-                // Réactiver le bouton d'ajout
+        supprimerButton.setDisable(true);
+        ajouterButton.setDisable(true);
+        progressBar.setVisible(true);
+        progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+
+        Timeline delayTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
+            try {
+                ServiceVoiture serviceVoiture = new ServiceVoiture();
+                if (serviceVoiture.existeMatricule(matricule)) {
+                    afficherMessageErreur("La matricule de la voiture existe déjà dans le parking.");
+                    ajouterButton.setDisable(false);
+                    return;
+                }
+
+                ServiceParking serviceParking = new ServiceParking();
+                selectedParking = serviceParking.getOneById(selectedParking.getIdParking());
+
+                if (selectedParking.getNombreActuelles() >= selectedParking.getCapacite()) {
+                    afficherMessageErreur("Le parking est plein. Impossible d'ajouter plus de voitures.");
+                    ajouterButton.setDisable(false);
+                    return;
+                }
+
+                Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
+
+                idVoitureAjoutee = serviceVoiture.ajouter(voiture);
+
+                if (idVoitureAjoutee != -1) {
+                    generateQRCode(matricule);
+                    progressBar.setVisible(false);
+                    progressBar.setProgress(0);
+
+                    selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() + 1);
+                    serviceParking.modifier(selectedParking);
+
+                    afficherQRCode(matricule); // Affichage du code QR après le délai
+
+                    afficherMessageSucces("Voiture ajoutée avec succès!");
+                } else {
+                    // Traitement en cas d'échec de l'ajout de la voiture
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
                 ajouterButton.setDisable(false);
-                return;
             }
 
-            // Récupérer le parking actuel depuis la base de données pour obtenir la capacité à jour
-            ServiceParking serviceParking = new ServiceParking();
-            selectedParking = serviceParking.getOneById(selectedParking.getIdParking());
-
-            // Afficher la capacité actuelle du parking
-            System.out.println("Capacité du parking avant ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
-
-            // Vérification de la capacité du parking
-            if (selectedParking.getNombreActuelles() >= selectedParking.getCapacite()) {
-                afficherMessageErreur("Le parking est plein. Impossible d'ajouter plus de voitures.");
-                ajouterButton.setDisable(false); // Réactiver le bouton d'ajout
-                return;
-            }
-
-            // Ajouter cette instruction de débogage pour afficher la capacité du parking sélectionné
-            System.out.println("Capacité du parking sélectionné : " + selectedParking.getCapacite());
-
-            Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
-
-            idVoitureAjoutee = serviceVoiture.ajouter(voiture); // Mise à jour de la variable de classe
-
-            if (idVoitureAjoutee != -1) {
-                // Mettre à jour le nombre actuel de voitures dans le parking
-                selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() + 1);
-
-                // Mettre à jour le nombre actuel de voitures dans la base de données
-                serviceParking.modifier(selectedParking);
-
-                afficherMessageSucces("Voiture ajoutée avec succès!");
-
-                // Réactiver le bouton de suppression
-                supprimerButton.setDisable(false);
-            } else {
-                // Traitement en cas d'échec de l'ajout de la voiture
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Réactiver le bouton d'ajout après le processus d'ajout
-            ajouterButton.setDisable(false);
+            System.out.println("Capacité du parking après ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
         }
+        ));
+        delayTimeline.setCycleCount(1);
+        delayTimeline.play();
+    }
 
-        // Afficher la capacité mise à jour du parking après l'ajout de la voiture
-        System.out.println("Capacité du parking après ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
+
+
+    private void generateQRCode(String matricule) {
+        int width = 300;
+        int height = 300;
+        String fileType = "png";
+        String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier";
+
+        String data = "Matricule: " + matricule;
+
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+
+        try {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, width, height, hints);
+
+            BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, fileType, byteArrayOutputStream);
+            byteArrayOutputStream.flush();
+            byteArrayOutputStream.close();
+
+            File qrFile = new File(filePath + "QRCode_" + matricule + "." + fileType);
+            ImageIO.write(bufferedImage, fileType, qrFile);
+
+            System.out.println("QR code généré avec succès.");
+
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void afficherQRCode(String matricule) {
+        String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier";
+        String fileName = "QRCode_" + matricule + ".png";
+
+        File file = new File(filePath + fileName);
+        if (file.exists()) {
+            Image qrCodeImage = new Image(file.toURI().toString());
+            qrCodeImageView.setImage(qrCodeImage);
+        } else {
+            System.out.println("Le fichier QR code n'existe pas : " + fileName);
+        }
     }
 
     @FXML
@@ -134,20 +210,16 @@ public class AjouterVoiture {
                 serviceVoiture.supprimer(idVoitureAjoutee);
                 afficherMessageSucces("Voiture supprimée avec succès!");
 
-                // Mettre à jour l'affichage du nombre actuel de voitures dans le parking
                 selectedParking.setNombreActuelles(selectedParking.getNombreActuelles() - 1);
 
-                // Mettre à jour le nombre actuel de voitures dans la base de données
                 ServiceParking serviceParking = new ServiceParking();
                 serviceParking.modifier(selectedParking);
 
-                // Réinitialiser les champs du formulaire
                 marqueField.clear();
                 modeleField.clear();
                 couleurField.clear();
                 matriculeField.clear();
 
-                // Désactiver le bouton de suppression
                 supprimerButton.setDisable(true);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -156,7 +228,6 @@ public class AjouterVoiture {
             afficherMessageErreur("Aucune voiture ajoutée récemment pour être supprimée.");
         }
     }
-
 
     private void afficherMessageErreur(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -171,7 +242,7 @@ public class AjouterVoiture {
         alert.setTitle("Succès");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show();
     }
 
     private boolean validateMarque(String marque) {

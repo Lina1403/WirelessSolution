@@ -29,6 +29,17 @@
         <artifactId>javafx-controls</artifactId>
         <version>21.0.2</version>
     </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.4.1</version> <!-- Assurez-vous de vérifier la dernière version disponible -->
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.4.1</version> <!-- Assurez-vous de vérifier la dernière version disponible -->
+        </dependency>
+
     </dependencies>
 
 <build>
