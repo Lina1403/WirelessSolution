@@ -3,6 +3,10 @@ package controllers;
 import entities.Facture;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -13,6 +17,14 @@ import java.time.LocalDate;
 
 public class Statistique {
     ServiceFacture serviceFacture = new ServiceFacture();
+    @FXML
+    private BarChart<String, Number> barChart;
+
+    @FXML
+    private CategoryAxis xAxis;
+
+    @FXML
+    private NumberAxis yAxis;
 
     @FXML
     private ComboBox<String> typeFactureComboBox;
@@ -84,8 +96,22 @@ public class Statistique {
             LocalDate dateFin = getDateFinSelectionnee();
             int nombreEtages = getNombreEtages();
 
+            // Initialiser la série de données pour le graphique
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Consommation d'énergie par étage");
+
             // Appel à la méthode du service pour récupérer les statistiques pour un étage spécifique
             float consommationEnergie = serviceFacture.calculerConsommationEnergieTotaleParEtageEtType(nombreEtages, typeFacture);
+
+            // Ajouter les données à la série
+            series.getData().add(new XYChart.Data<>("Étage", consommationEnergie));
+
+            // Effacer les données précédentes du graphique
+            barChart.getData().clear();
+
+            // Ajouter la série de données mise à jour au graphique
+            barChart.getData().add(series);
+
             // Affichage des statistiques dans votre interface utilisateur
             System.out.println("Consommation d'énergie pour l'étage sélectionné : " + consommationEnergie);
         } catch (SQLException e) {
@@ -93,6 +119,9 @@ public class Statistique {
             // Gérer l'erreur
         }
     }
+
+
+
     public void afficherStatistiquesTousAppartements(ActionEvent actionEvent) {
         String typeFactureStr = getTypeFactureSelectionne();
         Facture.Type typeFacture = null;
