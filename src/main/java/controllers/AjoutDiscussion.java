@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import services.DiscussionService;
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class AjoutDiscussion {
 
         User user1 = new User(2,"koussay");
 
+
         boolean isTitreValid = true;
         boolean isDescriptionValid = true;
         @FXML
@@ -44,7 +46,12 @@ public class AjoutDiscussion {
                 String title = titre.getText();
                 String desc = description.getText();
                 Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
-                Discussion discussion = new Discussion(title,currentTimestamp,user1,desc);
+                Color c = color.getValue();
+                String colorAsRgb = String.format("#%02X%02X%02X",
+                        (int)(c.getRed() * 255),
+                        (int)(c.getGreen() * 255),
+                        (int)(c.getBlue() * 255));
+                Discussion discussion = new Discussion(title,currentTimestamp,user1,desc,colorAsRgb);
                 if (title.isEmpty()) {
                         errorMessage.setText("Le champ titre est vide !");
                         isTitreValid = false;

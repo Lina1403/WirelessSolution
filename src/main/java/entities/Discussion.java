@@ -6,6 +6,15 @@ public class Discussion {
     private int id;
     private String titre;
     private String description;
+    private String color;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
     public String getDescription() {
         return description;
@@ -32,6 +41,13 @@ public class Discussion {
         this.TimeStampCreation = TimeStampCreation;
         this.createur = createur;
         this.description = description;
+    }
+    public Discussion(String titre, Timestamp TimeStampCreation, User createur,String description,String color) {
+        this.titre = titre;
+        this.TimeStampCreation = TimeStampCreation;
+        this.createur = createur;
+        this.description = description;
+        this.color=color;
     }
     public Discussion(String titre, Timestamp TimeStampCreation, User createur,String description) {
         this.titre = titre;

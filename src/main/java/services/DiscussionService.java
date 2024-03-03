@@ -18,8 +18,8 @@ public class DiscussionService implements IService<Discussion> {
 
     @Override
     public void ajouter(Discussion discussion) throws SQLException {
-        String req = "INSERT INTO `discussion` (`titre`, `date_creation`, `createur_id`,`description`)"
-                + "VALUES (?,?,?,?)";
+        String req = "INSERT INTO `discussion` (`titre`, `date_creation`, `createur_id`,`description`,`color_code`)"
+                + "VALUES (?,?,?,?,?)";
         try{
             PreparedStatement pst = connexion.prepareStatement(req);
             pst.setString(1, discussion.getTitre());
@@ -27,6 +27,7 @@ public class DiscussionService implements IService<Discussion> {
             pst.setTimestamp(2, currentTimestamp);
             pst.setInt(3, discussion.getCreateur().getId());
             pst.setString(4,discussion.getDescription());
+            pst.setString(5,discussion.getColor());
             pst.executeUpdate();
 
 
@@ -69,7 +70,7 @@ public class DiscussionService implements IService<Discussion> {
 
     @Override
     public Discussion getOneById(int id) throws SQLException {
-        String req = "SELECT discussion.titre, discussion.date_creation, discussion.description, discussion.id, user.nom , user.id" +
+        String req = "SELECT discussion.titre, discussion.date_creation, discussion.description, discussion.id, user.nom , user.id,discussion.color_code" +
                 " FROM discussion" +
                 " INNER JOIN user ON discussion.createur_id = user.id" +
                 " WHERE discussion.id = ?";
@@ -85,12 +86,14 @@ public class DiscussionService implements IService<Discussion> {
             int identifiant = rst.getInt(4);
             String nom =  rst.getString(5);
             int ident = rst.getInt(6);
+            String color = rst.getString(7);
             User user = new User(ident,nom);
             discussion.setId(identifiant);
             discussion.setTitre(titre);
             discussion.setTimeStampCreation(date);
             discussion.setDescription(description);
             discussion.setCreateur(user);
+            discussion.setColor(color);
         }
         return discussion;
     }

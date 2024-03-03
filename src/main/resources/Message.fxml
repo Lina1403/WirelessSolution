@@ -5,11 +5,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.image.ImageView?>
-<VBox styleClass="backg" prefHeight="481.0" prefWidth="665.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MessageController">
+<VBox fx:id="vb" prefHeight="481.0" prefWidth="665.0" styleClass="backg" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MessageController">
    <ButtonBar prefHeight="40.0" prefWidth="200.0">
       <buttons>
          <Button mnemonicParsing="false" onAction="#retour" text="Retour" />

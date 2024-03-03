@@ -1,4 +1,5 @@
 package controllers;
+import entities.Discussion;
 import entities.Message;
 import entities.User;
 import javafx.collections.FXCollections;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -45,6 +47,8 @@ public class MessageController {
     private Label error;
     @FXML
     private ImageView imageView;
+    @FXML
+    private VBox vb;
 
     public void setMessageField(TextField messageField) {
         this.messageField = messageField;
@@ -62,6 +66,9 @@ public class MessageController {
 
     public void initialize() throws SQLException {
         ObservableList<Message> messages = FXCollections.observableList(ms.afficherByDiscussionId(discuId));
+        Discussion d1 = ds.getOneById(discuId);
+        vb.setStyle("-fx-background-color: " + d1.getColor() + ";");
+
         messageList.setItems(messages);
         messageList.setCellFactory(param -> new MessageCell());
         System.out.println(messages);
