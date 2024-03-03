@@ -238,29 +238,6 @@ public class ServiceEvent implements IService<Event> {
             return eventsForMonth;
         }
 
-    public Set<Event> getEventsByEspace(int idEspace) throws SQLException {
-        Set<Event> events = new HashSet<>();
-        String req = "SELECT * FROM event WHERE idEspace = ?";
-        try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
-            pstmt.setInt(1, idEspace);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Event event = new Event();
-                    event.setIdEvent(rs.getInt("idEvent"));
-                    event.setTitle(rs.getString("title"));
-                    event.setDate(rs.getDate("date"));
-                    event.setNbrPersonne(rs.getInt("nbrPersonne"));
-                    event.setListeInvites(rs.getString("listeInvites"));
-
-                    // Vous pouvez également charger les détails de l'espace associé si nécessaire
-                    // Espace espace = getServiceEspace().getOneById(idEspace);
-                    // event.setEspace(espace);
-
-                    events.add(event);
-                }
-            }
-        }
-        return events;
     }
 
 
@@ -270,7 +247,7 @@ public class ServiceEvent implements IService<Event> {
 
 
 
-}
+
 
 
 
