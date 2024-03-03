@@ -7,14 +7,17 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import services.ServiceParking;
 import services.ServiceVoiture;
 
+import java.awt.*;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.regex.Pattern;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -32,7 +35,6 @@ import java.util.Map;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.ProgressBar;
 
 public class AjouterVoiture {
 
@@ -49,13 +51,16 @@ public class AjouterVoiture {
     private TextField matriculeField;
 
     @FXML
-    private Button supprimerButton;
+    private Button telechargerButton;
 
     @FXML
     private Button ajouterButton;
 
     @FXML
-    private Parking selectedParking;
+    private ComboBox<String> typeComboBox;
+
+    @FXML
+    private ListView<String> parkingsListView;
 
     @FXML
     private ImageView qrCodeImageView;
@@ -66,14 +71,21 @@ public class AjouterVoiture {
     @FXML
     private Timeline timeline;
 
-    private AfficherVoitureAdmin afficherVoitureAdmin;
+    private Parking selectedParking;
 
     private int idVoitureAjoutee;
 
+    private ServiceParking serviceParking;
+
+
+    private AfficherVoitureAdmin afficherVoitureAdmin;
+
+
     public void setSelectedParking(Parking parking) {
-        System.out.println(parking.getCapacite());
+        System.out.println("Parking sélectionné : " + parking); // Afficher le parking sélectionné
         this.selectedParking = parking;
     }
+
 
     public void setAfficherVoitureAdmin(AfficherVoitureAdmin afficherVoitureAdmin) {
         this.afficherVoitureAdmin = afficherVoitureAdmin;
@@ -81,15 +93,28 @@ public class AjouterVoiture {
 
     @FXML
     public void initialize() {
+        serviceParking = new ServiceParking();
+        progressBar.setVisible(false); // Désactiver la barre de progression
+        progressBar.setProgress(0); // Initialiser la progression à 0
+
         timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
             progressBar.setVisible(false);
             generateQRCode(matriculeField.getText());
         }));
         timeline.setCycleCount(1);
+        chargerTypes();
+        // Ajouter un écouteur sur le changement de sélection du ComboBox
+        typeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                chargerParkings(newValue);
+            }
+        });
     }
+
 
     @FXML
     private void handleAjouterButton(ActionEvent event) {
+
         String marque = marqueField.getText();
         String modele = modeleField.getText();
         String couleur = couleurField.getText();
@@ -100,11 +125,14 @@ public class AjouterVoiture {
             return;
         }
 
-        supprimerButton.setDisable(true);
-        ajouterButton.setDisable(true);
-        progressBar.setVisible(true);
-        progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+        if (selectedParking == null) {
+            afficherMessageErreur("Veuillez sélectionner un parking avant d'ajouter une voiture.");
+            return;
+        }
 
+        ajouterButton.setDisable(true);
+        progressBar.setVisible(true); // Activer la barre de progression
+        progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
         Timeline delayTimeline = new Timeline(new KeyFrame(Duration.seconds(5), e -> {
             try {
                 ServiceVoiture serviceVoiture = new ServiceVoiture();
@@ -116,6 +144,11 @@ public class AjouterVoiture {
 
                 ServiceParking serviceParking = new ServiceParking();
                 selectedParking = serviceParking.getOneById(selectedParking.getIdParking());
+                if (selectedParking == null) {
+                    afficherMessageErreur("Aucun parking sélectionné.");
+                    ajouterButton.setDisable(false);
+                    return;
+                }
 
                 if (selectedParking.getNombreActuelles() >= selectedParking.getCapacite()) {
                     afficherMessageErreur("Le parking est plein. Impossible d'ajouter plus de voitures.");
@@ -136,6 +169,8 @@ public class AjouterVoiture {
                     serviceParking.modifier(selectedParking);
 
                     afficherQRCode(matricule); // Affichage du code QR après le délai
+// Activer la visibilité du bouton Télécharger QR Code
+                    telechargerButton.setVisible(true);
 
                     afficherMessageSucces("Voiture ajoutée avec succès!");
                 } else {
@@ -145,6 +180,8 @@ public class AjouterVoiture {
                 ex.printStackTrace();
             } finally {
                 ajouterButton.setDisable(false);
+                progressBar.setVisible(false); // Désactiver la barre de progression
+                progressBar.setProgress(0); // Remettre la progression à 0
             }
 
             System.out.println("Capacité du parking après ajout : " + selectedParking.getNombreActuelles() + "/" + selectedParking.getCapacite());
@@ -152,6 +189,32 @@ public class AjouterVoiture {
         ));
         delayTimeline.setCycleCount(1);
         delayTimeline.play();
+
+    }
+    private void chargerTypes() {
+        ServiceParking serviceParking = new ServiceParking();
+        try {
+            List<String> types = serviceParking.getTypes();
+            typeComboBox.getItems().addAll(types);
+            typeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    chargerParkings(newValue);
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void chargerParkings(String type) {
+        ServiceParking serviceParking = new ServiceParking();
+        try {
+            List<String> parkings = serviceParking.getParkingsByType(type);
+            parkingsListView.getItems().clear();
+            parkingsListView.getItems().addAll(parkings);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -220,7 +283,6 @@ public class AjouterVoiture {
                 couleurField.clear();
                 matriculeField.clear();
 
-                supprimerButton.setDisable(true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -309,4 +371,64 @@ public class AjouterVoiture {
         }
         return true;
     }
+    @FXML
+    private void handleParkingSelection(MouseEvent event) {
+        String selectedParkingName = parkingsListView.getSelectionModel().getSelectedItem();
+        if (selectedParkingName != null) {
+            try {
+                Parking selectedParking = serviceParking.getParkingByName(selectedParkingName);
+                setSelectedParking(selectedParking);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    private void handleTelechargerButton(ActionEvent event) {
+        String matricule = matriculeField.getText();
+        if (!matricule.isEmpty()) {
+            String fileName = "QRCode_" + matricule + ".png";
+            String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier" + fileName;
+
+            File file = new File(filePath);
+            if (file.exists()) {
+                // Télécharger le fichier
+                try {
+                    Desktop.getDesktop().open(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Le fichier QR code n'existe pas : " + fileName);
+            }
+        } else {
+            afficherMessageErreur("Veuillez générer d'abord le code QR avant de le télécharger.");
+        }
+    }
+    public void modifierVoiture(int idVoiture, String nouvelleMarque, String nouveauModele, String nouvelleCouleur, String nouveauMatricule) {
+        // Implémentez la logique de modification de la voiture ici
+        try {
+            ServiceVoiture serviceVoiture = new ServiceVoiture();
+            Voiture voiture = serviceVoiture.getOneById(idVoiture);
+            if (voiture != null) {
+                voiture.setMarque(nouvelleMarque);
+                voiture.setModel(nouveauModele);
+                voiture.setCouleur(nouvelleCouleur);
+                voiture.setMatricule(nouveauMatricule);
+
+                // Enregistrez les modifications dans la base de données
+                serviceVoiture.modifier(voiture);
+
+                // Affichez un message de succès ou faites toute autre action nécessaire après la modification
+                afficherMessageSucces("Voiture modifiée avec succès!");
+            } else {
+                afficherMessageErreur("La voiture à modifier n'a pas été trouvée.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            afficherMessageErreur("Une erreur s'est produite lors de la modification de la voiture.");
+        }
+    }
+
+
 }

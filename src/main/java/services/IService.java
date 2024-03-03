@@ -3,10 +3,10 @@ package services;
 // import entities.Voiture;
 
 import java.sql.SQLException;
-        import java.util.Set;
+import java.util.Set;
 
 public interface IService <T>{
-    public int ajouter(T p) throws SQLException;
+    public void ajouter(T p) throws SQLException;
     public void modifier(T p) throws SQLException;
     public void supprimer(int id) throws SQLException;
     public T getOneById(int id) throws SQLException;

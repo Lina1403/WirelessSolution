@@ -18,11 +18,8 @@
     <!-- Bouton "Gérer les parkings" -->
     <Button layoutX="50.0" layoutY="123.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="95.0" text="Gérer les parkings" visible="false" />
 
-    <!-- ComboBox pour sélectionner le type de parking -->
-    <ComboBox fx:id="comboBoxType" layoutX="274.0" layoutY="123.0" prefHeight="40.0" prefWidth="156.0" promptText="Sélectionner un type" />
+    <Button fx:id="consulterButton" layoutX="300.0" layoutY="470.0" text="Consulter Voiture" onAction="#handleConsulterButton" />
 
-    <!-- Liste des voitures -->
-    <ListView fx:id="listViewParkings" layoutX="274.0" layoutY="193.0" prefHeight="280.0" prefWidth="454.0" />
 
     <!-- Bouton "Ajouter une voiture" -->
     <Button fx:id="ajouterButton" layoutX="274.0" layoutY="502.0" onAction="#handleAjouterButton" prefHeight="40.0" prefWidth="156.0" text="Ajouter une voiture" />

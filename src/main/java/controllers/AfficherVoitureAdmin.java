@@ -100,10 +100,10 @@ public class AfficherVoitureAdmin {
 
     private void ouvrirDetailsVoiture(Voiture voiture) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsVoiture.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsulterVoitureDetailsVoiture.fxml"));
             Parent root = loader.load();
-            DetailsVoiture controller = loader.getController();
-            controller.initData(voiture, this); // Passer l'instance actuelle de AfficherVoitureAdmin
+            ConsulterVoitureDetails controller = loader.getController();
+            //controller.initData(voiture, this); // Passer l'instance actuelle de AfficherVoitureAdmin
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

@@ -83,9 +83,9 @@ public class Voiture {
     public String toString() {
         return
 
-                 marque  +
+                marque  +
 
-                " est dans le Parking " + parking ;
+                        " est dans le Parking " + parking ;
     }
 
     @Override

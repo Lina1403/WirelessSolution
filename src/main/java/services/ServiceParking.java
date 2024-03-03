@@ -13,7 +13,7 @@ public class ServiceParking implements IService<Parking> {
     Connection cnx = DataSource.getInstance().getCnx();
 
     @Override
-    public int ajouter(Parking p) throws SQLException {
+    public void ajouter(Parking p) throws SQLException {
         String req = "INSERT INTO parking (nom, capacite, type, nombreActuelles) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
@@ -28,14 +28,12 @@ public class ServiceParking implements IService<Parking> {
                 if (rs.next()) {
                     int id = rs.getInt(1);
                     System.out.println("Parking ajouté avec l'identifiant : " + id);
-                    return id;
                 }
             }
             System.out.println("Échec de l'ajout du parking.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Retourner -1 en cas d'échec de l'ajout
     }
 
 

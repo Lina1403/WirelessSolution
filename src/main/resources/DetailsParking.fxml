@@ -11,27 +11,27 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailsParking">
     <children>
-      <ImageView fitHeight="600.0" fitWidth="800.0" >
-         <image>
-            <Image url="@image/Services.png" />
-         </image>
-      </ImageView>
+        <ImageView fitHeight="600.0" fitWidth="800.0" >
+            <image>
+                <Image url="@image/Services.png" />
+            </image>
+        </ImageView>
         <Label layoutX="136.0" layoutY="125.0" text="Nom:" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Label>
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font></Label>
         <Label layoutX="136.0" layoutY="168.0" text="Capacité:" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Label>
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font></Label>
         <Label layoutX="136.0" layoutY="217.0" text="Type:" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Label>
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font></Label>
         <Label layoutX="139.0" layoutY="262.0" text="Nombre Actuelles:" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Label>
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font></Label>
         <TextField fx:id="textFieldNom" layoutX="271.0" layoutY="121.0" />
         <TextField fx:id="textFieldCapacite" layoutX="271.0" layoutY="164.0" />
         <ComboBox fx:id="comboBoxType" layoutX="271.0" layoutY="213.0" prefHeight="25.0" prefWidth="149.0" />

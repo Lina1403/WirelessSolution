@@ -8,25 +8,33 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import services.ServiceParking;
 
 import javafx.event.ActionEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 public class AfficherVoiture {
 
-    @FXML
+  /*  @FXML
     private ComboBox<String> comboBoxType;
+   */
 
-    @FXML
+   /* @FXML
     private ListView<String> listViewParkings;
+    */
 
     @FXML
     private Button ajouterButton;
+
+    @FXML
+    private Button consulterButton;
 
     private ServiceParking serviceParking;
 
@@ -37,33 +45,71 @@ public class AfficherVoiture {
     @FXML
     private void handleAjouterButton(ActionEvent event) {
         // Récupérer le parking sélectionné dans la ListView
-        String parkingSelectionne = listViewParkings.getSelectionModel().getSelectedItem();
-        if (parkingSelectionne != null) {
-            // Récupérer le parking correspondant à partir du service
-            try {
-                Parking parking = serviceParking.getParkingByName(parkingSelectionne);
-                // Ouvrir l'interface d'ajout de voiture en passant le parking sélectionné
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
-                Parent root = loader.load();
+        // String parkingSelectionne = listViewParkings.getSelectionModel().getSelectedItem();
+        // if (parkingSelectionne != null) {
+        // Récupérer le parking correspondant à partir du service
+        try {
+            // Parking parking = serviceParking.getParkingByName(parkingSelectionne);
+            // Ouvrir l'interface d'ajout de voiture en passant le parking sélectionné
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
+            Parent root = loader.load();
 
-                AjouterVoiture controller = loader.getController();
-                controller.setSelectedParking(parking); // Définir le parking sélectionné dans le contrôleur AjouterVoiture
+            AjouterVoiture controller = loader.getController();
+            // controller.setSelectedParking(parking); // Définir le parking sélectionné dans le contrôleur AjouterVoiture
 
-                Stage stage = new Stage();
-                stage.setTitle("Ajouter une voiture");
-                stage.setScene(new Scene(root));
-                stage.show();
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Veuillez sélectionner un parking avant d'ajouter une voiture.");
+            Stage stage = new Stage();
+            stage.setTitle("Ajouter une voiture");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        // } else {
+        //     System.out.println("Veuillez sélectionner un parking avant d'ajouter une voiture.");
+        // }
     }
 
     @FXML
+    private void handleConsulterButton(ActionEvent event) {
+        // Afficher une boîte de dialogue pour sélectionner un fichier image du code QR
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir le code QR");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Images (*.png, *.jpg, *.jpeg)", "*.png", "*.jpg", "*.jpeg");
+        fileChooser.getExtensionFilters().add(extFilter);
+        File qrCodeFile = fileChooser.showOpenDialog(null);
+
+        if (qrCodeFile != null) {
+            // Si un fichier est sélectionné, charger l'image du code QR
+            Image qrCodeImage = new Image(qrCodeFile.toURI().toString());
+
+            // Afficher la fenêtre des détails de la voiture avec les informations correspondantes
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsulterVoitureDetails.fxml"));
+            Parent root;
+            try {
+                root = loader.load();
+                ConsulterVoitureDetails controller = loader.getController();
+                controller.initData(qrCodeImage, qrCodeFile);
+                // Passer l'image du code QR au contrôleur des détails de la voiture
+
+
+                Stage stage = new Stage();
+                stage.setTitle("Détails de la voiture");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+
+
+            }
+        }
+    }
+
+
+
+
+    @FXML
     public void initialize() {
-        // Charger les types de parking disponibles dans la ComboBox
+     /*   // Charger les types de parking disponibles dans la ComboBox
         chargerTypes();
 
         // Ajouter un gestionnaire d'événements pour le changement de sélection dans la ComboBox
@@ -78,10 +124,14 @@ public class AfficherVoiture {
             }
         });
 
-        // Désactiver le bouton "Ajouter" par défaut
+      */
+
+      /*  // Désactiver le bouton "Ajouter" par défaut
         ajouterButton.setDisable(true);
 
-        // Ajouter un gestionnaire d'événements pour le changement de sélection dans la ListView des parkings
+       */
+
+     /*   // Ajouter un gestionnaire d'événements pour le changement de sélection dans la ListView des parkings
         listViewParkings.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 ajouterButton.setDisable(false); // Activer le bouton si un parking est sélectionné
@@ -89,9 +139,11 @@ public class AfficherVoiture {
                 ajouterButton.setDisable(true); // Désactiver le bouton si aucun parking n'est sélectionné
             }
         });
+
+      */
     }
 
-    private void chargerTypes() {
+  /*  private void chargerTypes() {
         // Vous pouvez obtenir les types à partir de votre source de données, ici je les ai définis manuellement
         List<String> types = null;
         try {
@@ -108,4 +160,6 @@ public class AfficherVoiture {
         listViewParkings.getItems().clear();
         listViewParkings.getItems().addAll(parkings);
     }
+
+   */
 }

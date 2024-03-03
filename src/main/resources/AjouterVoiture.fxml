@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -13,44 +15,59 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVoiture">
     <children>
-      <ImageView fitHeight="600.0" fitWidth="800.0">
-         <image>
-            <Image url="@image/Av.png" />
-         </image>
-      </ImageView>
+        <ImageView fitHeight="600.0" fitWidth="800.0">
+            <image>
+                <Image url="@image/Av.png" />
+            </image>
+        </ImageView>
 
         <TextField fx:id="marqueField" layoutX="224.0" layoutY="124.0" promptText="Marque" />
         <TextField fx:id="modeleField" layoutX="224.0" layoutY="178.0" promptText="Modèle" />
-     <TextField fx:id="couleurField" layoutX="224.0" layoutY="228.0" promptText="Couleur" />
-     <TextField fx:id="matriculeField" layoutX="224.0" layoutY="276.0" promptText="Matricule" />
-     <Button fx:id="ajouterButton" layoutX="207.0" layoutY="325.0" onAction="#handleAjouterButton" prefHeight="25.0" prefWidth="72.0" text="Ajouter" />
-     <Button fx:id="supprimerButton" disable="true" layoutX="318.0" layoutY="325.0" onAction="#handleSupprimerButton" text="Supprimer" />
-        <ProgressBar fx:id="progressBar" layoutX="499.0" layoutY="203.0" prefHeight="18.0" prefWidth="185.0" />
+        <TextField fx:id="couleurField" layoutX="224.0" layoutY="228.0" promptText="Couleur" />
+        <TextField fx:id="matriculeField" layoutX="224.0" layoutY="279.0" promptText="Matricule" />
+        <Button fx:id="telechargerButton" layoutX="499.0" layoutY="508.0" onAction="#handleTelechargerButton" text="Télécharger QR Code" visible="false" />
 
-        <ImageView fx:id="qrCodeImageView" fitHeight="200" fitWidth="200" layoutX="224.0" layoutY="360.0" />
+        <Button fx:id="ajouterButton" layoutX="134.0" layoutY="508.0" onAction="#handleAjouterButton" prefHeight="25.0" prefWidth="149.0" text="Ajouter" />
+        <ProgressBar fx:id="progressBar" layoutX="54.0" layoutY="473.0" prefHeight="18.0" prefWidth="318.0" />
+        <ComboBox fx:id="typeComboBox" layoutX="223.0" layoutY="325.0" prefHeight="25.0" prefWidth="149.0" />
+        <ListView fx:id="parkingsListView" layoutX="223.0" layoutY="377.0" onMouseClicked="#handleParkingSelection" prefHeight="74.0" prefWidth="149.0">
+            <!-- Autres attributs et éléments de configuration -->
+        </ListView>
 
-        <Label layoutX="112.0" layoutY="128.0" prefHeight="20.0" prefWidth="91.0" text="Marque :" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="112.0" layoutY="182.0" prefHeight="20.0" prefWidth="91.0" text="Modèle :" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="112.0" layoutY="232.0" prefHeight="20.0" prefWidth="91.0" text="Couleur :" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="112.0" layoutY="280.0" prefHeight="20.0" prefWidth="91.0" text="Matricule :" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
+        <ImageView fx:id="qrCodeImageView" fitHeight="281.0" fitWidth="271.0" layoutX="438.0" layoutY="148.0" />
+
+        <Label layoutX="60.0" layoutY="127.0" prefHeight="20.0" prefWidth="91.0" text="Marque :" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="60.0" layoutY="181.0" prefHeight="20.0" prefWidth="91.0" text="Modèle :" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="60.0" layoutY="231.0" prefHeight="20.0" prefWidth="91.0" text="Couleur :" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
+        <Label layoutX="60.0" layoutY="281.0" prefHeight="20.0" prefWidth="91.0" text="Matricule :" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="14.0" />
+            </font>
+        </Label>
         <VBox alignment="CENTER" spacing="10">
             <HBox alignment="CENTER" spacing="10" />
         </VBox>
+      <Label layoutX="60.0" layoutY="328.0" prefHeight="20.0" prefWidth="91.0" text="Type :" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="53.0" layoutY="404.0" prefHeight="20.0" prefWidth="106.0" text="Nom Parking :" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
