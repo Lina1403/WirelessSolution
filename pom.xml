@@ -45,11 +45,10 @@
             <version>2.0.24</version>
         </dependency>
         <dependency>
-            <groupId>org.jfxtras</groupId>
-            <artifactId>jfxtras-agenda</artifactId>
-            <version>8.0-r5</version>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.3</version>
         </dependency>
-
 
 
 

@@ -114,4 +114,19 @@ public class ServiceEspace implements IService<Espace> {
         PS.executeUpdate();
         System.out.println("Espace supprimé !");
     }
+    public int getReservationCountForEspace(int idEspace) throws SQLException {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM event WHERE idEspace = ?";
+        try (PreparedStatement statement = cnx.prepareStatement(sql)) {
+            statement.setInt(1, idEspace);
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        }
+        return count;
+    }
+
+
 }
