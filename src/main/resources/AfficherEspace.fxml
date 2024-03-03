@@ -3,16 +3,16 @@
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.ChoiceBox?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherEspace">
 
     <children>
@@ -34,16 +34,17 @@
                 </FXCollections>
             </items>
         </ComboBox>
-        <TextArea fx:id="txtDescription" layoutX="593.0" layoutY="326.0" prefHeight="26.0" prefWidth="86.0" promptText="Description" />
+        <TextArea fx:id="txtDescription" layoutX="593.0" layoutY="326.0" prefHeight="58.0" prefWidth="142.0" promptText="Description" />
 
         <TextField fx:id="txtCapacite" layoutX="593.0" layoutY="273.0" prefHeight="26.0" prefWidth="86.0" promptText="Capacité" />
         <Label fx:id="lblTitleError" layoutX="305.0" layoutY="362.0" prefHeight="18.0" prefWidth="86.0" />
 
-        <ListView fx:id="listEspace" layoutX="264.0" layoutY="143.0" prefHeight="244.0" prefWidth="272.0" />
-        <Button blendMode="HARD_LIGHT" layoutX="429.0" layoutY="478.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" />
+        <ListView fx:id="listEspace" layoutX="264.0" layoutY="143.0" prefHeight="244.0" prefWidth="292.0" />
+        <Button blendMode="HARD_LIGHT" layoutX="264.0" layoutY="468.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" />
         <Button layoutX="64.0" layoutY="165.0" mnemonicParsing="false" onAction="#gererEvenements" opacity="0.0" prefHeight="35.0" prefWidth="106.0" text="gerer les events" />
-        <TextField fx:id="txtRechercheNom" layoutX="400.0" layoutY="102.0" promptText="Rechercher par nom" />
-        <ChoiceBox fx:id="choixTri" layoutX="34.0" layoutY="30.0" prefWidth="150.0" />
+        <TextField fx:id="txtRechercheNom" layoutX="423.0" layoutY="105.0" prefHeight="26.0" prefWidth="135.0" promptText="Rechercher un espace" />
+        <ChoiceBox fx:id="choixTri" layoutX="264.0" layoutY="105.0" prefHeight="26.0" prefWidth="86.0" />
+        <Button fx:id="btnCalendrier" text="Afficher Calendrier" onAction="#afficherCalendrier" />
 
     </children>
 

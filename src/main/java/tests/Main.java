@@ -71,7 +71,7 @@ public class Main {
             Event event = new Event();
             event.setTitle("lina");
             Date date = java.sql.Date.valueOf("2023-05-26");
-            event.setDate(date);
+            event.setDate((java.sql.Date) date);
             event.setNbrPersonne(20);
             event.setListeInvites("A birthday party");
             event.setEspace(espace); // Attribue l'espace à l'événement

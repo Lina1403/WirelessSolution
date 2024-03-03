@@ -2,11 +2,17 @@ package services;
 
 import entities.Espace;
 import entities.Event;
+
 import utils.DataSource;
-import  services.ServiceEspace;
+
+import java.io.IOException;
+import java.io.StringWriter;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.HashSet;
 import java.util.Set;
+
 
 public class ServiceEvent implements IService<Event> {
     Connection cnx = DataSource.getInstance().getCnx();
@@ -16,7 +22,7 @@ public class ServiceEvent implements IService<Event> {
             throw new IllegalArgumentException("L'espace est déjà occupé à cette date.");
         }
 
-        String req = "INSERT INTO `event` (`title`, `date`, `nbrPersonne`, `listeInvites`, `idEspace`) VALUES (?, ?, ?, ?, ?)";
+        String req = "INSERT INTO event (title, date, nbrPersonne, listeInvites, idEspace) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, event.getTitle());
@@ -120,6 +126,7 @@ public class ServiceEvent implements IService<Event> {
                 espace.setName(rs.getString("name"));
                 event.setEspace(espace);
 
+
                 events.add(event);
             }
         }
@@ -165,6 +172,7 @@ public class ServiceEvent implements IService<Event> {
         }
     }
 
+
     @Override
     public Event getOneById(int id) throws SQLException {
         Event event = null;
@@ -189,10 +197,48 @@ public class ServiceEvent implements IService<Event> {
                     espace.setIdEspace(rs.getInt("idEspace"));
                     espace.setName(rs.getString("espace_name"));
                     event.setEspace(espace);
+
                 }
             }
         }
 
+
         return event;
     }
-}
+
+
+        public Set<Event> getEventsForMonth(int idEspace, YearMonth yearMonth) throws SQLException {
+            Set<Event> eventsForMonth = new HashSet<>();
+            LocalDate firstDayOfMonth = yearMonth.atDay(1);
+            LocalDate lastDayOfMonth = yearMonth.atEndOfMonth();
+
+            String req = "SELECT * FROM event WHERE idEspace = ? AND date BETWEEN ? AND ?";
+            try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
+                pstmt.setInt(1, idEspace);
+                pstmt.setDate(2, Date.valueOf(firstDayOfMonth));
+                pstmt.setDate(3, Date.valueOf(lastDayOfMonth));
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        Event event = new Event();
+                        event.setIdEvent(rs.getInt("idEvent"));
+                        event.setTitle(rs.getString("title"));
+                        event.setDate(rs.getDate("date"));
+                        event.setNbrPersonne(rs.getInt("nbrPersonne"));
+                        event.setListeInvites(rs.getString("listeInvites"));
+                        // Créez un objet Espace et définissez son ID à partir de la colonne de la base de données
+                        Espace espace = new Espace();
+                        espace.setIdEspace(rs.getInt("idEspace"));
+                        event.setEspace(espace);
+
+                        eventsForMonth.add(event);
+                    }
+                }
+            }
+            return eventsForMonth;
+        }
+    }
+
+
+
+

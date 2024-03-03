@@ -69,4 +69,7 @@
         </font>
     </Label>
    <TextArea fx:id="listInvitesField" layoutX="382.0" layoutY="288.0" prefHeight="95.0" prefWidth="190.0" />
+    <Button fx:id="boutonConsulterEvents" text="Consulter Mes Événements" onAction="#consulterMesEvents" />
+
+
 </AnchorPane>

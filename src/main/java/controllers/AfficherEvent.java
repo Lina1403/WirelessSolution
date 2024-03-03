@@ -2,7 +2,7 @@ package controllers;
 
 import entities.Espace;
 import entities.Event;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import services.ServiceEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,9 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -25,6 +22,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.awt.Color;
+import java.util.Comparator;
+
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 public class AfficherEvent {
@@ -32,6 +31,8 @@ public class AfficherEvent {
     @FXML private Button boutonGererEspace;
     @FXML private TextField txtRechercheNom;
     @FXML private ListView<Event> listeEvents;
+    @FXML private ChoiceBox<String> triChoiceBox;
+
     private ObservableList<Event> eventsObservableList;
     private ServiceEvent serviceEvent;
 
@@ -65,8 +66,18 @@ public class AfficherEvent {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-        // Écouter le clic sur le bouton PDF
+        triChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (newValue.equals("Nom")) {
+                    trierParNom();
+                } else if (newValue.equals("Date")) {
+                    trierParDate();
+                }
+            }
+        });
+        txtRechercheNom.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercherParNom(newValue.trim());
+        });
 
         // Écouter le clic sur le bouton de gestion d'événements
         boutonGerer.setOnAction(event -> {
@@ -91,16 +102,21 @@ public class AfficherEvent {
         // Écouter le clic sur le bouton de gestion des espaces
         boutonGererEspace.setOnAction(event -> ouvrirAjouterEspace());
     }
-    @FXML
+
     void trierParNom() {
         ObservableList<Event> events = listeEvents.getItems();
         events.sort((event1, event2) -> event1.getTitle().compareToIgnoreCase(event2.getTitle()));
         listeEvents.setItems(events);
     }
 
-    @FXML
-    void rechercherParNom() {
-        String nomRecherche = txtRechercheNom.getText().trim();
+    void trierParDate() {
+        ObservableList<Event> events = listeEvents.getItems();
+        events.sort(Comparator.comparing(Event::getDate));
+        listeEvents.setItems(events);
+    }
+
+
+    void rechercherParNom(String nomRecherche) {
         if (!nomRecherche.isEmpty()) {
             ObservableList<Event> resultats = FXCollections.observableArrayList();
             for (Event event : eventsObservableList) {

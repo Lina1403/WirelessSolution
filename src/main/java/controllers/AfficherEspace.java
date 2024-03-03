@@ -297,6 +297,31 @@ public class AfficherEspace {
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
     }
+    @FXML
+    void afficherCalendrier(ActionEvent event) {
+        Espace espace = listEspace.getSelectionModel().getSelectedItem();
+        if (espace != null) {
+            try {
+                // Charger le fichier FXML du calendrier
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Calendrier.fxml"));
+                Parent root = loader.load();
+
+                // Passer l'espace sélectionné au contrôleur du calendrier
+                CalendrierController calendrierController = loader.getController();
+                calendrierController.selectEspace(espace);
+
+                // Créer une nouvelle scène pour afficher le calendrier
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Calendrier de l'espace " + espace.getName());
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            afficherAlerteErreur("Veuillez sélectionner un espace.");
+        }
+    }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

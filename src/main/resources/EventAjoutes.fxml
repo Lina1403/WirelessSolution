@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.EventAjoutes"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <TableView fx:id="eventTableView" layoutX="28.0" layoutY="27.0" prefHeight="346.0" prefWidth="544.0">
+        <columns>
+            <TableColumn fx:id="titleColumn" prefWidth="150.0" text="Titre"/>
+            <TableColumn fx:id="dateColumn" prefWidth="150.0" text="Date"/>
+            <TableColumn fx:id="nbrPersonneColumn" prefWidth="100.0" text="Nombre de personnes"/>
+            <TableColumn fx:id="listeInvitesColumn" prefWidth="144.0" text="Liste des invités"/>
+        </columns>
+    </TableView>
+
+</AnchorPane>

@@ -99,7 +99,7 @@ public class DetailsEvent {
                 event.setNbrPersonne(nbrPersonne);
                 event.setEspace(espace);
                 event.setListeInvites(listeInvites);
-                event.setDate(date);
+                event.setDate((java.sql.Date) date);
 
                 serviceEvent.modifier(event);
 

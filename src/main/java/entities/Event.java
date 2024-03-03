@@ -1,9 +1,12 @@
 package entities;
 
-import java.util.Date;
+import java.sql.Date; // Utilisation de java.sql.Date au lieu de java.util.Date
 import java.util.Objects;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class Event {
+
     private Integer idEvent;
     private String title;
     private Date date;
