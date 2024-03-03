@@ -23,8 +23,8 @@
         </ImageView>
 
         <TextField fx:id="txtNom" layoutX="593.0" layoutY="169.0" prefHeight="26.0" prefWidth="86.0" promptText="Nom" />
-        <Button fx:id="btnSupprimer" blendMode="HARD_LIGHT" layoutX="429.0" layoutY="418.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="123.0" text="Supprimer" />
-        <Button fx:id="btnModifier" blendMode="HARD_LIGHT" layoutX="263.0" layoutY="418.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="123.0" text="Modifier" />
+        <Button fx:id="btnSupprimer" blendMode="HARD_LIGHT" layoutX="593.0" layoutY="441.0" mnemonicParsing="false" onAction="#supprimer" prefHeight="26.0" prefWidth="78.0" text="Supprimer" />
+        <Button fx:id="btnModifier" blendMode="HARD_LIGHT" layoutX="593.0" layoutY="405.0" mnemonicParsing="false" onAction="#modifier" prefHeight="26.0" prefWidth="78.0" text="Modifier" />
         <!-- Remplacez le champ d'état par une ComboBox -->
         <ComboBox fx:id="comboEtat" blendMode="HARD_LIGHT" layoutX="593.0" layoutY="227.0" prefHeight="26.0" prefWidth="86.0" promptText="État">
             <items>
@@ -40,11 +40,12 @@
         <Label fx:id="lblTitleError" layoutX="305.0" layoutY="362.0" prefHeight="18.0" prefWidth="86.0" />
 
         <ListView fx:id="listEspace" layoutX="264.0" layoutY="143.0" prefHeight="244.0" prefWidth="292.0" />
-        <Button blendMode="HARD_LIGHT" layoutX="264.0" layoutY="468.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="123.0" text="ajouter un espace" />
+        <Button blendMode="HARD_LIGHT" layoutX="268.0" layoutY="427.0" mnemonicParsing="false" onAction="#ajouterEspace" prefHeight="26.0" prefWidth="114.0" text="ajouter un espace" />
         <Button layoutX="64.0" layoutY="165.0" mnemonicParsing="false" onAction="#gererEvenements" opacity="0.0" prefHeight="35.0" prefWidth="106.0" text="gerer les events" />
         <TextField fx:id="txtRechercheNom" layoutX="423.0" layoutY="105.0" prefHeight="26.0" prefWidth="135.0" promptText="Rechercher un espace" />
         <ChoiceBox fx:id="choixTri" layoutX="264.0" layoutY="105.0" prefHeight="26.0" prefWidth="86.0" />
-        <Button fx:id="btnCalendrier" text="Afficher Calendrier" onAction="#afficherCalendrier" />
+        <Button fx:id="btnCalendrier" blendMode="HARD_LIGHT" layoutX="268.0" layoutY="467.0" onAction="#afficherCalendrier" text="Afficher Calendrier" />
+        <Button fx:id="btnStats" blendMode="HARD_LIGHT" layoutX="268.0" layoutY="507.0" onAction="#afficherStatistiques" prefHeight="26.0" prefWidth="114.0" text="Statistiques" />
 
     </children>
 

@@ -58,11 +58,14 @@ public class AfficherEvent {
                     if (empty || item == null) {
                         setText(null);
                     } else {
-                        // Afficher le titre de l'événement et son lieu dans la liste
-                        setText(item.getTitle() + " - " + item.getEspace().getName());
+                        setText(item.toString());
                     }
                 }
             });
+
+
+            //                         setText(item.getTitle() + " - " + item.getEspace().getName());
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

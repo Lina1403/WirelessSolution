@@ -72,12 +72,12 @@ public class Espace {
 
     @Override
     public String toString() {
-        return "Espace: " +
-                "name='" + name + '\'' +
-                ", etat=" + etat +
-                ", capacite=" + capacite +
-                ", description='" + description + '\'' +
-                '.';
+        return "Espace : " +
+                  getName() + "\n" +
+                " etat : " + getEtat() + "\n" +
+                " capacite : " + getCapacite() + "\n" +
+                " description : " + getDescription()
+                ;
     }
 
 

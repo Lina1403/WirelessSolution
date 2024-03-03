@@ -83,13 +83,12 @@ public class Event {
 
     @Override
     public String toString() {
-        return "Event{" +
-                ", title='" + title + '\'' +
-                ", date=" + date +
-                ", nbrPersonne=" + nbrPersonne +
-                ", listeInvites='" + listeInvites + '\'' + // Updated variable name in the output
-                ", espace=" + espace +
-                '}';
+        return "Event : " +
+                getTitle() + "\n" +
+                " date : " + getDate() + "\n" +
+                " nbrPersonne : " + getNbrPersonne() + "\n" +
+                " listeInvites : " + getListeInvites() + "\n" +// Updated variable name in the output
+                " espace : " + getEspace().getName()  + "\n";
     }
 
     @Override

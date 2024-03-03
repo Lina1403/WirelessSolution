@@ -97,7 +97,7 @@ public class AfficherEspace {
                     if (empty || espace == null) {
                         setText(null);
                     } else {
-                        setText(espace.getName() + " - " + espace.getEtat());
+                        setText(espace.toString());
                     }
                 }
             });
@@ -322,6 +322,20 @@ public class AfficherEspace {
             afficherAlerteErreur("Veuillez sélectionner un espace.");
         }
     }
+    @FXML
+    void afficherStatistiques() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/stats.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Statistiques");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
