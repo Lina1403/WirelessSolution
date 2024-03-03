@@ -67,11 +67,7 @@ public class main {
             System.out.println(e.getMessage());
         }*/
 
-        try{
-            messageService.modifier(message);
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
+        System.out.println(messageService.afficherByDiscussionId(1));
     }
 
 }

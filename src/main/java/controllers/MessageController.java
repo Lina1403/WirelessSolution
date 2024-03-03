@@ -58,7 +58,7 @@ public class MessageController {
     User user2 = new User(3,"dhia");
     MessageService ms = new MessageService();
     DiscussionService ds = new DiscussionService();
-    File file ;
+
 
     public void initialize() throws SQLException {
         ObservableList<Message> messages = FXCollections.observableList(ms.afficherByDiscussionId(discuId));
@@ -75,11 +75,10 @@ public class MessageController {
         Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         attachButton.setOnAction(e->{
-            file = fileChooser.showOpenDialog(stage);
-            if(file!=null){
-                System.out.println(file);
-
-                Image image = new Image(file.toURI().toString(),100,150,true,true);
+            MessageService.file = fileChooser.showOpenDialog(stage);
+            if(MessageService.file!=null){
+                System.out.println(MessageService.file);
+                Image image = new Image(MessageService.file.toURI().toString(),100,150,true,true);
                 System.out.println(image);
                 imageView.setImage(image);
                 imageView.setFitWidth(100);
@@ -99,6 +98,7 @@ public class MessageController {
                             imageView.setImage(null);
                             imageView.setFitWidth(0);
                             imageView.setFitHeight(0);
+                            MessageService.file=null ;
                         });
                         contextMenu.getItems().addAll( deleteMenuItem);
 
@@ -144,7 +144,7 @@ public class MessageController {
     }
     private void sendMessage() throws SQLException {
         String mess = messageField.getText();
-        if(mess.isEmpty()){
+        if(mess.isEmpty() && MessageService.file == null){
             error.setText("Le message est vide !");
 
         }else{
@@ -153,10 +153,15 @@ public class MessageController {
 
             String text = messageField.getText();
             Timestamp currentTimestamp = new Timestamp( System.currentTimeMillis());
+
             // Create a new Message object
             Message message = new Message(text,currentTimestamp,user1);
             // add message to the database
             ms.ajouter(message);
+            imageView.setImage(null);
+            imageView.setFitWidth(0);
+            imageView.setFitHeight(0);
+            MessageService.file=null;
             // Add the message to the messageList
             messageList.getItems().add(message);
             initialize();

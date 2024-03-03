@@ -4,10 +4,10 @@ import controllers.MessageController;
 import entities.Discussion;
 import entities.Message;
 import entities.User;
+import javafx.scene.image.Image;
 import utils.DataSource;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,19 +42,29 @@ public class MessageService implements IService<Message>{
     }
     @Override
     public void ajouter(Message message) throws SQLException {
-        String req = "INSERT INTO `message` (`contenu`, `date_envoi`, `emetteur_id`,`discussion_id`)"
-                + "VALUES (?,?,?,?)";
+        String req = "INSERT INTO `message` (`contenu`, `date_envoi`, `emetteur_id`,`discussion_id`,`image`)"
+                + "VALUES (?,?,?,?,?)";
         try{
             PreparedStatement pst = connexion.prepareStatement(req);
             pst.setString(1, message.getContenu());
             pst.setTimestamp(2, message.getTimeStamp_envoi());
             pst.setInt(3,message.getEmetteur().getId());
             pst.setInt(4, MessageController.discuId);
+            if(file == null){
 
+                pst.setNull(5, java.sql.Types.BLOB);
 
+            }else{
+                fis = new FileInputStream(file);
+
+                pst.setBinaryStream(5, fis);
+
+            }
             pst.executeUpdate();
         }catch(SQLException e){
             System.out.println(e.getMessage());
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -112,24 +122,50 @@ public class MessageService implements IService<Message>{
         }
         return messages;
     }
-    public List<Message> afficherByDiscussionId(int id) throws SQLException {
+    public List<Message> afficherByDiscussionId(int id)  {
         List<Message> messages  = new ArrayList<>();
-        String req = "SELECT message.contenu, message.date_envoi, user.nom AS emetteur ,message.id  " +
+        String req = "SELECT message.contenu, message.date_envoi, user.nom AS emetteur ,message.id,message.image  " +
                 "FROM message" +
                 " JOIN user ON message.emetteur_id = user.id " +
                 "Where message.discussion_id = ?;";
+        try {
         PreparedStatement pre = connexion.prepareStatement(req);
         pre.setInt(1, id);
         ResultSet rst = pre.executeQuery();
 
-        while(rst.next()) {
-            String contenu =  rst.getString(1);
+        while (rst.next()) {
+            String contenu = rst.getString(1);
             Timestamp date = rst.getTimestamp(2);
             User user1 = new User(rst.getString(3));
             int ident = rst.getInt(4);
-            Message message = new Message(ident,contenu,date,user1);
-            messages.add(message);
-        }
+
+            InputStream is = rst.getBinaryStream(5);
+            if (is != null) {
+                OutputStream os = new FileOutputStream(new File("photo.jpg"));
+                byte[] content = new byte[1024];
+                int size = 0;
+
+                while ((size = is.read(content)) != -1) {
+                    os.write(content, 0, size);
+                }
+                os.close();
+                is.close();
+                Image image = new Image("file:photo.jpg",100,150,true,true);
+                Message message1 = new Message(ident, contenu, date, user1,image);
+                messages.add(message1);
+            }else{
+
+                    System.out.println("null");
+                    Message message = new Message(ident, contenu, date, user1);
+                    messages.add(message);
+                }}
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }catch(FileNotFoundException e ){
+        System.out.println(e.getMessage());
+        }catch(IOException e ){
+        System.out.println(e.getMessage());
+    }
 
         return messages;
 

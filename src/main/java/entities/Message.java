@@ -1,5 +1,7 @@
 package entities;
 
+import javafx.scene.image.Image;
+
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -9,10 +11,10 @@ public class Message {
     private Timestamp TimeStamp_envoi;
     private User emetteur ;
     private Discussion discussion;
-    private byte[] image;
+    private Image image;
     public Message(){}
 
-    public Message(int id, String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion, byte[] image) {
+    public Message(int id, String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion, Image image) {
         this.id = id;
         this.contenu = contenu;
         this.TimeStamp_envoi = TimeStamp_envoi;
@@ -20,7 +22,14 @@ public class Message {
         this.discussion = discussion;
         this.image = image;
     }
-    public Message(String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion, byte[] image) {
+    public Message(int id, String contenu, Timestamp TimeStamp_envoi, User emetteur, Image image) {
+        this.id = id;
+        this.contenu = contenu;
+        this.TimeStamp_envoi = TimeStamp_envoi;
+        this.emetteur = emetteur;
+        this.image = image;
+    }
+    public Message(String contenu, Timestamp TimeStamp_envoi, User emetteur, Discussion discussion, Image image) {
         this.contenu = contenu;
         this.TimeStamp_envoi = TimeStamp_envoi;
         this.emetteur = emetteur;
@@ -90,11 +99,11 @@ public class Message {
         this.discussion = discussion;
     }
 
-    public byte[] getImage() {
+    public Image getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(Image image) {
         this.image = image;
     }
 
@@ -106,7 +115,7 @@ public class Message {
                 ", TimeStamp_envoi=" + TimeStamp_envoi +
                 ", emetteur=" + emetteur +
                 ", discussion=" + discussion +
-                ", image=" + Arrays.toString(image) +
+
                 '}';
     }
 }

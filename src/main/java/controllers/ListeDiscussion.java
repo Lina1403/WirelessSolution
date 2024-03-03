@@ -4,6 +4,7 @@ import entities.Discussion;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,10 +16,13 @@ import services.DiscussionService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.function.Predicate;
 
 public class ListeDiscussion {
     @FXML
     private TableView<Discussion> table;
+    @FXML
+    private TextField rechercheField;
     @FXML
     private TableColumn<Discussion, String> titre = new TableColumn<>("titre");
     @FXML
@@ -34,6 +38,10 @@ public class ListeDiscussion {
         createur.setCellValueFactory(cellData -> {
             String creatorName = cellData.getValue().getCreateur().getName();
             return new SimpleStringProperty(creatorName);
+        });
+
+        rechercheField.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercherParUser();// Appeler la méthode rechercherParNom lorsque le texte dans le champ de recherche change
         });
         dateCreation.setCellValueFactory(new PropertyValueFactory<>("TimeStampCreation"));
         table.setItems(discussions);
@@ -69,4 +77,23 @@ public class ListeDiscussion {
     public void redirectToAjout(){
         changeScene("/AjouterDiscussion.fxml");
     }
+
+    public void rechercherParUser(){
+        String nomRecherche = rechercheField.getText().trim().toLowerCase();
+
+        if (!nomRecherche.isEmpty()) {
+            // Créer un prédicat pour filtrer les espaces dont le nom contient la chaîne de recherche
+            Predicate<Discussion> nomPredicate = discussion -> discussion.getCreateur().getName().toLowerCase().contains(nomRecherche);
+
+            // Créer un FilteredList avec le prédicat
+            FilteredList<Discussion> filteredList = new FilteredList<>(table.getItems(), nomPredicate);
+
+            // Mettre à jour la liste affichée dans la ListView avec le FilteredList filtré
+            table.setItems(filteredList);
+        } else {
+            // Si le champ de recherche est vide, afficher tous les espaces
+            changeScene("/ListeDiscussion.fxml");
+        }
+    }
 }
+
