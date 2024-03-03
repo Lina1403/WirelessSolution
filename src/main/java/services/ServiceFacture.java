@@ -41,7 +41,7 @@ public class ServiceFacture implements IService<Facture>{
             throw new IllegalArgumentException("Appartement with numAppartement " + p.getAppartement().getNumAppartement() + " does not exist.");
         }
 
-        String sql = "INSERT INTO facture (numFacture, type, montant, descriptionFacture, date, idAppartement) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO facture (numFacture, type, montant, descriptionFacture, date, idAppartement, consommation) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, p.getNumFacture());
@@ -51,6 +51,7 @@ public class ServiceFacture implements IService<Facture>{
             statement.setDate(5, new java.sql.Date(p.getDate().getTime()));
             // Ne pas spécifier idAppartement ici, il sera déduit de la relation de clé étrangère
             statement.setInt(6, idAppartement); // Cela peut être commenté ou supprimé
+            statement.setFloat(7, p.getConsomation());
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -85,6 +86,7 @@ public class ServiceFacture implements IService<Facture>{
                 "`date`='" + p.getDate() + "'," +
                 "`type`='" + p.getType() + "'," +
                 "`montant`='" + p.getMontant() + "'," +
+                "`consommation`='" + p.getConsomation() + "', " + // Ajout de la virgule ici
                 "`descriptionFacture`='" + p.getDescriptionFacture() + "' " +
                 "WHERE `idFacture`=" + p.getIdFacture();
 
@@ -162,6 +164,8 @@ public class ServiceFacture implements IService<Facture>{
                 Facture.Type typeFacture = Facture.Type.valueOf(rs.getString("type"));
                 facture.setType(typeFacture);
                 facture.setMontant(rs.getFloat("montant"));
+                facture.setMontant(rs.getFloat("consommation"));
+
                 facture.setDescriptionFacture(rs.getString("descriptionFacture"));
 
                 Appartement appartement = new Appartement();
@@ -203,6 +207,7 @@ public class ServiceFacture implements IService<Facture>{
                     facture.setType(typeFacture);
                     facture.setMontant(rs.getFloat("montant"));
                     facture.setDescriptionFacture(rs.getString("descriptionFacture"));
+                    facture.setMontant(rs.getFloat("consommation"));
 
                     Appartement appartementFacture = new Appartement();
                     appartementFacture.setNumAppartement(rs.getInt("numAppartement"));

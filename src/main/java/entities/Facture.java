@@ -12,6 +12,7 @@ public class Facture {
     private Type type;
     private float montant;
     private String descriptionFacture;
+    private float consomation ;
 
     // La clé étrangère
     private Appartement appartement;
@@ -29,44 +30,48 @@ public class Facture {
         this.idFacture = idFacture;
     }
 
-    public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture, Appartement appartement) {
+    public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture,float consomation, Appartement appartement) {
         this.idFacture = idFacture;
         this.numFacture = numFacture;
         this.date = date;
         this.type = type;
         this.montant = montant;
         this.descriptionFacture = descriptionFacture;
+        this.consomation = consomation ;
         this.appartement = appartement;
     }
 
 
-    public Facture(int numFacture, Date date, Type type, float montant, String descriptionFacture) {
+    public Facture(int numFacture, Date date, Type type, float montant, String descriptionFacture,float consomation) {
         this.numFacture = numFacture;
         this.date = date;
         this.type = type;
         this.montant = montant;
         this.descriptionFacture = descriptionFacture;
+        this.consomation = consomation ;
 
 
     }
 
-    public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture) {
+    public Facture(int idFacture, int numFacture, Date date, Type type, float montant, String descriptionFacture,  float  consomation) {
         this.idFacture = idFacture;
         this.numFacture = numFacture;
         this.date = date;
         this.type = type;
         this.montant = montant;
         this.descriptionFacture = descriptionFacture;
+        this.consomation = consomation ;
 
 
     }
 
-    public Facture(int numFacture, Date date, Type type, float montant, String descriptionFacture, Appartement appartement) {
+    public Facture(int numFacture, Date date, Type type, float montant, String descriptionFacture,float consomation, Appartement appartement) {
         this.numFacture = numFacture;
         this.date = date;
         this.type = type;
         this.montant = montant;
         this.descriptionFacture = descriptionFacture;
+        this.consomation = consomation ;
         this.appartement = appartement;
 
     }
@@ -129,16 +134,22 @@ public class Facture {
         this.date = date;
     }
 
+    public float getConsomation() {
+        return consomation;
+    }
+
+    public void setConsomation(float consomation) {
+        this.consomation = consomation;
+    }
 
     @Override
     public String toString() {
-        return "Facture{" +
-
-                "numFacture=" + numFacture +
-                "Date=" + date +
-                ", type=" + type +
-
-                '}';
+        return "Numéro de Facture : '" + getNumFacture() + "',\n" +
+                "Type de Facture : '" + getType() + "',\n" +
+                "Montant : '" + getMontant() + "',\n" +
+                "Consomation : '" + getConsomation() + "',\n" +
+                "Date : '" + getDate() + "',\n" +
+                "Description: '" + getDescriptionFacture() + "',\n";
     }
 
     @Override

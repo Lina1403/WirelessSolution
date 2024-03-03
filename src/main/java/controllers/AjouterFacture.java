@@ -36,6 +36,8 @@ public class AjouterFacture {
     private TextField NumFacture;
 
     @FXML
+    private TextField consommationField;
+    @FXML
     private Text title;
 
     @FXML
@@ -64,6 +66,8 @@ public class AjouterFacture {
             String typeString = typeComboBox.getValue();
             Facture.Type type = Facture.Type.valueOf(typeString);
             float montant = Float.parseFloat(montantField.getText());
+            float consommation = Float.parseFloat(consommationField.getText());
+
             String description = descriptionField.getText();
             if (Numfact <= 0) {
                 throw new IllegalArgumentException("NumFacture doit être un nombre entier positif.");
@@ -79,7 +83,7 @@ public class AjouterFacture {
                 throw new IllegalArgumentException("No apartment selected.");
             }
             // Créer l'objet Facture
-            Facture facture = new Facture(Numfact, Date.valueOf(date), type, montant, description,appartementSelectionne);
+            Facture facture = new Facture(Numfact, Date.valueOf(date), type, montant, description, consommation, appartementSelectionne);
 
             // Appeler la méthode pour ajouter la facture
             PS.ajouter(facture);

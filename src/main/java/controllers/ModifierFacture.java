@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ModifierFacture {
+    @FXML
+    private TextField id_consommation_modifier;
+
 
     @FXML
     private TextField id_numFacture_modifier;
@@ -41,11 +44,14 @@ public class ModifierFacture {
         if (facture != null) {
             id_numFacture_modifier.setText(String.valueOf(facture.getNumFacture()));
             id_montant_modifier.setText(String.valueOf(facture.getMontant()));
+            id_consommation_modifier.setText(String.valueOf(facture.getNumFacture()));
+
             Date sqlDate = (Date) facture.getDate();
             LocalDate localDate = sqlDate.toLocalDate();
             id_date_modifier.setValue(localDate);
             id_description_modifier.setText(facture.getDescriptionFacture());
             typeComboBox.setValue(facture.getType().toString());
+
         }
     }
 
@@ -58,6 +64,7 @@ public class ModifierFacture {
                 LocalDate date = id_date_modifier.getValue();
                 String description = id_description_modifier.getText();
                 Facture.Type type = Facture.Type.valueOf(typeComboBox.getValue());
+                float consommation = Float.parseFloat(id_consommation_modifier.getText());
 
                 // Vérifier que les champs obligatoires ne sont pas vides
                 if (numFacture == 0 || montant == 0 || date == null || description.isEmpty() ) {
@@ -77,6 +84,7 @@ public class ModifierFacture {
                 selectedFacture.setDate(Date.valueOf(date));
                 selectedFacture.setDescriptionFacture(description);
                 selectedFacture.setType(type);
+                selectedFacture.setConsomation(consommation);
 
                 // Modifier la facture dans la base de données
                 serviceFacture.modifier(selectedFacture);

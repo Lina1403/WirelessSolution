@@ -43,7 +43,7 @@ public class AjouterAppartement {
             String nomResident = nomResidentField.getText();
             String taille = tailleField.getText();
             int nbrEtage = Integer.parseInt(nbrEtageField.getText());
-           // Récupérer la valeur sélectionnée du ComboBox directement comme String
+            // Récupérer la valeur sélectionnée du ComboBox directement comme String
             String statut = (String) statutComboBox.getSelectionModel().getSelectedItem();
 
             // Créer un nouvel objet Appartement avec les valeurs récupérées

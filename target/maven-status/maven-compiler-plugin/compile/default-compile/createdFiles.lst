@@ -1,3 +1,17 @@
+entities\User$Role.class
+entities\Resident.class
+controllers\Statistics.class
+utils\SendMail.class
+controllers\showcaseUser.class
+services\StatiqueService.class
+entities\Admin.class
+controllers\showcaseUser$1.class
+controllers\Login.class
+entities\User.class
 controllers\Statistique.class
 controllers\Graph.class
+services\ServiceUser.class
+controllers\AddUser.class
 controllers\AppartementCell.class
+controllers\showcaseUser$2.class
+entities\Concierge.class

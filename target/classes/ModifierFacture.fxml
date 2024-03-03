@@ -23,8 +23,10 @@
     <Label layoutX="69.0" layoutY="151.0" text="Date" />
     <Label layoutX="43.0" layoutY="247.0" text="Description Facture" />
     <Label layoutX="48.0" layoutY="195.0" text="Type Facture" />
+    <Label layoutX="426.0" layoutY="168.0" text="Consommation" />
 
     <Button blendMode="HARD_LIGHT" layoutX="185.0" layoutY="347.0" mnemonicParsing="false" onAction="#modifierFacture" text="Modifier" />
+    <TextField fx:id="id_consommation_modifier" layoutX="426.0" layoutY="192.0" />
 
     <TextField fx:id="id_numFacture_modifier" blendMode="HARD_LIGHT" layoutX="185.0" layoutY="56.0" />
     <TextField fx:id="id_montant_modifier" blendMode="HARD_LIGHT" layoutX="185.0" layoutY="104.0" />

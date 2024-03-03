@@ -231,7 +231,7 @@ public class AfficherAppartement {
             Parent root = loader.load();
 
             // Obtenez le contrôleur de l'interface Statistique
-            Statistique controller = loader.getController();
+            Statistics controller = loader.getController();
 
             // Initialiser et afficher les statistiques dans l'interface Statistique
             controller.initialiserStatistiques();

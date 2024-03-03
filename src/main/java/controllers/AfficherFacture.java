@@ -18,18 +18,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.ServiceFacture;
-import java.util.List;
+
+import java.util.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
+import utils.SendMail;
 
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class AfficherFacture {
@@ -44,6 +45,7 @@ public class AfficherFacture {
     private ListView<Facture> listViewFacture;
     @FXML
     private Button boutonPDF;
+    private  final SendMail sendMail = new SendMail();
 
 
     public void initData(Appartement appartement) throws SQLException {
@@ -150,6 +152,7 @@ public class AfficherFacture {
             afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture pour générer le PDF.");
         }
     }
+
 
 
 
@@ -303,5 +306,26 @@ public class AfficherFacture {
             e.printStackTrace(); // Gérer SQLException de manière appropriée
         }
     }
+    @FXML
+    void sendFactureByEmail() {
+        Facture factureSelectionnee = listViewFacture.getSelectionModel().getSelectedItem();
 
+        if (factureSelectionnee != null) {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Envoyer facture par e-mail");
+            dialog.setHeaderText("Entrez l'adresse e-mail du destinataire :");
+            dialog.setContentText("E-mail : ");
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(email -> {
+                String subject = "Facture";
+                String message = "Veuillez trouver ci-joint la facture.";
+                String filePath = "invoice.pdf"; // Chemin vers le fichier PDF généré
+                sendMail.sendEmail("votre-email@gmail.com", "votre-mot-de-passe", email, subject, message, filePath);
+            });
+        } else {
+            System.out.println("Aucune facture sélectionnée.");
+            afficherAlerteErreur("Sélection requise", "Veuillez sélectionner une facture à envoyer par e-mail.");
+        }
+    }
 }

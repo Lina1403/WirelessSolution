@@ -69,21 +69,7 @@ public class Statistique {
     }
 
     public void afficherStatistiquesAppartement(ActionEvent actionEvent) {
-        try {
-            String typeFactureStr = getTypeFactureSelectionne();
-            Facture.Type typeFacture = Facture.Type.valueOf(typeFactureStr); // Convertir String en Facture.Type
-            LocalDate dateDebut = getDateDebutSelectionnee();
-            LocalDate dateFin = getDateFinSelectionnee();
-            int nombreEtages = getNombreEtages();
 
-            // Appel à la méthode du service pour récupérer les statistiques pour un appartement spécifique
-            float consommationEnergie = serviceFacture.calculerConsommationEnergieAppartementParTypeEtPeriode(nombreEtages, typeFacture, dateDebut, dateFin);
-            // Affichage des statistiques dans votre interface utilisateur
-            System.out.println("Consommation d'énergie pour l'appartement sélectionné : " + consommationEnergie);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Gérer l'erreur
-        }
     }
 
 
@@ -123,19 +109,7 @@ public class Statistique {
 
 
     public void afficherStatistiquesTousAppartements(ActionEvent actionEvent) {
-        String typeFactureStr = getTypeFactureSelectionne();
-        Facture.Type typeFacture = null;
-        try {
-            typeFacture = Facture.Type.valueOf(typeFactureStr);
-        } catch (IllegalArgumentException e) {
-            // Handle the case where the enum constant does not exist
-            e.printStackTrace();
-            return; // Exit the method or handle the error as appropriate
-        }
-        LocalDate dateDebut = getDateDebutSelectionnee();
-        LocalDate dateFin = getDateFinSelectionnee();
 
-        // Rest of your method logic...
     }
 
 

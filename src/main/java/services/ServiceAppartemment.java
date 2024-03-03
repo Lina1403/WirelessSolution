@@ -2,6 +2,7 @@ package services;
 
 import entities.Appartement;
 import entities.Facture;
+import entities.User;
 import utils.DataSource;
 
 import java.sql.*;
@@ -10,6 +11,7 @@ import java.util.Set;
 public class ServiceAppartemment implements IService<Appartement> {
     private List<Facture> factures = new ArrayList<>();
     Connection cnx = DataSource.getInstance().getCnx();
+    User user = new User(1,"Ali", User.Role.RESIDENT);
 
 
     @Override
@@ -19,7 +21,7 @@ public class ServiceAppartemment implements IService<Appartement> {
 
         PreparedStatement preparedStatement = cnx.prepareStatement(req,Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setInt(1, p.getNumAppartement());
-        preparedStatement.setString(2, p.getNomResident());
+        preparedStatement.setString(2, user.getNom());
         preparedStatement.setString(3, p.getTaille());
         preparedStatement.setInt(4, p.getNbrEtage());
         preparedStatement.setString(5, p.getStatutAppartement().toString());
