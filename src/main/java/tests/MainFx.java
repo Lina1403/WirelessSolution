@@ -15,11 +15,11 @@ public class MainFx extends Application {
        //  Parent root = FXMLLoader.load(getClass().getResource("/AfficherParking.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/AjouterParking.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/DetailsParking.fxml"));
-        // Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoitureAdmin.fxml"));
+         Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/DetailsVoiture.fxml"));
 
         //-------------------------- U   S   E   R -----------------------------
-        Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoiture.fxml"));
+       // Parent root = FXMLLoader.load(getClass().getResource("/AfficherVoiture.fxml"));
         // Parent root = FXMLLoader.load(getClass().getResource("/AjouterVoiture.fxml"));
 
 

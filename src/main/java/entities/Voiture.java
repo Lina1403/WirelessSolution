@@ -81,11 +81,13 @@ public class Voiture {
 
     @Override
     public String toString() {
-        return
-
-                marque  +
-
-                        " est dans le Parking " + parking ;
+        return "Voiture : " +
+                "marque : " + marque + '\n' +
+                " model : " + model + '\n' +
+                " couleur : " + couleur + '\n' +
+                " matricule : " + matricule + '\n' +
+                " parking : " + parking
+                ;
     }
 
     @Override
