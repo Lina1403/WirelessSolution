@@ -3,6 +3,7 @@ package services;
 import entities.Parking;
 import entities.Voiture;
 import utils.DataSource;
+import entities.User;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -12,13 +13,13 @@ public class ServiceVoiture {
 
     Connection cnx = DataSource.getInstance().getCnx();
 
-    public int ajouter(Voiture v) throws SQLException {
+    public void ajouter(Voiture v) throws SQLException {
         // Vérifier si le parking existe avant d'ajouter la voiture
         ServiceParking serviceParking = new ServiceParking();
         Parking parking = serviceParking.getOneById(v.getParking().getIdParking());
 
         if (parking != null) {
-            String req = "INSERT INTO voiture (marque, model, couleur, matricule, idParking, idResident) VALUES (?, ?, ?, ?, ?, ?)";
+            String req = "INSERT INTO voiture (marque, model, couleur, matricule, idParking, id) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement st = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
                 st.setString(1, v.getMarque());
@@ -26,7 +27,7 @@ public class ServiceVoiture {
                 st.setString(3, v.getCouleur());
                 st.setString(4, v.getMatricule());
                 st.setInt(5, v.getParking().getIdParking());
-                st.setInt(6, v.getIdResident());
+                st.setInt(6, v.getUser().getId());
 
                 int rowsAffected = st.executeUpdate();
 
@@ -37,7 +38,6 @@ public class ServiceVoiture {
                     if (generatedKeys.next()) {
                         int idVoiture = generatedKeys.getInt(1);
                         System.out.println("Voiture ajoutée avec l'identifiant : " + idVoiture);
-                        return idVoiture;
                     } else {
                         System.out.println("Impossible de récupérer l'identifiant de la voiture ajoutée.");
                     }
@@ -46,8 +46,11 @@ public class ServiceVoiture {
                 }
             }
         }
-        return -1;
+
     }
+
+
+
 
     public void modifier(Voiture v) throws SQLException {
         String req = "UPDATE voiture SET " +
@@ -92,7 +95,7 @@ public class ServiceVoiture {
 
     public Voiture getOneById(int id) throws SQLException {
         Voiture voiture = null;
-        String req = "SELECT * FROM voiture WHERE idVoiture=?";
+        String req = "SELECT v.*, u.* FROM voiture v JOIN user u ON v.id = u.id WHERE v.idVoiture=?";
 
         try (PreparedStatement st = cnx.prepareStatement(req)) {
             st.setInt(1, id);
@@ -101,11 +104,19 @@ public class ServiceVoiture {
             if (rs.next()) {
                 voiture = new Voiture();
                 voiture.setIdVoiture(rs.getInt("idVoiture"));
-                voiture.setIdResident(rs.getInt("idResident"));
+                voiture.setId(rs.getInt("id"));
                 voiture.setMarque(rs.getString("marque"));
                 voiture.setModel(rs.getString("model"));
                 voiture.setCouleur(rs.getString("couleur"));
                 voiture.setMatricule(rs.getString("matricule"));
+
+                // Créer un objet User et définir ses attributs
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setNom(rs.getString("nom"));
+
+                // Définir l'utilisateur de la voiture
+                voiture.setUser(user);
 
                 // Créer un service pour obtenir l'objet Parking à partir de son ID
                 ServiceParking serviceParking = new ServiceParking();
@@ -124,7 +135,7 @@ public class ServiceVoiture {
 
     public Set<Voiture> getAll() throws SQLException {
         Set<Voiture> voitures = new HashSet<>();
-        String req = "SELECT * FROM voiture";
+        String req = "SELECT v.*, u.* FROM voiture v JOIN user u ON v.id = u.id";
 
         try (Statement st = cnx.createStatement();
              ResultSet rs = st.executeQuery(req)) {
@@ -132,11 +143,20 @@ public class ServiceVoiture {
             while (rs.next()) {
                 Voiture voiture = new Voiture();
                 voiture.setIdVoiture(rs.getInt("idVoiture"));
-                voiture.setIdResident(rs.getInt("idResident"));
+                voiture.setId(rs.getInt("id"));
                 voiture.setMarque(rs.getString("marque"));
                 voiture.setModel(rs.getString("model"));
                 voiture.setCouleur(rs.getString("couleur"));
                 voiture.setMatricule(rs.getString("matricule"));
+
+                // Créer un objet User et définir ses attributs
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setNom(rs.getString("nom"));
+
+                // Définir l'utilisateur de la voiture
+                voiture.setUser(user);
+                voitures.add(voiture);
 
                 // Récupérer les détails du parking associé à cette voiture
                 int idParking = rs.getInt("idParking");
@@ -146,7 +166,6 @@ public class ServiceVoiture {
                 // Attribuer l'objet Parking à l'objet Voiture
                 voiture.setParking(parking);
 
-                voitures.add(voiture);
             }
         } catch (SQLException e) {
             e.printStackTrace();

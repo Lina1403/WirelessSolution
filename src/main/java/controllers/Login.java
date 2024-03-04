@@ -35,25 +35,49 @@ public class Login {
     private PasswordField passwordfield;
     @FXML
     private Label loginmessagelabel;
-    public void cancelbtnonaction(ActionEvent event)
-    {
-        Stage stage =(Stage) cancelbtn.getScene().getWindow();
+
+    public void cancelbtnonaction(ActionEvent event) {
+        Stage stage = (Stage) cancelbtn.getScene().getWindow();
         stage.close();
     }
-    public void loginbtnonaction(ActionEvent event){
 
-        if(emailfield.getText().isBlank()==false && passwordfield.getText().isBlank()==false){
+    public void loginbtnonaction(ActionEvent event) throws SQLException {
+
+        if (emailfield.getText().isBlank() == false && passwordfield.getText().isBlank() == false) {
             validatelogin();
-        }
-        else {
+        } else {
             loginmessagelabel.setText("fill all the spots");
         }
 
     }
 
+    public User getCurrentUserFromDatabase(String email) throws SQLException {
+        Connection cnx = DataSource.getInstance().getCnx();
+        String query = "SELECT * FROM user WHERE mail=?";
+
+        try (PreparedStatement statement = cnx.prepareStatement(query)) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("nom");
+                    // Vous pouvez récupérer d'autres informations de l'utilisateur à partir de la base de données
+                    // selon votre modèle de données
+
+                    // Créer un objet User avec les informations récupérées
+                    User currentUser = new User(id, name, email); // Supposons que votre User a un constructeur avec ces champs
+
+                    return currentUser;
+                }
+            }
+        }
+
+        return null; // Si aucun utilisateur n'est trouvé avec l'email spécifié
+    }
+
     public void validatelogin() {
         Connection cnx = DataSource.getInstance().getCnx();
-        String verifyLogin = "SELECT count(1), role FROM users WHERE mail=? AND password=?";
+        String verifyLogin = "SELECT count(1), role FROM user WHERE mail=? AND password=?";
         try (PreparedStatement statement = cnx.prepareStatement(verifyLogin)) {
             statement.setString(1, emailfield.getText());
             statement.setString(2, passwordfield.getText());
@@ -63,42 +87,42 @@ public class Login {
                     if (count == 1) {
                         String roleString = queryResult.getString("role");
                         User.Role role = User.Role.valueOf(roleString.toUpperCase());
-                        if (role == User.Role.CONCIERGE) {
-                            // Charger l'interface AfficherAppartementfxml pour le concierge
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherParking.fxml"));
-                            Parent root = loader.load();
-                            Scene scene = new Scene(root);
-                            Stage stage = new Stage();
-                            stage.setScene(scene);
-                            stage.show();
-                            // Fermer la fenêtre de connexion
-                            Stage loginStage = (Stage) loginbtn.getScene().getWindow();
-                            loginStage.close();
-                        } else if (role == User.Role.RESIDENT) {
-                            // Charger l'interface pour l'utilisateur normal
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
-                            Parent root = loader.load();
-                            Scene scene = new Scene(root);
-                            Stage stage = new Stage();
-                            stage.setScene(scene);
-                            stage.show();
-                            // Fermer la fenêtre de connexion
-                            Stage loginStage = (Stage) loginbtn.getScene().getWindow();
-                            loginStage.close();
+                        if (role == User.Role.RESIDENT) {
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
+                                Parent root = loader.load();
+
+                                AjouterVoiture controller = loader.getController();
+                                if (controller != null) {
+                                    String currentUserEmail = emailfield.getText();
+                                    User currentUser = getCurrentUserFromDatabase(currentUserEmail);
+                                    controller.setCurrentUser(currentUser);
+
+                                    // Afficher la scène
+                                    Scene scene = new Scene(root);
+                                    Stage stage = new Stage();
+                                    stage.setScene(scene);
+                                    stage.show();
+
+                                    // Fermer la fenêtre de connexion
+                                    Stage loginStage = (Stage) loginbtn.getScene().getWindow();
+                                    loginStage.close();
+                                } else {
+                                    System.out.println("Failed to retrieve AjouterVoiture controller");
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         } else {
-                            loginmessagelabel.setText("Congrats"); // Cela peut être modifié en fonction de l'interface utilisateur
+                            loginmessagelabel.setText("Retry");
                         }
-                    } else {
-                        loginmessagelabel.setText("Retry");
                     }
                 }
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
 
 
 }

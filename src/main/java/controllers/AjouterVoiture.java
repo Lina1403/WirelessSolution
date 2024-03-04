@@ -2,6 +2,7 @@ package controllers;
 
 import com.google.zxing.common.BitMatrix;
 import entities.Parking;
+import entities.User;
 import entities.Voiture;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -70,6 +71,12 @@ public class AjouterVoiture {
 
     @FXML
     private Timeline timeline;
+
+    private User currentUser;
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
 
     private Parking selectedParking;
 
@@ -156,9 +163,9 @@ public class AjouterVoiture {
                     return;
                 }
 
-                Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking);
+                Voiture voiture = new Voiture(selectedParking.getIdParking(), marque, modele, couleur, matricule, selectedParking,currentUser);
 
-                idVoitureAjoutee = serviceVoiture.ajouter(voiture);
+                serviceVoiture.ajouter(voiture);
 
                 if (idVoitureAjoutee != -1) {
                     generateQRCode(matricule);

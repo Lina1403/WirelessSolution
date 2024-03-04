@@ -4,23 +4,44 @@ import java.util.Objects;
 
 public class Voiture {
     private int idVoiture;
-    private int idResident; // Assuming this is the foreign key referring to the resident
+    private int id; // Assuming this is the foreign key referring to the resident
     private String marque;
     private String model;
     private String couleur;
     private String matricule;
     private Parking parking; // Changed type from String to Parking
 
+    private User user; // Added reference to User
+
+
     public Voiture() {
     }
 
-    public Voiture(int idResident, String marque, String model, String couleur, String matricule, Parking parking) {
-        this.idResident = idResident;
+    public Voiture(int id, String marque, String model, String couleur, String matricule, Parking parking ,User user) {
+        this.id = id;
         this.marque = marque;
         this.model = model;
         this.couleur = couleur;
         this.matricule = matricule;
         this.parking = parking;
+        this.user = user; // Initialisation de l'utilisateur
+
+    }
+    public Voiture( String marque, String model, String couleur, String matricule, Parking parking ,User user) {
+        this.marque = marque;
+        this.model = model;
+        this.couleur = couleur;
+        this.matricule = matricule;
+        this.parking = parking;
+        this.user = user; // Initialisation de l'utilisateur
+
+    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getIdVoiture() {
@@ -31,12 +52,12 @@ public class Voiture {
         this.idVoiture = idVoiture;
     }
 
-    public int getIdResident() {
-        return idResident;
+    public int getId() {
+        return id;
     }
 
-    public void setIdResident(int idResident) {
-        this.idResident = idResident;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMarque() {
@@ -79,6 +100,7 @@ public class Voiture {
         this.parking = parking;
     }
 
+
     @Override
     public String toString() {
         return "Voiture : " +
@@ -96,7 +118,7 @@ public class Voiture {
         if (o == null || getClass() != o.getClass()) return false;
         Voiture voiture = (Voiture) o;
         return idVoiture == voiture.idVoiture &&
-                idResident == voiture.idResident &&
+                id == voiture.id &&
                 Objects.equals(marque, voiture.marque) &&
                 Objects.equals(model, voiture.model) &&
                 Objects.equals(couleur, voiture.couleur) &&
@@ -106,6 +128,6 @@ public class Voiture {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idVoiture, idResident, marque, model, couleur, matricule, parking);
+        return Objects.hash(idVoiture, id, marque, model, couleur, matricule, parking);
     }
 }

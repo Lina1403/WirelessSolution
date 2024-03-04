@@ -101,6 +101,12 @@ public class User {
 
     }
 
+    public User(int id, String nom, String mail) {
+        this.id = id;
+        this.nom = nom;
+        this.mail = mail;
+    }
+
     @Override
     public String toString() {
         return "User{" +
