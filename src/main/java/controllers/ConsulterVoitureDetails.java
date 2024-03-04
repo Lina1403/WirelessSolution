@@ -40,6 +40,7 @@ public class ConsulterVoitureDetails {
     private TextField textFieldMatricule; // Ajout de l'annotation @FXML
 
 
+
     @FXML
     private Button ajouterQRCodeButton;
 

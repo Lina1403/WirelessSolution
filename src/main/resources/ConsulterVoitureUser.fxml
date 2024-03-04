@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ConsulterVoitureUser">
+    <children>
+        <TextField fx:id="textFieldMarque" layoutX="76.0" layoutY="108.0" />
+        <TextField fx:id="textFieldModele" layoutX="76.0" layoutY="167.0" />
+        <TextField fx:id="textFieldCouleur" layoutX="76.0" layoutY="223.0" />
+        <TextField fx:id="textFieldMatricule" layoutX="76.0" layoutY="278.0" />
+
+        <ListView fx:id="listeVoitures" layoutX="240.0" layoutY="62.0" prefHeight="294.0" prefWidth="361.0" />
+
+        <TextField fx:id="searchField" layoutX="76.0" layoutY="62.0" promptText="Rechercher..." />
+
+        <Button layoutX="120.0" layoutY="333.0" onAction="#modifierVoiture" text="Modifier" />
+        <Button layoutX="200.0" layoutY="333.0" onAction="#supprimerVoiture" text="Supprimer" />
+
+    </children>
+</AnchorPane>

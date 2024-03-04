@@ -26,7 +26,7 @@
         <TextField fx:id="couleurField" layoutX="224.0" layoutY="228.0" promptText="Couleur" />
         <TextField fx:id="matriculeField" layoutX="224.0" layoutY="279.0" promptText="Matricule" />
         <Button fx:id="telechargerButton" layoutX="499.0" layoutY="508.0" onAction="#handleTelechargerButton" text="Télécharger QR Code" visible="false" />
-        <Button fx:id="consulterVoituresButton" layoutX="338.0" layoutY="508.0" mnemonicParsing="false" onAction="#handleAjouterButton" prefHeight="25.0" prefWidth="149.0" text="Consulter Voitures" />
+        <Button fx:id="consulterVoituresButton" layoutX="338.0" layoutY="508.0" mnemonicParsing="false" onAction="#handleConsulterButton" prefHeight="25.0" prefWidth="149.0" text="Consulter Voitures" />
 
         <Button fx:id="ajouterButton" layoutX="134.0" layoutY="508.0" onAction="#handleAjouterButton" prefHeight="25.0" prefWidth="149.0" text="Ajouter" />
         <ProgressBar fx:id="progressBar" layoutX="54.0" layoutY="473.0" prefHeight="18.0" prefWidth="318.0" />

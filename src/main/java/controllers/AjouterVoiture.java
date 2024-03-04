@@ -8,10 +8,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import services.ServiceParking;
 import services.ServiceVoiture;
@@ -444,6 +448,29 @@ public class AjouterVoiture {
             afficherMessageErreur("Une erreur s'est produite lors de la modification de la voiture.");
         }
     }
+
+    @FXML
+    private void handleConsulterButton(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsulterVoitureUser.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+
+            // Récupérez le contrôleur de la vue chargée
+            ConsulterVoitureUser controller = loader.getController();
+
+            // Initialisez les données nécessaires dans le contrôleur de la vue chargée
+
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Titre de votre fenêtre");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 }
