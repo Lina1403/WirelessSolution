@@ -3,6 +3,8 @@ package controllers;
 import entities.Espace;
 import entities.Event;
 import javafx.scene.control.*;
+import javafx.util.StringConverter;
+import services.ServiceEspace;
 import services.ServiceEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseButton;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.awt.Desktop;
@@ -22,19 +23,36 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.awt.Color;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.Set;
+import  services.ServiceEvent;
 
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 public class AfficherEvent {
-    @FXML private Button boutonGerer;
+    public void setAfficherEvent(AfficherEvent afficherEvent) {
+        this.afficherEvent = afficherEvent;
+    }
+
     @FXML private Button boutonGererEspace;
     @FXML private TextField txtRechercheNom;
     @FXML private ListView<Event> listeEvents;
     @FXML private ChoiceBox<String> triChoiceBox;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private AfficherEvent afficherEvent;
+    private Event event;
+    private ServiceEvent serviceEvent;
+
+    @FXML private TextField textFieldTitre;
+    @FXML private TextField textFieldNbrPersonne;
+    @FXML private ComboBox<Espace> comboBoxEspace;
+    @FXML private TextArea textFieldListeInvites; // Modifier le type en TextArea
+    @FXML private TextField textFieldDate;
 
     private ObservableList<Event> eventsObservableList;
-    private ServiceEvent serviceEvent;
 
     // Constructeur
     public AfficherEvent() {
@@ -42,70 +60,48 @@ public class AfficherEvent {
         eventsObservableList = FXCollections.observableArrayList();
     }
 
-    // Méthode appelée après l'initialisation de la vue
+    // Méthode initialize()
     @FXML
     public void initialize() {
         try {
-            // Charger la liste des événements
-            eventsObservableList.addAll(serviceEvent.getAll());
-            listeEvents.setItems(eventsObservableList);
+            chargerEvents();
+            afficherEvent = this;
 
-            // Personnaliser l'affichage des éléments dans la ListView
-            listeEvents.setCellFactory(param -> new ListCell<Event>() {
-                @Override
-                protected void updateItem(Event item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item.toString());
+
+            listeEvents.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    event = newValue; // Mise à jour de l'événement sélectionné
+                    eventSelected(newValue);
+                }
+            });
+
+            triChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null) {
+                    if (newValue.equals("Nom")) {
+                        trierParNom();
+                    } else if (newValue.equals("Date")) {
+                        trierParDate();
                     }
                 }
             });
 
+            txtRechercheNom.textProperty().addListener((observable, oldValue, newValue) -> {
+                rechercherParNom(newValue.trim());
+            });
 
-            //                         setText(item.getTitle() + " - " + item.getEspace().getName());
-
+            boutonGererEspace.setOnAction(event -> ouvrirAjouterEspace());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        triChoiceBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (newValue.equals("Nom")) {
-                    trierParNom();
-                } else if (newValue.equals("Date")) {
-                    trierParDate();
-                }
-            }
-        });
-        txtRechercheNom.textProperty().addListener((observable, oldValue, newValue) -> {
-            rechercherParNom(newValue.trim());
-        });
-
-        // Écouter le clic sur le bouton de gestion d'événements
-        boutonGerer.setOnAction(event -> {
-            Event selectedEvent = listeEvents.getSelectionModel().getSelectedItem();
-            if (selectedEvent != null) {
-                ouvrirDetailsEvent(selectedEvent);
-            } else {
-                // Afficher un message d'erreur si aucun événement n'est sélectionné
-            }
-        });
-
-        // Écouter le double-clic sur un élément de la liste
-        listeEvents.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                Event selectedEvent = listeEvents.getSelectionModel().getSelectedItem();
-                if (selectedEvent != null) {
-                    ouvrirDetailsEvent(selectedEvent);
-                }
-            }
-        });
-
-        // Écouter le clic sur le bouton de gestion des espaces
-        boutonGererEspace.setOnAction(event -> ouvrirAjouterEspace());
     }
 
+    void eventSelected(Event event) {
+        textFieldTitre.setText(event.getTitle());
+        textFieldNbrPersonne.setText(String.valueOf(event.getNbrPersonne()));
+        textFieldListeInvites.setText(event.getListeInvites());
+        textFieldDate.setText(dateFormat.format(event.getDate()));
+        comboBoxEspace.setValue(event.getEspace());
+    }
     void trierParNom() {
         ObservableList<Event> events = listeEvents.getItems();
         events.sort((event1, event2) -> event1.getTitle().compareToIgnoreCase(event2.getTitle()));
@@ -117,7 +113,6 @@ public class AfficherEvent {
         events.sort(Comparator.comparing(Event::getDate));
         listeEvents.setItems(events);
     }
-
 
     void rechercherParNom(String nomRecherche) {
         if (!nomRecherche.isEmpty()) {
@@ -151,22 +146,96 @@ public class AfficherEvent {
         }
     }
 
-    private void ouvrirDetailsEvent(Event event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetailsEvent.fxml"));
-            Parent root = loader.load();
-            DetailsEvent controller = loader.getController();
-            controller.initData(event);
-            controller.setAfficherEvent(this);
+    @FXML
+    private void modifierEvent() {
+        {
+            if (event != null) {
+                try {
+                    // Contrôle de saisie pour le titre
+                    String titre = textFieldTitre.getText().trim();
+                    if (titre.isEmpty() || !titre.matches("[a-zA-Z ]+")) {
+                        throw new IllegalArgumentException("Le titre ne peut pas être vide et doit contenir uniquement des lettres et des espaces.");
+                    }
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Détails de l'événement");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    // Contrôle de saisie pour le nombre de personnes
+                    String nbrPersonneText = textFieldNbrPersonne.getText().trim();
+                    if (nbrPersonneText.isEmpty()) {
+                        throw new IllegalArgumentException("Veuillez saisir un nombre pour le nombre de personnes.");
+                    }
+                    int nbrPersonne = Integer.parseInt(nbrPersonneText);
+                    if (nbrPersonne <= 0 || nbrPersonne > 50) {
+                        throw new IllegalArgumentException("Le nombre de personnes doit être compris entre 1 et 50.");
+                    }
+
+                    // Contrôle de saisie pour la listeInvites
+                    String listeInvites = textFieldListeInvites.getText().trim();
+                    if (listeInvites.isEmpty()) {
+                        throw new IllegalArgumentException("La listeInvites ne peut pas être vide.");
+                    }
+
+                    // Contrôle de saisie pour la date
+                    String dateString = textFieldDate.getText().trim();
+                    if (dateString.isEmpty()) {
+                        throw new IllegalArgumentException("Veuillez saisir une date.");
+                    }
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = dateFormat.parse(dateString);
+
+                    // Contrôle de saisie pour l'espace
+                    Espace espace = comboBoxEspace.getValue();
+                    if (espace == null) {
+                        throw new IllegalArgumentException("Veuillez sélectionner un espace.");
+                    }
+
+                    // Si toutes les validations sont passées, vous pouvez effectuer la modification
+                    event.setTitle(titre);
+                    event.setNbrPersonne(nbrPersonne);
+                    event.setEspace(espace);
+                    event.setListeInvites(listeInvites);
+                    event.setDate(new java.sql.Date(date.getTime()));
+
+                    serviceEvent.modifier(event);
+
+                    afficherEvent.refreshList();
+
+                } catch (NumberFormatException e) {
+                    afficherAlerteErreurEvent("Erreur de format", "Veuillez saisir un nombre valide pour le nombre de personnes.");
+                } catch (IllegalArgumentException | ParseException e) {
+                    afficherAlerteErreurEvent("Erreur de saisie", e.getMessage());
+                } catch (SQLException e) {
+                    afficherAlerteErreurEvent("Erreur SQL", "Erreur lors de la modification de l'événement : " + e.getMessage());
+                } catch (Exception e) {
+                    afficherAlerteErreurEvent("Erreur", e.getMessage());
+                }
+
+            }}}
+
+        private void chargerEvents() throws SQLException {
+        // Charger la liste des événements
+        eventsObservableList.addAll(serviceEvent.getAll());
+        listeEvents.setItems(eventsObservableList);
+
+        // Personnaliser l'affichage des éléments dans la ListView
+        listeEvents.setCellFactory(param -> new ListCell<Event>() {
+            @Override
+            protected void updateItem(Event item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.toString());
+                }
+            }
+        });
     }
+
+            private void afficherAlerteErreurEvent(String titre, String message) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(titre);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        }
 
     public void refreshList() {
         try {
@@ -176,4 +245,21 @@ public class AfficherEvent {
             throwables.printStackTrace();
         }
     }
+
+
+    @FXML
+    private void supprimerEvent() {
+        if (event != null) {
+            try {
+                serviceEvent.supprimer(event.getIdEvent());
+                afficherEvent.refreshList();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Gérer l'erreur de suppression
+            }
+        }
+    }
+
+
+
 }

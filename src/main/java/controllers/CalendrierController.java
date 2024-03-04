@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
+import javafx.scene.layout.FlowPane;
 
 import entities.Espace;
 import entities.Event;
@@ -23,30 +24,41 @@ public class CalendrierController implements Initializable {
 
     @FXML private Text year;
     @FXML private Text month;
-    @FXML private GridPane calendar; // Modifier le type en GridPane
+    @FXML private FlowPane calendar;
+
     private ServiceEvent eventService;
-    private Espace selectedEspace; // Espace sélectionné
-    private YearMonth currentYearMonth; // Current year and month
+    private Espace selectedEspace;
+    private YearMonth currentYearMonth;
+
+    // Méthode pour sélectionner un espace
     public void selectEspace(Espace espace) {
         this.selectedEspace = espace;
         drawCalendar(); // Redessiner le calendrier pour l'espace sélectionné
     }
+
+    // Méthode d'initialisation du contrôleur
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        eventService = new ServiceEvent(); // Initialize the event service
-        currentYearMonth = YearMonth.now(); // Set the current year and month
-        drawCalendar();
+        eventService = new ServiceEvent(); // Initialiser le service d'événement
+        currentYearMonth = YearMonth.now(); // Définir l'année et le mois actuels
+        drawCalendar(); // Dessiner le calendrier
     }
+
+    // Méthode pour reculer d'un mois
     @FXML
     void backOneMonth(ActionEvent event) {
         currentYearMonth = currentYearMonth.minusMonths(1);
-        drawCalendar(); // Redraw the calendar
+        drawCalendar(); // Redessiner le calendrier
     }
+
+    // Méthode pour avancer d'un mois
     @FXML
     void forwardOneMonth(ActionEvent event) {
         currentYearMonth = currentYearMonth.plusMonths(1);
-        drawCalendar();
+        drawCalendar(); // Redessiner le calendrier
     }
+
+    // Méthode pour dessiner le calendrier
     private void drawCalendar() {
         year.setText(String.valueOf(currentYearMonth.getYear()));
         month.setText(String.valueOf(currentYearMonth.getMonth()));
@@ -56,8 +68,6 @@ public class CalendrierController implements Initializable {
         calendar.getChildren().clear();
         Map<LocalDate, List<Event>> eventMap = getAllEventsForMonth(currentYearMonth);
 
-        int row = 0;
-        int col = 0;
         for (int day = 1; day <= daysInMonth; day++) {
             StackPane stackPane = new StackPane();
 
@@ -72,28 +82,31 @@ public class CalendrierController implements Initializable {
             if (!eventsForDate.isEmpty()) {
                 rectangle.setFill(Color.LIGHTBLUE);
             }
-            calendar.add(stackPane, col, row);
-            col++;
-            if (col == 7) {
-                col = 0;
-                row++;
-            }}}
+            calendar.getChildren().add(stackPane); // Ajouter le stackPane au FlowPane
+        }
+    }
+
+    // Méthode pour obtenir tous les événements pour un mois donné
     private Map<LocalDate, List<Event>> getAllEventsForMonth(YearMonth yearMonth) {
         Map<LocalDate, List<Event>> eventMap = new HashMap<>();
         try {
-            if (selectedEspace != null) { // Check if selectedEspace is not null
+            if (selectedEspace != null) { // Vérifier si selectedEspace n'est pas nul
                 Set<Event> events = eventService.getEventsForMonth(selectedEspace.getIdEspace(), yearMonth);
                 for (Event event : events) {
                     LocalDate eventDate = event.getDate().toLocalDate();
                     if (eventDate.getMonth() == yearMonth.getMonth()) {
                         eventMap.computeIfAbsent(eventDate, k -> new ArrayList<>()).add(event);
-                    }}}
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert("Error", "Failed to fetch events from the database.");
         }
         return eventMap;
     }
+
+    // Méthode pour afficher une alerte
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

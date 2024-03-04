@@ -13,27 +13,38 @@ public class Event {
     private int nbrPersonne;
     private String listeInvites; // Renamed variable
     private Espace espace;
+    private User user; // Ajout de la référence à l'utilisateur
+
 
     public Event() {
     }
 
-    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String listeInvites, Espace espace) {
+    public Event(Integer idEvent, String title, Date date, int nbrPersonne, String listeInvites, Espace espace, User user) {
         this.idEvent = idEvent;
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
         this.listeInvites = listeInvites;
         this.espace = espace;
+        this.user = user; // Initialisation de l'utilisateur
     }
 
-    public Event(String title, Date date, int nbrPersonne, String listeInvites, Espace espace) {
+    public Event(String title, Date date, int nbrPersonne, String listeInvites, Espace espace, User user) {
         this.title = title;
         this.date = date;
         this.nbrPersonne = nbrPersonne;
         this.listeInvites = listeInvites;
         this.espace = espace;
+        this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     public Integer getIdEvent() {
         return idEvent;
     }

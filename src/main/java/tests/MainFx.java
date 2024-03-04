@@ -13,8 +13,9 @@ public class MainFx extends Application {
        //Parent root = FXMLLoader.load(getClass().getResource("/Calendrier.fxml"));
        //  Parent root = FXMLLoader.load(getClass().getResource("/stats.fxml"));
 
-       // Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvent.fxml"));
-         Parent root = FXMLLoader.load(getClass().getResource("/AfficherEspace.fxml"));
+       //Parent root = FXMLLoader.load(getClass().getResource("/AjouterEvent.fxml"));
+         Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
+      //   Parent root = FXMLLoader.load(getClass().getResource("/AfficherEvent.fxml"));
 
         // Créer une nouvelle scène avec le contenu du fichier FXML
         Scene scene = new Scene (root);

@@ -1,7 +1,9 @@
+
 package controllers;
 
 import entities.Espace;
 import entities.Event;
+import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,6 +46,7 @@ public class AjouterEvent {
     @FXML private ComboBox<String> espaceComboBox;
     @FXML private Button boutonPDF;
     private Event addedEvent;
+
     @FXML
     void initialize() {
         try {
@@ -58,9 +61,18 @@ public class AjouterEvent {
         });
     }
 
+    private User currentUser;
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+    public AjouterEvent() {
+    }
+
     @FXML
     void ajouterEvent(ActionEvent event) {
         try {
+
             // Contrôle de saisie pour le titre
             String title = titleField.getText().trim();
             if (!title.matches("[a-zA-Z ]+")) {
@@ -99,7 +111,7 @@ public class AjouterEvent {
                 throw new IllegalArgumentException("L'espace sélectionné n'existe pas.");
             }
             // Créer l'objet Event et l'ajouter
-            Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, listeInvites, espaceObj);
+            Event eventObj = new Event(title, Date.valueOf(date), nbrPersonne, listeInvites, espaceObj, currentUser);
             serviceEvent.ajouter(eventObj);
 
             // Stocker l'événement ajouté dans la variable addedEvent
@@ -198,7 +210,7 @@ public class AjouterEvent {
     @FXML
     void consulterMesEvents(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chemin/vers/EventAjoutés.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventAjoutes.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
