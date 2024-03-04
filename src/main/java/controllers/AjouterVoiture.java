@@ -223,7 +223,7 @@ public class AjouterVoiture {
         int width = 300;
         int height = 300;
         String fileType = "png";
-        String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier";
+        String filePath = "C:\\Users\\hp\\Desktop\\qrcode";
 
         String data = "Matricule: " + matricule;
 
@@ -253,15 +253,21 @@ public class AjouterVoiture {
     }
 
     private void afficherQRCode(String matricule) {
-        String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier\\";
+        String filePath = "C:\\Users\\hp\\Desktop\\qrcode";
         String fileName = "QRCode_" + matricule + ".png";
 
         File file = new File(filePath + fileName);
 
         if (file.exists()) {
+            try {
+                // Charger l'image à partir du fichier
+                BufferedImage bufferedImage = ImageIO.read(file);
             Image qrCodeImage = new Image(file.toURI().toString());
             qrCodeImageView.setImage(qrCodeImage);
-        } else {
+        } catch (IOException e) {
+                e.printStackTrace();
+            }
+            } else {
             System.out.println("Le fichier QR code n'existe pas : " + fileName);
         }
     }
