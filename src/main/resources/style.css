@@ -1,0 +1,5 @@
+.back{
+    -fx-background-image: url("AjouterReclamation.PNG") ;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}

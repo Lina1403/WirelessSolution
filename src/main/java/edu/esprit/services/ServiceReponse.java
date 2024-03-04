@@ -14,9 +14,17 @@ import java.util.List;
 public class ServiceReponse implements IService<Reponse> {
     private final Connection cnx;
     private PreparedStatement pst;
+    private static ServiceReponse instance;
 
     public ServiceReponse() {
         cnx = DataSource.getInstance().getCnx();
+    }
+
+    public static ServiceReponse getInstance() {
+        if (instance == null) {
+            instance = new ServiceReponse();
+        }
+        return instance;
     }
 
     @Override

@@ -2,25 +2,37 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherReclamation">
     <children>
-        <TableView fx:id="TableViewRecB" layoutX="39.0" layoutY="14.0" prefHeight="269.0" prefWidth="506.0">
-            <columns>
-                <TableColumn fx:id="CvNom" prefWidth="78.4000244140625" text="Nom" />
-                <TableColumn fx:id="CvDescri" prefWidth="163.20001220703125" text="Description" />
-                <TableColumn fx:id="CvDate" prefWidth="91.199951171875" text="Date" />
-                <TableColumn fx:id="CvCat" prefWidth="78.4000244140625" text="Categorie" />
-                <TableColumn fx:id="CvStatut" prefWidth="98.39999999999998" text="Statut" />
-            </columns>
-        </TableView>
-        <Button fx:id="modifier" layoutX="199.0" layoutY="327.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
-        <TextField fx:id="stat" layoutX="28.0" layoutY="327.0" />
-        <Label fx:id="satut" layoutX="28.0" layoutY="302.0" text="Statut du reclamation :" />
-        <Button fx:id="supprimer" layoutX="282.0" layoutY="327.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
+        <ImageView fitHeight="586.0" fitWidth="667.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@ListeVoiture.png" />
+            </image>
+        </ImageView>
+        <VBox spacing="10" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <Label text="Liste des Réclamations" />
+            <ListView fx:id="listViewRec" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <HBox spacing="10">
+                <TextField fx:id="CategorieRecTF" promptText="Categorie" />
+                <TextField fx:id="descriRecTF" promptText="Description" />
+                <Button fx:id="ajouterButton" text="Ajouter" onAction="#ajouter" />
+                <Button fx:id="modifierButton" text="Modifier" onAction="#modifier" />
+                <Button fx:id="supprimerButton" text="Supprimer" onAction="#supprimer" />
+                <Button fx:id="ajouterReponseButton" text="Ajouter Réponse" onAction="#goToAjouterReponse" />
+                <Button fx:id="consulterReponseButton" text="Consulter Réponses" onAction="#consulterReponse" />
+            </HBox>
+        </VBox>
     </children>
 </AnchorPane>

@@ -9,23 +9,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="573.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AjouterReponse">
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ListView?>
+<AnchorPane prefHeight="573.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherReponse">
     <children>
-        <VBox layoutX="20" layoutY="20" spacing="10">
-            <Label text="Commentaire:" />
-            <TextField fx:id="comTF" />
-
-            <TableView fx:id="TableViewComA">
-                <columns>
-                    <TableColumn fx:id="CvNomA" prefWidth="115.2" text="Nom admin" />
-                    <TableColumn fx:id="CvCom" prefWidth="132.0" text="Commentaire" />
-                </columns>
-            </TableView>
-            <HBox spacing="10">
-                <Button fx:id="ajouter" onAction="#ajouter" text="Ajouter" />
-                <Button fx:id="modifier" onAction="#modifier" text="Modifier" />
-                <Button fx:id="supprimer" onAction="#supprimer" text="Supprimer" />
-            </HBox>
-        </VBox>
+        <Text layoutX="20.0" layoutY="20.0" text="Réponses" />
+        <ListView fx:id="listViewReponses" layoutX="20.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" />
+        <TextField fx:id="comTF" layoutX="230.0" layoutY="50.0" prefWidth="200.0" />
+        <Button fx:id="modifier" layoutX="440.0" layoutY="50.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
+        <Button fx:id="supprimer" layoutX="440.0" layoutY="90.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
     </children>
 </AnchorPane>

@@ -13,16 +13,14 @@ public class MainFx extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load AjouterReclamation.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterReclamation.fxml"));
-        Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherReponse.fxml"));
+
 
         // Set the controller for AjouterReclamation.fxml
-        AjouterReclamation controller = loader.getController();
-        controller.setStage(stage); // Pass the stage to the controller
-
-        Scene scene = new Scene(root);
+        Parent root=loader.load();
+        Scene scene=new Scene(root);
         stage.setScene(scene);
-        stage.setTitle("Ajouter Réclamation");
+        stage.setTitle("ajout");
         stage.show();
     }
 
