@@ -262,12 +262,12 @@ public class AjouterVoiture {
             try {
                 // Charger l'image à partir du fichier
                 BufferedImage bufferedImage = ImageIO.read(file);
-            Image qrCodeImage = new Image(file.toURI().toString());
-            qrCodeImageView.setImage(qrCodeImage);
-        } catch (IOException e) {
+                Image qrCodeImage = new Image(file.toURI().toString());
+                qrCodeImageView.setImage(qrCodeImage);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            } else {
+        } else {
             System.out.println("Le fichier QR code n'existe pas : " + fileName);
         }
     }

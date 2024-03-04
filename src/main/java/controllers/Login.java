@@ -76,7 +76,7 @@ public class Login {
                             loginStage.close();
                         } else if (role == User.Role.RESIDENT) {
                             // Charger l'interface pour l'utilisateur normal
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherVoiture.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
                             Parent root = loader.load();
                             Scene scene = new Scene(root);
                             Stage stage = new Stage();
