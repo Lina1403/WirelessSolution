@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ConsulterVoitureDetails">
     <!-- Image du code QR -->
-    <ImageView fx:id="qrCodeImageView" fitHeight="200.0" fitWidth="200.0" layoutX="200.0" layoutY="50.0" />
+    <ImageView fx:id="qrCodeImageView" fitHeight="200.0" fitWidth="200.0" layoutX="329.0" layoutY="100.0" />
 
-    <TextField fx:id="textFieldMarque" layoutX="150.0" layoutY="300.0" />
-    <TextField fx:id="textFieldModele" layoutX="150.0" layoutY="330.0" />
-    <TextField fx:id="textFieldCouleur" layoutX="150.0" layoutY="360.0" />
-    <TextField fx:id="textFieldMatricule" layoutX="150.0" layoutY="390.0" />
+    <TextField fx:id="textFieldMarque" layoutX="76.0" layoutY="108.0" />
+    <TextField fx:id="textFieldModele" layoutX="76.0" layoutY="167.0" />
+    <TextField fx:id="textFieldCouleur" layoutX="76.0" layoutY="223.0" />
+    <TextField fx:id="textFieldMatricule" layoutX="76.0" layoutY="278.0" />
 
 
-    <Button text="Modifier" layoutX="300.0" layoutY="420.0" onAction="#handleModifierButton" />
+    <Button layoutX="120.0" layoutY="333.0" onAction="#handleModifierButton" text="Modifier" />
 
 </AnchorPane>

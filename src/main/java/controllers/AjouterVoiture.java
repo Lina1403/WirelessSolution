@@ -169,7 +169,7 @@ public class AjouterVoiture {
                     serviceParking.modifier(selectedParking);
 
                     afficherQRCode(matricule); // Affichage du code QR après le délai
-// Activer la visibilité du bouton Télécharger QR Code
+                    // Activer la visibilité du bouton Télécharger QR Code
                     telechargerButton.setVisible(true);
 
                     afficherMessageSucces("Voiture ajoutée avec succès!");
@@ -253,10 +253,11 @@ public class AjouterVoiture {
     }
 
     private void afficherQRCode(String matricule) {
-        String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier";
+        String filePath = "C:\\Users\\hp\\Desktop\\Nouveau dossier\\";
         String fileName = "QRCode_" + matricule + ".png";
 
         File file = new File(filePath + fileName);
+
         if (file.exists()) {
             Image qrCodeImage = new Image(file.toURI().toString());
             qrCodeImageView.setImage(qrCodeImage);
@@ -264,6 +265,7 @@ public class AjouterVoiture {
             System.out.println("Le fichier QR code n'existe pas : " + fileName);
         }
     }
+
 
     @FXML
     private void handleSupprimerButton(ActionEvent event) {

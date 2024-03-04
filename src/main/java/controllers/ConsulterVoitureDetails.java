@@ -8,11 +8,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import javafx.event.ActionEvent;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import javax.imageio.ImageIO;
 
 
 
@@ -80,27 +89,15 @@ public class ConsulterVoitureDetails {
     }
 
     private String decodeQRCode(File qrCodeImageFile) {
-        // Implémentez la logique pour décoder le contenu du QR code à partir de l'image
-        // Vous pouvez utiliser une bibliothèque de décodage de QR code comme zxing
-        // Voici un exemple simple pour illustrer le processus, mais vous devrez utiliser une bibliothèque réelle :
-        if (qrCodeImageFile != null && qrCodeImageFile.exists()){
-
-            try {
-                Scanner scanner = new Scanner(qrCodeImageFile);
-                StringBuilder qrCodeContent = new StringBuilder();
-                while (scanner.hasNextLine()) {
-                    qrCodeContent.append(scanner.nextLine());
-                }
-                scanner.close();
-                return qrCodeContent.toString();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return "Erreur lors du décodage du QR code.";
-            }
-        } else {
-            return "Fichier QR code invalide ou introuvable.";
+        try {
+            BufferedImage bufferedImage = ImageIO.read(qrCodeImageFile);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(new BufferedImageLuminanceSource(bufferedImage)));
+            Result qrCodeResult = new MultiFormatReader().decode(binaryBitmap);
+            return qrCodeResult.getText();
+        } catch (NotFoundException | IOException e) {
+            e.printStackTrace();
+            return "Erreur lors du décodage du QR code.";
         }
-
     }
     @FXML
     private void handleModifierButton(ActionEvent event) {
