@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,12 +17,21 @@
             <Image url="@image/Login.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="19.0" fitWidth="28.0" layoutX="652.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/eye-clipart-transparent.png" />
+         </image>
+      </ImageView>
       <Label layoutX="371.0" layoutY="334.0" prefHeight="17.0" prefWidth="60.0" text="Email" />
       <Label layoutX="371.0" layoutY="397.0" prefHeight="18.0" prefWidth="90.0" text="Mot de passe" />
       <TextField fx:id="emailfield" layoutX="476.0" layoutY="325.0" prefHeight="36.0" prefWidth="156.0" />
       <PasswordField fx:id="passwordfield" layoutX="476.0" layoutY="388.0" prefHeight="36.0" prefWidth="156.0" />
-      <Button fx:id="loginbtn" layoutX="458.0" layoutY="499.0" mnemonicParsing="false" onAction="#loginbtnonaction" opacity="0.0" prefHeight="54.0" prefWidth="191.0" text="login" />
-      <Button fx:id="cancelbtn" layoutX="513.0" layoutY="572.0" mnemonicParsing="false" onAction="#cancelbtnonaction" prefHeight="25.0" prefWidth="82.0" text="Annuler" />
-      <Hyperlink fx:id="signup" layoutX="523.0" layoutY="461.0" onAction="#handlesignup" prefHeight="23.0" prefWidth="61.0" text="sign-up" />
+      <Button fx:id="loginbtn" layoutX="447.0" layoutY="500.0" mnemonicParsing="false" onAction="#loginbtnonaction" opacity="0.0" prefHeight="54.0" prefWidth="191.0" text="login" />
+      <Button fx:id="cancelbtn" layoutX="502.0" layoutY="651.0" mnemonicParsing="false" onAction="#cancelbtnonaction" prefHeight="25.0" prefWidth="82.0" text="Annuler" />
+      <ToggleButton fx:id="toggleButton" layoutX="647.0" layoutY="393.0" mnemonicParsing="false" onAction="#toggleButton" opacity="0.0" prefHeight="26.0" prefWidth="28.0" text="Show" />
+      <Label fx:id="ShownPassword" layoutX="507.0" layoutY="430.0" text="shown password" />
+      <Hyperlink fx:id="signup" layoutX="526.0" layoutY="568.0" onAction="#handlesignup" prefHeight="23.0" prefWidth="61.0" text="sign-up" />
+      <Hyperlink layoutX="144.0" layoutY="492.0" onAction="#OnForget" onDragDetected="#opt" text="mot_de_passe oublié" />
+
    </children>
 </AnchorPane>

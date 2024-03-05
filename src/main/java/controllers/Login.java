@@ -1,18 +1,15 @@
 package controllers;
 
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import utils.Datasource;
-
+import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,6 +31,12 @@ public class Login {
     private PasswordField passwordfield;
      @FXML
      private Label loginmessagelabel;
+    @FXML
+    private ToggleButton toggleButton;
+
+    @FXML
+    private Label ShownPassword;
+    private String captchaChallenge;
     public void cancelbtnonaction(ActionEvent event)
     {
         Stage stage =(Stage) cancelbtn.getScene().getWindow();
@@ -123,5 +126,35 @@ public class Login {
 
         // Show the Stage
         stage.show();
+    }
+    @FXML
+    void toggleButton(ActionEvent event) {
+        if(toggleButton.isSelected()){
+            ShownPassword.setVisible(true);
+            ShownPassword.textProperty().bind(Bindings.concat(passwordfield.getText()));
+            toggleButton.setText("Hide");
+        }else {
+            ShownPassword.setVisible(false);
+            toggleButton.setText("Show");
+        }
+    }
+    public void OnForget(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/ForgetPassword.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    @FXML
+    void opt(MouseEvent event) {
+
     }
 }

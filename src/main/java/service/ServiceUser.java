@@ -141,5 +141,35 @@ public class ServiceUser implements IService<User> {
 
         return users;
     }
-
+    public void changePassword(String mail, String newPassword) {
+        String query = "UPDATE user SET password=? WHERE mail=?";
+        try {
+            PreparedStatement preparedStatement = cnx.prepareStatement(query);
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, mail);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Mot de passe modifié avec succès");
+            } else {
+                System.out.println("Aucun utilisateur trouvé avec cet email");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean doesEmailExist(String mail) {
+        String query = "SELECT COUNT(*) AS count FROM user WHERE mail=?";
+        try {
+            PreparedStatement preparedStatement = cnx.prepareStatement(query);
+            preparedStatement.setString(1, mail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int count = resultSet.getInt("count");
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 }
