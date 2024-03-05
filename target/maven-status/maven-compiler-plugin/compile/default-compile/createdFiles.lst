@@ -1,9 +1,11 @@
 entities\User$Role.class
 entities\Resident.class
+controllers\AfficherFactureResident$1.class
 controllers\Statistics.class
 utils\SendMail.class
 controllers\showcaseUser.class
 entities\Admin.class
+controllers\AfficherFactureResident.class
 controllers\showcaseUser$1.class
 controllers\Login.class
 services\ServiceStatistique.class
