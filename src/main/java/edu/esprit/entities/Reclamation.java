@@ -48,7 +48,7 @@ public class Reclamation {
     /* public Reclamation(User userAdd, String text, String text1, String text2) {
         }*/
     public String getNom_user() {
-        return this.user.getNom_user();
+        return this.user.getNom();
     }
 
 
@@ -111,7 +111,7 @@ public class Reclamation {
     public String toString() {
         return "Reclamation{" +
                 "idRec=" + idRec +
-                ", idU=" + user.getId_user() +
+                ", idU=" + user.getId() +
                 ", descriRec=" + descriRec +
                 ", DateRec=" + DateRec +
                 ", CategorieRec=" + CategorieRec +

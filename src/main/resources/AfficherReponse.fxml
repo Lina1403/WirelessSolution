@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="573.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherReponse">
     <children>
         <Text layoutX="20.0" layoutY="20.0" text="Réponses" />
-        <ListView fx:id="listViewReponses" layoutX="20.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" />
+        <ListView fx:id="listViewReponses" layoutX="24.0" layoutY="50.0" prefHeight="300.0" prefWidth="552.0"/>
         <TextField fx:id="comTF" layoutX="230.0" layoutY="50.0" prefWidth="200.0" />
         <Button fx:id="modifier" layoutX="440.0" layoutY="50.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
         <Button fx:id="supprimer" layoutX="440.0" layoutY="90.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />

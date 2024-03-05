@@ -1,50 +1,47 @@
 package edu.esprit.entities;
 import java.util.Date;
 
-public class Concierge extends User {
-    private Date date_de_naissance;
-    private int num_tel;
+public class Concierge extends User{
+    private String horraire_service;
+    private String service;
 
     public Concierge() {
+
+    }
+    public String getHorraire_service() {
+        return horraire_service;
     }
 
-    public Concierge(int id_user, String nom_user, String prenom_user, String email, String mdp, Date date_de_naissance, int num_tel) {
-        super(id_user, nom_user, prenom_user, email, mdp);
-        this.date_de_naissance = date_de_naissance;
-        this.num_tel = num_tel;
+    public void setHorraire_service(String horraire_service) {
+        this.horraire_service = horraire_service;
     }
 
-    public Concierge(String nom_user, String prenom_user, String email, String mdp, int num_tel, Date date_de_naissance) {
-        super(nom_user, prenom_user, email, mdp);
-        this.num_tel = num_tel;
-        this.date_de_naissance = date_de_naissance;
+    public String getService() {
+        return service;
     }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public Concierge(int id, String nom, String prenom, int number, String mail, String password, Role role, String horraire_service, String service) {
+        super(id, nom, prenom, number, mail, password,role);
+        this.horraire_service = horraire_service;
+        this.service = service;
+    }
+
+    public Concierge(String nom, String prenom, int number, String mail, String password,Role role, String horraire_service, String service) {
+        super(nom, prenom, number, mail, password,role);
+        this.horraire_service = horraire_service;
+        this.service = service;
+    }
+
+    @Override
     public String toString() {
         return "Concierge{" +
-                " nom_user='" + getNom_user()  +
-                ", prenom_user='" + getPrenom_user() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", mdp='" + getMdp() + '\'' +
-                ", num_tel=" + num_tel +
-                ", date_de_naissance=" + date_de_naissance +
-
-                '}';
-    }
-
-
-    public Date getDate_de_naissance() {
-        return date_de_naissance;
-    }
-
-    public void setDate_de_naissance(Date date_de_naissance) {
-        this.date_de_naissance = date_de_naissance;
-    }
-
-    public int getNum_tel() {
-        return num_tel;
-    }
-
-    public void setNum_tel(int num_tel) {
-        this.num_tel = num_tel;
+                "horraire_service='" + horraire_service + '\'' +
+                ", service='" + service + '\'' +
+                "nom='" + getNom() + '\'' +
+                ", prenom='" + getPrenom() + '\'' + '}';
     }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
@@ -31,6 +32,9 @@ public class AfficherReponse {
 
     @FXML
     private Button supprimer;
+    public void initialize() {
+        loadAllResponses(); // Load all responses when the view is initialized
+    }
 
     public void setReclamation(Reclamation reclamation) {
         this.selectedReclamation = reclamation;
@@ -47,33 +51,17 @@ public class AfficherReponse {
             }
         }
     }
-
-    @FXML
-    void modifier(ActionEvent event) {
-        Reponse selectedReponse = listViewReponses.getSelectionModel().getSelectedItem();
-        if (selectedReponse != null && !comTF.getText().isEmpty()) {
-            selectedReponse.setContenu(comTF.getText());
-            selectedReponse.setDateReponse(new Date());
-            try {
-                serviceReponse.modifier(selectedReponse);
-                loadResponses(); // Refresh the list view
-                comTF.clear(); // Clear the input field
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    private void loadAllResponses() {
+        try {
+            Set<Reponse> allResponses = serviceReponse.getAll(); // Retrieve all responses
+            listViewReponses.setItems(FXCollections.observableArrayList(allResponses)); // Set items in ListView
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exception
         }
     }
 
-    @FXML
-    void supprimer(ActionEvent event) {
-        Reponse selectedReponse = listViewReponses.getSelectionModel().getSelectedItem();
-        if (selectedReponse != null) {
-            try {
-                serviceReponse.supprimer(selectedReponse.getIdReponse());
-                loadResponses(); // Refresh the list view
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+
+
+
 }

@@ -6,8 +6,6 @@ import edu.esprit.entities.User;
 import edu.esprit.services.ServiceReponse;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,49 +17,21 @@ import edu.esprit.services.ServiceReclamation;
 import edu.esprit.services.ServiceUser;
 import javafx.stage.Stage;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
-public class AfficherReclamation {
-
+public class AfficherReclamationAdmin {
     private final ServiceReclamation rs = new ServiceReclamation();
     private final ServiceUser su = new ServiceUser();
     private Stage stage; // Reference to the stage
-
-    @FXML
-    private TextField CategorieRecTF;
-
-
     @FXML
     private ListView<Reclamation> listViewRec;
-
     @FXML
-    private TextField descriRecTF;
-    @FXML
-    private TextField searchTextField;
-    @FXML
-    private Button ajouterButton;
-
-    @FXML
-    private Button modifierButton;
-
-    @FXML
-    private Button supprimerButton;
-
-
-    @FXML
-    private Button consulterReponseButton;
-
+    private Button ajouterReponseButton;
     public void initialize() {
-        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchReclamations();// Appeler la méthode rechercherParNom lorsque le texte dans le champ de recherche change
-        });
         showReclamations();
     }
     private User currentUser;
@@ -73,90 +43,23 @@ public class AfficherReclamation {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
     public void showReclamations() {
         try {
-            // Assuming getAll() returns a List<Reclamation>
             Set<Reclamation> reclamations = rs.getAll();
+            User userAdd = su.getOneById(2); // Assuming the user ID is fixed or obtained from somewhere
+            List<Reclamation> filteredReclamations = new ArrayList<>();
 
-            if (reclamations != null && !reclamations.isEmpty()) {
-                ObservableList<Reclamation> observableReclamations = FXCollections.observableArrayList(reclamations);
-                listViewRec.setItems(observableReclamations);
-            } else {
-                showAlert(Alert.AlertType.INFORMATION, "Information", "No reclamations found.");
+            for (Reclamation reclamation : reclamations) {
+                if (reclamation.getUser().equals(userAdd)) {
+                    filteredReclamations.add(reclamation);
+                }
             }
+
+            listViewRec.setItems(FXCollections.observableArrayList(filteredReclamations));
         } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to retrieve reclamations: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to retrieve reclamations:\n" + e.getMessage());
         }
     }
-
-
-    private void searchReclamations() {
-        String nomRecherche = searchTextField.getText().trim().toLowerCase();
-
-        if (!nomRecherche.isEmpty()) {
-            // Créer un prédicat pour filtrer les espaces dont le nom contient la chaîne de recherche
-                Predicate<Reclamation> nomPredicate = reclamation -> reclamation.getCategorieRec().toLowerCase().contains(nomRecherche);
-
-            // Créer un FilteredList avec le prédicat
-            FilteredList<Reclamation> filteredList = new FilteredList<>(listViewRec.getItems(), nomPredicate);
-
-            // Mettre à jour la liste affichée dans la ListView avec le FilteredList filtré
-            listViewRec.setItems(filteredList);
-        }
-    }
-
-
-
-    @FXML
-    void ajouter(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/AjouterReclamation.fxml")); // Assurez-vous que le chemin est correct
-        Parent ajoutReclamationView = loader.load();
-
-        // Scène pour l'ajout de réclamation
-        Scene ajoutReclamationScene = new Scene(ajoutReclamationView);
-
-        // Obtention de la scène actuelle (stage) à partir du bouton
-        Stage window = (Stage) ajouterButton.getScene().getWindow();
-
-        // Changement de la scène actuelle pour afficher la vue d'ajout de réclamation
-        window.setScene(ajoutReclamationScene);
-        window.show();
-    }
-
-
-    @FXML
-    void modifier(ActionEvent event) {
-        Reclamation selectedReclamation = listViewRec.getSelectionModel().getSelectedItem();
-        if (selectedReclamation != null) {
-            selectedReclamation.setCategorieRec(CategorieRecTF.getText());
-            selectedReclamation.setDescriRec(descriRecTF.getText());
-
-            try {
-                rs.modifier(selectedReclamation);
-                showReclamations();
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Reclamation modified successfully.");
-            } catch (SQLException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to modify reclamation:\n" + e.getMessage());
-            }
-        }
-    }
-
-    @FXML
-    void supprimer(ActionEvent event) {
-        Reclamation selectedReclamation = listViewRec.getSelectionModel().getSelectedItem();
-        if (selectedReclamation != null) {
-            try {
-                rs.supprimer(selectedReclamation.getIdRec());
-                listViewRec.getItems().remove(selectedReclamation);
-                showAlert(Alert.AlertType.INFORMATION, "Success", "Reclamation deleted successfully.");
-            } catch (SQLException e) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete reclamation:\n" + e.getMessage());
-            }
-        }
-    }
-
     @FXML
     void goToAjouterReponse(ActionEvent event) throws IOException {
         Reclamation selectedReclamation = listViewRec.getSelectionModel().getSelectedItem();
@@ -172,7 +75,6 @@ public class AfficherReclamation {
             showAlert(Alert.AlertType.WARNING, "Warning", "Please select a reclamation.");
         }
     }
-
     @FXML
     void consulterReponse(ActionEvent event) {
         Reclamation selectedReclamation = listViewRec.getSelectionModel().getSelectedItem();
@@ -190,7 +92,6 @@ public class AfficherReclamation {
             showAlert(Alert.AlertType.WARNING, "Warning", "Please select a reclamation.");
         }
     }
-
     private void showReponsesDialog(List<Reponse> reponses) {
         // Create a dialog to display responses
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1051.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AcceuilBack">
+
+    <!-- L'image d'arrière-plan -->
+    <ImageView fitHeight="750.0" fitWidth="1051.0" layoutY="-1.0">
+        <image>
+            <Image url="@FrontAccueil.png" />
+        </image>
+    </ImageView>
+
+    <!-- Bouton "Event" -->
+    <Button fx:id="eventButton" layoutX="648.0" layoutY="76.0" onAction="#handleReclamationButtonAction" opacity="0.0" prefHeight="44.0" prefWidth="128.0" text="Event" />
+
+</AnchorPane>

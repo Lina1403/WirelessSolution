@@ -33,7 +33,7 @@ public class ServiceReclamation implements IService<Reclamation> {
         String requete = "INSERT INTO reclamation (idU, descriRec, DateRec, CategorieRec, StatutRec) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(requete)) {
-            pst.setInt(1, r.getUser().getId_user());
+            pst.setInt(1, r.getUser().getId());
             pst.setString(2, r.getDescriRec());
             pst.setDate(3, new java.sql.Date(r.getDateRec().getTime()));
             pst.setString(4, r.getCategorieRec());
@@ -49,7 +49,7 @@ public class ServiceReclamation implements IService<Reclamation> {
     public void modifier(Reclamation r) throws SQLException {
         String sql = "UPDATE reclamation SET idU=?, descriRec=?, DateRec=?, CategorieRec=?, StatutRec=? WHERE idRec=?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {
-            ps.setInt(1, r.getUser().getId_user());
+            ps.setInt(1, r.getUser().getId());
             ps.setString(2, r.getDescriRec());
             ps.setDate(3, new java.sql.Date(r.getDateRec().getTime()));
             ps.setString(4, r.getCategorieRec());
@@ -84,7 +84,7 @@ public class ServiceReclamation implements IService<Reclamation> {
             if (rst.next()) {
                 r = new Reclamation();
                 User u = new User();
-                u.setId_user(rst.getInt("IdU"));
+                u.setId(rst.getInt("IdU"));
                 r.setUser(u);
                 r.setIdRec(rst.getInt("idRec"));
                 r.setDescriRec(rst.getString("DescriRec"));
@@ -98,16 +98,16 @@ public class ServiceReclamation implements IService<Reclamation> {
         return r;
     }
 
-    @Override
-    public List<Reclamation> getAll() throws SQLException {
-        List<Reclamation> reclamations = new ArrayList<>();
+
+    public Set<Reclamation> getAll() throws SQLException {
+        Set<Reclamation> reclamations = new HashSet<>();
         String req = "SELECT * FROM Reclamation";
         try (PreparedStatement ps = cnx.prepareStatement(req)) {
             ResultSet rst = ps.executeQuery();
             while (rst.next()) {
                 Reclamation r = new Reclamation();
                 User user = new User();
-                user.setId_user(rst.getInt("IdU"));
+                user.setId(rst.getInt("IdU"));
                 r.setUser(user);
                 r.setIdRec(rst.getInt("idRec"));
                 r.setDescriRec(rst.getString("DescriRec"));

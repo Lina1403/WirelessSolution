@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ServiceReponse implements IService<Reponse> {
     private final Connection cnx;
@@ -112,7 +113,7 @@ public class ServiceReponse implements IService<Reponse> {
 
 
     @Override
-    public List<Reponse> getAll() throws SQLException {
+    public Set<Reponse> getAll() throws SQLException {
         List<Reponse> reponses = new ArrayList<>();
         String requete = "SELECT * FROM reponse";
         pst = cnx.prepareStatement(requete);
@@ -125,6 +126,6 @@ public class ServiceReponse implements IService<Reponse> {
             r.setDateReponse(rst.getDate("dateReponse"));
             reponses.add(r);
         }
-        return reponses;
+        return (Set<Reponse>) reponses;
     }
 }

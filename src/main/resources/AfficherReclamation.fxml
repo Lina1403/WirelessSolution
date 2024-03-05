@@ -7,32 +7,26 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherReclamation">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherReclamation">
     <children>
         <ImageView fitHeight="586.0" fitWidth="667.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@ListeVoiture.png" />
             </image>
         </ImageView>
-        <VBox spacing="10" alignment="TOP_CENTER">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10" />
-            </padding>
-            <Label text="Liste des Réclamations" />
-            <ListView fx:id="listViewRec" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <HBox spacing="10">
-                <TextField fx:id="CategorieRecTF" promptText="Categorie" />
-                <TextField fx:id="descriRecTF" promptText="Description" />
-                <Button fx:id="ajouterButton" text="Ajouter" onAction="#ajouter" />
-                <Button fx:id="modifierButton" text="Modifier" onAction="#modifier" />
-                <Button fx:id="supprimerButton" text="Supprimer" onAction="#supprimer" />
-                <Button fx:id="ajouterReponseButton" text="Ajouter Réponse" onAction="#goToAjouterReponse" />
-                <Button fx:id="consulterReponseButton" text="Consulter Réponses" onAction="#consulterReponse" />
-            </HBox>
-        </VBox>
+        <Label layoutX="185.0" layoutY="87.0" text="Category" />
+        <TextField fx:id="CategorieRecTF" layoutX="237.0" layoutY="83.0" prefHeight="25.0" prefWidth="150.0" />
+        <TextField fx:id="searchTextField" layoutX="476.0" layoutY="22.0" promptText="Search by description" />
+
+        <Label layoutX="396.0" layoutY="87.0" text="Description" />
+        <TextField fx:id="descriRecTF" layoutX="466.0" layoutY="83.0" prefHeight="25.0" prefWidth="150.0" />
+        <Button fx:id="ajouterButton" layoutX="209.0" layoutY="373.0" onAction="#ajouter" text="Ajouter" />
+
+        <Button fx:id="modifierButton" layoutX="405.0" layoutY="373.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
+        <Button fx:id="supprimerButton" layoutX="478.0" layoutY="373.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
+        <Button fx:id="ajouterReponseButton" layoutX="282.0" layoutY="373.0" mnemonicParsing="false" onAction="#goToAjouterReponse" text="Ajouter Réponse" />
+        <Button fx:id="consulterReponseButton" layoutX="488.0" layoutY="404.0" mnemonicParsing="false" onAction="#consulterReponse" prefHeight="17.0" prefWidth="125.0" text="Consulter Réponses" />
+        <ListView fx:id="listViewRec" layoutX="237.0" layoutY="119.0" prefHeight="245.0" prefWidth="352.0" />
     </children>
 </AnchorPane>

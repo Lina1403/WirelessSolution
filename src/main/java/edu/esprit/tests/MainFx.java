@@ -13,7 +13,7 @@ public class MainFx extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load AjouterReclamation.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherReponse.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
 
 
         // Set the controller for AjouterReclamation.fxml

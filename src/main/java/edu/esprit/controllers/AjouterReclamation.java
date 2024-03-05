@@ -35,7 +35,7 @@ public class AjouterReclamation {
     private TextField descriRecTF;
 
     @FXML
-    void ajouter(ActionEvent event) {
+    void ajouter(ActionEvent event) throws SQLException {
         if (CategorieRecTF.getText().isEmpty() || descriRecTF.getText().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Warning", "Please fill in all fields.");
             return;

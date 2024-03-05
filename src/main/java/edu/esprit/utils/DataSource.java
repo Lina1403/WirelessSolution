@@ -2,7 +2,7 @@ package edu.esprit.utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-public class DataSource {private String url = "jdbc:mysql://localhost:3306/projet_pidev";
+public class DataSource {private String url = "jdbc:mysql://localhost:3306/final";
     private String user = "root";
     private String passwd = "";
 

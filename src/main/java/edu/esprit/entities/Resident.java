@@ -2,52 +2,50 @@ package edu.esprit.entities;
 
 import java.util.Date;
 
-public class Resident extends User {
-    private Date date_de_naissance;
-    private int num_tel;
+public class Resident extends  User{
+    private int num_urgence;
+    private Date date_of_arrival;
 
     @Override
     public String toString() {
-        return "Client{" +
-                " nom_user='" + getNom_user()  +
-                ", prenom_user='" + getPrenom_user() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", mdp='" + getMdp() + '\'' +
-                ", num_tel=" + num_tel +
-                ", date_de_naissance=" + date_de_naissance +
+        return "Resident{" +
+
+                ", num_urgence=" + num_urgence +
+                ", contact_urgence='" + date_of_arrival + '\'' + "nom='" + getNom() + '\'' +
+                ", prenom='" + getPrenom() + '\'' +
                 '}';
     }
 
-    public Date getDate_de_naissance() {
-        return date_de_naissance;
+    public int getNum_urgence() {
+        return num_urgence;
     }
 
-    public void setDate_de_naissance(Date date_de_naissance) {
-        this.date_de_naissance = date_de_naissance;
+    public void setNum_urgence(int num_urgence) {
+        this.num_urgence = num_urgence;
     }
 
-    public int getNum_tel() {
-        return num_tel;
+    public Date getDate_of_arrival() {
+        return date_of_arrival;
     }
 
-    public void setNum_tel(int num_tel) {
-        this.num_tel = num_tel;
+    public void setDate_of_arrival(Date date_of_arrival) {
+        this.date_of_arrival = date_of_arrival;
     }
 
-    public Resident() {
+    public Resident()
+    {
+
+    }
+    public Resident(int id, String nom, String prenom, int number, String mail, String password, int num_urgence, Date date_of_arrival, Role role)
+    {
+        super(id, nom, prenom, number, mail, password,role);
+        this.num_urgence = num_urgence;
+        this.date_of_arrival=date_of_arrival;
     }
 
-    public Resident(int id_user, String nom_user, String prenom_user, String email, String mdp, Date date_de_naissance, int num_tel) {
-        super(id_user, nom_user, prenom_user, email, mdp);
-        this.date_de_naissance = date_de_naissance;
-        this.num_tel = num_tel;
+    public Resident(String nom, String prenom, int number, String mail, String password, int num_urgence, Date date_of_arrival,Role role) {
+        super(nom, prenom, number, mail, password,role);
+        this.num_urgence = this.num_urgence;
+        this.date_of_arrival= this.date_of_arrival;
     }
-
-    public Resident(String nom_user, String prenom_user, String email, String mdp, int num_tel, Date date_de_naissance) {
-        super(nom_user, prenom_user, email, mdp);
-        this.num_tel = num_tel;
-        this.date_de_naissance = date_de_naissance;
-    }
-
-    // getters and setters for date_de_naissance, num_tel
 }

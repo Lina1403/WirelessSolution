@@ -15,6 +15,10 @@ public class Reponse {
 
     public Reponse() {
     }
+    public Reponse(Reclamation reclamation) {
+        this.reclamation = reclamation;
+    }
+
 
     public Reponse(Reclamation reclamation, String contenu, Date dateReponse) {
         this.reclamation = reclamation;

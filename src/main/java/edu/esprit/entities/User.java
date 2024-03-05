@@ -6,142 +6,137 @@ import java.util.Date;
 import java.util.Objects;
 
 public class User {
-    private int id_user;
-    private String nom_user;
-    private String prenom_user;
-    private String email;
-    private String mdp;
-    private int num_tel;
-    private Date date;
-
-    private String role;
-    public User(){
-
+    private int id;
+    private String nom;
+    private String prenom;
+    private int number;
+    private String mail;
+    private String password;
+    private Role role ;
+    public enum Role {
+        ADMIN,
+        CONCIERGE,
+        RESIDENT
     }
 
-    public User(String nom_user, String prenom_user, String email, String mdp, int num_tel, Date date, String role) {
-        this.nom_user = nom_user;
-        this.prenom_user = prenom_user;
-        this.email = email;
-        this.mdp = mdp;
-        this.num_tel = num_tel;
-        this.date = date;
+    public User(int id, String nom, Role role) {
+        this.id = id;
+        this.nom = nom;
         this.role = role;
     }
 
-    public User(int id_user, String nom_user, String prenom_user, String email, String mdp, int num_tel, Date date, String role) {
-        this.id_user = id_user;
-        this.nom_user = nom_user;
-        this.prenom_user = prenom_user;
-        this.email = email;
-        this.mdp = mdp;
-        this.num_tel = num_tel;
-        this.date = date;
-
-        this.role = role;
+    public User() {
     }
 
-    public User(String nomUser, String prenomUser, String email, String mdp) {
+    public int getId() {
+        return id;
     }
 
-    public User(int idUser, String nomUser, String prenomUser, String email, String mdp) {
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getId_user() {
-        return id_user;
+    public String getNom() {
+        return nom;
     }
 
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public String getNom_user() {
-        return nom_user;
+    public String getPrenom() {
+        return prenom;
     }
 
-    public void setNom_user(String nom_user) {
-        this.nom_user = nom_user;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
-    public String getPrenom_user() {
-        return prenom_user;
+    public int getNumber() {
+        return number;
     }
 
-    public void setPrenom_user(String prenom_user) {
-        this.prenom_user = prenom_user;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public String getEmail() {
-        return email;
+    public String getMail() {
+        return mail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
-    public String getMdp() {
-        return mdp;
+    public String getPassword() {
+        return password;
     }
 
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public int getNum_tel() {
-        return num_tel;
-    }
-
-    public void setNum_tel(int num_tel) {
-        this.num_tel = num_tel;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-
-
-
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    /*  @Override
-      public String toString() {
-          return "User{" +
-                  "nom_user='" + nom_user + '\'' +
-                  ", prenom_user='" + prenom_user + '\'' +
-                  ", email='" + email + '\'' +
-
-                  ", num_tel='" + num_tel + '\'' +
-                  ", date=" + date +
-                  ", cartepro='" + cartepro + '\'' +
-                  ", role='" + role + '\'' +
-                  '}';
-      }
-   */@Override
-    public String toString() {
-        return nom_user;
+    public User(int id, String nom, String prenom, int number, String mail, String password, Role role) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.number = number;
+        this.mail = mail;
+        this.password = password;
+        this.role = role ;
     }
 
+    public User(String nom, String prenom, int number, String mail, String password, Role role) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.number = number;
+        this.mail = mail;
+        this.password = password;
+        this.role = role ;
+
+    }
+
+    public User(int id, String nom, String mail) {
+        this.id = id;
+        this.nom = nom;
+        this.mail = mail;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", number=" + number +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                ", role ='" + role + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return getId_user() == user.getId_user();
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId_user());
+        return Objects.hash(id);
     }
+
+    public void setHorraire_service(String horraireService) {
+    }
+
+
 }
