@@ -11,30 +11,63 @@ import java.util.Set;
 public class ServiceAppartemment implements IService<Appartement> {
     private List<Facture> factures = new ArrayList<>();
     Connection cnx = DataSource.getInstance().getCnx();
-    User user = new User(1, "Mohamed", User.Role.RESIDENT);
-        @Override
-        public void ajouter(Appartement p) throws SQLException {
-            String req = "INSERT INTO `appartement` (`numAppartement`, `nomResident`, `taille`, `nbrEtage`, `statutAppartement`)" +
-                    " VALUES (?, ?, ?, ?, ?)";
+    @Override
+    public void ajouter(Appartement p) throws SQLException {
+        User selectedUser = p.getUser();
 
-            PreparedStatement preparedStatement = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, p.getNumAppartement());
-            preparedStatement.setString(2, p.getNomResident());
-            preparedStatement.setString(3, p.getTaille());
-            preparedStatement.setInt(4, p.getNbrEtage());
-            preparedStatement.setString(5, p.getStatutAppartement().toString());
-            ResultSet rs = preparedStatement.getGeneratedKeys();
-            while (rs.next()) {
-                p.setIdAppartement(rs.getInt(1));
+        if (selectedUser != null) {
+            int idUser = selectedUser.getId();
+
+            String req = "INSERT INTO `appartement` (`numAppartement`, `nomResident`, `taille`, `nbrEtage`, `statutAppartement`,`id`)" +
+                    " VALUES (?, ?, ?, ?, ?,?)";
+
+            try (PreparedStatement preparedStatement = cnx.prepareStatement(req, Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setInt(1, p.getNumAppartement());
+                preparedStatement.setString(2, p.getNomResident());
+                preparedStatement.setString(3, p.getTaille());
+                preparedStatement.setInt(4, p.getNbrEtage());
+                preparedStatement.setString(5, p.getStatutAppartement().toString());
+                preparedStatement.setInt(6, idUser);
+
+                ResultSet rs = preparedStatement.getGeneratedKeys();
+                while (rs.next()) {
+                    p.setIdAppartement(rs.getInt(1));
+                }
+
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Appartement ajouté avec succès.");
+                } else {
+                    System.out.println("Échec de l'ajout de l'appartement.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Erreur SQL lors de l'ajout de l'appartement: " + e.getMessage());
             }
+        } else {
+            System.out.println("Aucun utilisateur sélectionné.");
+        }
+    }
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Appartement added successfully.");
-            } else {
-                System.out.println("Failed to insert Appartement.");
+    public Set<User> getAllResidents() throws SQLException {
+        Set<User> residents = new HashSet<>();
+        String req = "SELECT * FROM `users` WHERE `role` = 'RESIDENT'";
+
+        try (Statement st = cnx.createStatement();
+             ResultSet rs = st.executeQuery(req)) {
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setNom(rs.getString("nom"));
+                user.setPrenom(rs.getString("prenom"));
+                user.setRole(User.Role.valueOf(rs.getString("role")));
+
+                residents.add(user);
             }
         }
+
+        return residents;
+    }
 
 
         @Override
@@ -102,7 +135,34 @@ public class ServiceAppartemment implements IService<Appartement> {
         }
 
 
+    public Set<Appartement> getAppartementsForUser(User user) throws SQLException {
+        Set<Appartement> appartementsForUser = new HashSet<>();
 
+        // Assurez-vous que l'objet utilisateur n'est pas null avant de l'utiliser
+        if (user == null) {
+            System.out.println("User is null.");
+            return appartementsForUser; // ou lancez une exception appropriée selon vos besoins
+        }
+
+        String req = "SELECT * FROM `appartement` WHERE `id`=" + user.getId();
+
+        try (Statement st = cnx.createStatement();
+             ResultSet rs = st.executeQuery(req)) {
+            while (rs.next()) {
+                Appartement appartement = new Appartement();
+                appartement.setIdAppartement(rs.getInt("idAppartement"));
+                appartement.setNumAppartement(rs.getInt("numAppartement"));
+                appartement.setNomResident(rs.getString("nomResident"));
+                appartement.setTaille(rs.getString("taille"));
+                appartement.setNbrEtage(rs.getInt("nbrEtage"));
+                Appartement.statutAppartement stat = Appartement.statutAppartement.valueOf(rs.getString("statutAppartement"));
+                appartement.setStatutAppartement(stat);
+                appartementsForUser.add(appartement);
+            }
+        }
+
+        return appartementsForUser;
+    }
 
 
 

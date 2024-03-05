@@ -1,18 +1,26 @@
 package controllers;
 
 import entities.Appartement;
+import entities.User;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import services.ServiceAppartemment;
 
+import java.sql.SQLException;
+import java.util.Set;
+
 public class AjouterAppartement {
+    @FXML
+    private ListView<User> residentListView;
 
     @FXML
     private TextField nbrEtageField;
@@ -32,44 +40,66 @@ public class AjouterAppartement {
     @FXML
     private Text title;
 
-    // Instance de ServiceAppartement pour gérer les opérations sur les appartements
     private final ServiceAppartemment serviceAppartement = new ServiceAppartemment();
+    @FXML
+    void initialize() {
+        // Initialize residentListView with the list of residents
+        try {
+            Set<User> residents = serviceAppartement.getAllResidents();
+            residentListView.setItems(FXCollections.observableArrayList(residents));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle SQLException appropriately
+        }
+    }
 
     @FXML
     void AjouterAppartement(ActionEvent event) {
+
         try {
-            // Récupérer les valeurs des champs du formulaire
-            int numAppartement = Integer.parseInt(numAppartementField.getText());
-            String nomResident = nomResidentField.getText();
-            String taille = tailleField.getText();
-            int nbrEtage = Integer.parseInt(nbrEtageField.getText());
-            // Récupérer la valeur sélectionnée du ComboBox directement comme String
-            String statut = (String) statutComboBox.getSelectionModel().getSelectedItem();
+            User selectedResident = residentListView.getSelectionModel().getSelectedItem(); // Récupérer le résident sélectionné
+            System.out.println(selectedResident);
+            if (selectedResident != null) { // Vérifier si un résident est sélectionné
+                int numAppartement = Integer.parseInt(numAppartementField.getText());
+                String nomResident = nomResidentField.getText();
+                String taille = tailleField.getText();
+                int nbrEtage = Integer.parseInt(nbrEtageField.getText());
+                String statut = (String) statutComboBox.getSelectionModel().getSelectedItem();
 
-            // Créer un nouvel objet Appartement avec les valeurs récupérées
-            Appartement appartement = new Appartement();
-            appartement.setNumAppartement(numAppartement);
-            appartement.setNomResident(nomResident);
-            appartement.setTaille(taille);
-            appartement.setNbrEtage(nbrEtage);
-            appartement.setStatutAppartement(Appartement.statutAppartement.valueOf(statut)); // Plus besoin de convertir en enum
+                // Créer un nouvel objet Appartement avec les valeurs récupérées
+                Appartement appartement = new Appartement();
+                appartement.setNumAppartement(numAppartement);
+                appartement.setNomResident(nomResident);
+                appartement.setTaille(taille);
+                appartement.setNbrEtage(nbrEtage);
+                appartement.setStatutAppartement(Appartement.statutAppartement.valueOf(statut));
+                System.out.println(selectedResident.getId());
+                if (appartement.getUser() == null) {
+                    appartement.setUser(selectedResident);
+                }
+                appartement.getUser().setId(selectedResident.getId());
+                // Appeler la méthode d'ajout d'appartement du service approprié
+                serviceAppartement.ajouter(appartement);
 
-            // Appeler la méthode d'ajout d'appartement du service approprié
-            serviceAppartement.ajouter(appartement);
+                // Afficher une confirmation à l'utilisateur
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Confirmation");
 
-            // Afficher une confirmation à l'utilisateur
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Confirmation");
-            alert.setContentText("Appartement ajouté avec succès.");
-            alert.showAndWait();
+                alert.setContentText("Appartement ajoute avec succes");
 
-            // Effacer les champs après l'ajout réussi
-            effacerChamps();
+                alert.showAndWait();
+
+                // Effacer les champs après l'ajout réussi
+                effacerChamps();
+            } else {
+                // Afficher un message si aucun résident n'est sélectionné
+                afficherAlerteErreur("Aucun résident sélectionné", "Veuillez sélectionner un résident.");
+            }
         } catch (NumberFormatException e) {
             // Gérer les erreurs de format numérique
             afficherAlerteErreur("Erreur de format", "Veuillez entrer des valeurs numériques valides.");
         } catch (Exception e) {
-            // Gérer les autres exceptions
+            e.printStackTrace(); // Ajoutez cette ligne pour imprimer la trace de l'exception
             afficherAlerteErreur("Erreur", "Une erreur s'est produite lors de l'ajout de l'appartement : " + e.getMessage());
         }
     }

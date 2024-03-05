@@ -129,5 +129,9 @@ public class User {
     public void setHorraire_service(String horraireService) {
     }
 
-
+    public User(int id, String nom, String mail) {
+        this.id = id;
+        this.nom = nom;
+        this.mail = mail;
+    }
 }

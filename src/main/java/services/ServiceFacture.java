@@ -228,9 +228,7 @@ public class ServiceFacture implements IService<Facture>{
 
 
 
-    private Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
-        return java.sql.Date.valueOf(dateToConvert);
-    }
+
 
 }
 
