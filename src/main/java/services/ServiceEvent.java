@@ -81,7 +81,9 @@ public class ServiceEvent implements IService<Event> {
         return events; // ou lancez une exception appropriée selon vos besoins
     }
 
-    String req = "SELECT * FROM event WHERE `id` = ?";
+    String req = "SELECT e.*, es.name AS espace_name FROM event e " +
+            "INNER JOIN espace es ON e.idEspace = es.idEspace " +
+            "WHERE e.id = ?";
 
     try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
         pstmt.setInt(1, user.getId()); // Supposons que l'identifiant de l'utilisateur est accessible via getId()
@@ -97,7 +99,7 @@ public class ServiceEvent implements IService<Event> {
                 // Création de l'objet Espace et assignation au nouvel événement
                 Espace espace = new Espace();
                 espace.setIdEspace(rs.getInt("idEspace"));
-            //    espace.setName(rs.getString("name"));
+                espace.setName(rs.getString("espace_name")); // Récupération du nom de l'espace
                 event.setEspace(espace);
 
                 events.add(event);
