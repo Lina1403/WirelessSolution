@@ -174,6 +174,9 @@ public class ServiceParking implements IService<Parking> {
                 parking.setIdParking(resultSet.getInt("idParking"));
                 parking.setNom(resultSet.getString("nom"));
                 parking.setType(resultSet.getString("type"));
+                parking.setCapacite(resultSet.getInt("capacite")); // Récupérer la capacité totale du parking
+                parking.setNombreActuelles(resultSet.getInt("nombreActuelles")); // Récupérer le nombre actuel de voitures dans le parking
+
                 // Vous pouvez définir d'autres propriétés du parking ici si nécessaire
                 return parking;
             }

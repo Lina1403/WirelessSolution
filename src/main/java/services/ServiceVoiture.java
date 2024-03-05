@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ServiceVoiture {
+public class ServiceVoiture implements IService<Voiture> {
 
     Connection cnx = DataSource.getInstance().getCnx();
 
@@ -174,6 +174,48 @@ public class ServiceVoiture {
 
         return voitures;
     }
+    public Set<Voiture> getAllByUserId(int userId) throws SQLException {
+        Set<Voiture> voitures = new HashSet<>();
+        String req = "SELECT v.*, u.* FROM voiture v JOIN user u ON v.id = u.id WHERE u.id = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Voiture voiture = new Voiture();
+                    voiture.setIdVoiture(rs.getInt("idVoiture"));
+                    voiture.setId(rs.getInt("id"));
+                    voiture.setMarque(rs.getString("marque"));
+                    voiture.setModel(rs.getString("model"));
+                    voiture.setCouleur(rs.getString("couleur"));
+                    voiture.setMatricule(rs.getString("matricule"));
+
+                    // Créer un objet User et définir ses attributs
+                    User user = new User();
+                    user.setId(rs.getInt("id"));
+                    user.setNom(rs.getString("nom"));
+
+                    // Définir l'utilisateur de la voiture
+                    voiture.setUser(user);
+                    voitures.add(voiture);
+
+                    // Récupérer les détails du parking associé à cette voiture
+                    int idParking = rs.getInt("idParking");
+                    ServiceParking serviceParking = new ServiceParking();
+                    Parking parking = serviceParking.getOneById(idParking);
+
+                    // Attribuer l'objet Parking à l'objet Voiture
+                    voiture.setParking(parking);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des voitures pour l'utilisateur avec l'ID : " + userId);
+        }
+
+        return voitures;
+    }
+
     public boolean existeMatricule(String matricule) throws SQLException {
         String query = "SELECT COUNT(*) FROM voiture WHERE matricule = ?";
         try (PreparedStatement statement = cnx.prepareStatement(query)) {

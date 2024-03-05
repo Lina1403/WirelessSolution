@@ -18,13 +18,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-// import org.controlsfx.control.Notifications;
 import services.ServiceParking;
 import services.ServiceVoiture;
-
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import com.google.zxing.BarcodeFormat;
@@ -32,9 +29,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
 import javax.imageio.ImageIO;
-import javax.management.Notification;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -209,7 +204,7 @@ public class AjouterVoiture {
                     Gmailer gmailer = new Gmailer();
                     gmailer.sendMail(email, subject, message); // Utiliser l'adresse e-mail saisie comme destinataire
                    // afficherMessageSucces("Succès");
-                 //   showNotification();
+
                 } else {
                     // Traitement en cas d'échec de l'ajout de la voiture
                 }
@@ -252,34 +247,7 @@ public class AjouterVoiture {
     }
 
 
-   /* @FXML
-    private void handleNotificationButton(ActionEvent event) {
-        showNotification();
-    }
 
-    private void showNotification() {
-        try {
-            // Image image = new Image("@image/Notif.png");
-            Image image = new Image(getClass().getResource("/image/Notif.png").toString());
-
-
-            // Redimensionner l'image
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(350); // ajustez la largeur comme vous le souhaitez
-            imageView.setFitHeight(639); // ajustez la hauteur comme vous le souhaitez
-
-            Notifications notifications = Notifications.create();
-            notifications.graphic(imageView); // Utilisez l'ImageView avec l'image redimensionnée
-            notifications.text("Reclamation added successfully");
-            notifications.title("Success Message");
-            // notifications.hideAfter(Duration.seconds(4));
-            notifications.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    */
 
     private void chargerTypes() {
         ServiceParking serviceParking = new ServiceParking();
@@ -542,21 +510,23 @@ public class AjouterVoiture {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsulterVoitureUser.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-
-            // Récupérez le contrôleur de la vue chargée
             ConsulterVoitureUser controller = loader.getController();
+            System.out.println(currentUser);
+            controller.setCurrentUser(currentUser);
 
-            // Initialisez les données nécessaires dans le contrôleur de la vue chargée
+            // Ici, assurez-vous d'avoir une instance de currentUser
+
+            Scene scene = new Scene(root);
 
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("Titre de votre fenêtre");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
 
 
