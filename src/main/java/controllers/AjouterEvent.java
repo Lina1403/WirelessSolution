@@ -235,8 +235,6 @@ public class AjouterEvent {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 
