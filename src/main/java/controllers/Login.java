@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class Login {
 
+
     @FXML
     private Button cancelbtn;
 
@@ -109,6 +110,34 @@ public class Login {
                                     loginStage.close();
                                 } else {
                                     System.out.println("Failed to retrieve AjouterVoiture controller");
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else if (role == User.Role.CONCIERGE) {
+                            // Logique pour les concierges
+                            // Par exemple, ouvrir une interface spécifique pour les concierges.
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/BtnParking.fxml"));
+                                Parent root = loader.load();
+
+                                BtnParking controller = loader.getController();
+                                if (controller != null) {
+                                    String currentUserEmail = emailfield.getText();
+                                    User currentUser = getCurrentUserFromDatabase(currentUserEmail);
+                                    controller.setCurrentUser(currentUser);
+
+                                    // Afficher la scène
+                                    Scene scene = new Scene(root);
+                                    Stage stage = new Stage();
+                                    stage.setScene(scene);
+                                    stage.show();
+
+                                    // Fermer la fenêtre de connexion
+                                    Stage loginStage = (Stage) loginbtn.getScene().getWindow();
+                                    loginStage.close();
+                                } else {
+                                    System.out.println("Failed to retrieve InterfaceConcierge controller");
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();

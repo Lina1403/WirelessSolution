@@ -44,6 +44,8 @@
 
         <HBox layoutX="47.0" layoutY="300.0" spacing="20.0" />
         <Button fx:id="boutonAjouter" layoutX="426.0" layoutY="633.0" mnemonicParsing="false" onAction="#ajouterParking" prefHeight="53.0" prefWidth="199.0" text="Ajouter" />
+        <Button fx:id="retourButton" layoutX="845.0" layoutY="45.0" onAction="#retournerVersAcceuil" opacity="0.0" prefHeight="57.0" prefWidth="157.0" text="Retour vers l'accueil" />
+
         <Accordion />
     </children>
 </AnchorPane>

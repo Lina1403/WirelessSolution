@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +12,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class BtnParking {
-
-    @FXML
-    private void allerVersAjouterParking(ActionEvent event) {
-        chargerVue("/AjouterParking.fxml", event);
-    }
 
     @FXML
     private void allerVersAfficherParking(ActionEvent event) {
@@ -53,4 +49,6 @@ public class BtnParking {
         }
     }
 
+    public void setCurrentUser(User currentUser) {
+    }
 }
