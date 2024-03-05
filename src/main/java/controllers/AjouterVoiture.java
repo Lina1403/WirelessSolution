@@ -13,15 +13,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+// import org.controlsfx.control.Notifications;
 import services.ServiceParking;
 import services.ServiceVoiture;
 
 import java.awt.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import com.google.zxing.BarcodeFormat;
@@ -31,6 +34,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 import javax.imageio.ImageIO;
+import javax.management.Notification;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,6 +46,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class AjouterVoiture {
+
+    @FXML
+    private Label placesDispoLabel;
 
     @FXML
     private TextField marqueField;
@@ -90,6 +97,9 @@ public class AjouterVoiture {
 
 
     private AfficherVoitureAdmin afficherVoitureAdmin;
+
+
+
 
 
     public void setSelectedParking(Parking parking) {
@@ -184,6 +194,7 @@ public class AjouterVoiture {
                     telechargerButton.setVisible(true);
 
                     afficherMessageSucces("Voiture ajoutée avec succès!");
+                 //   showNotification();
                 } else {
                     // Traitement en cas d'échec de l'ajout de la voiture
                 }
@@ -202,6 +213,57 @@ public class AjouterVoiture {
         delayTimeline.play();
 
     }
+
+    @FXML
+    private void afficherNombrePlacesDispo(String parkingName) {
+        String selectedParking = parkingsListView.getSelectionModel().getSelectedItem();
+        if (selectedParking != null) {
+            try {
+                ServiceParking serviceParking = new ServiceParking();
+                Parking parking = serviceParking.getParkingByName(selectedParking);
+                int capaciteTotale = parking.getCapacite();
+                int nombreActuel = parking.getNombreActuelles();
+                int placesDispo = capaciteTotale - nombreActuel;
+
+                placesDispoLabel.setText(String.valueOf(placesDispo));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            placesDispoLabel.setText("");
+        }
+    }
+
+
+   /* @FXML
+    private void handleNotificationButton(ActionEvent event) {
+        showNotification();
+    }
+
+    private void showNotification() {
+        try {
+            // Image image = new Image("@image/Notif.png");
+            Image image = new Image(getClass().getResource("/image/Notif.png").toString());
+
+
+            // Redimensionner l'image
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(350); // ajustez la largeur comme vous le souhaitez
+            imageView.setFitHeight(639); // ajustez la hauteur comme vous le souhaitez
+
+            Notifications notifications = Notifications.create();
+            notifications.graphic(imageView); // Utilisez l'ImageView avec l'image redimensionnée
+            notifications.text("Reclamation added successfully");
+            notifications.title("Success Message");
+            // notifications.hideAfter(Duration.seconds(4));
+            notifications.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    */
+
     private void chargerTypes() {
         ServiceParking serviceParking = new ServiceParking();
         try {
@@ -223,10 +285,17 @@ public class AjouterVoiture {
             List<String> parkings = serviceParking.getParkingsByType(type);
             parkingsListView.getItems().clear();
             parkingsListView.getItems().addAll(parkings);
+
+            // Mettre à jour le nombre de places disponibles pour chaque parking
+            for (String parkingName : parkings) {
+                afficherNombrePlacesDispo(parkingName);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
 
 
 
@@ -397,6 +466,8 @@ public class AjouterVoiture {
             try {
                 Parking selectedParking = serviceParking.getParkingByName(selectedParkingName);
                 setSelectedParking(selectedParking);
+                afficherNombrePlacesDispo(selectedParkingName);
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
