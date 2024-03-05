@@ -64,8 +64,19 @@ public class Login {
                         String roleString = queryResult.getString("role");
                         User.Role role = User.Role.valueOf(roleString.toUpperCase());
                         if (role == User.Role.CONCIERGE) {
-                            // Charger l'interface AfficherAppartementfxml pour le concierge
+                            // Charger l'interface AfficherAppartement.fxml pour le concierge
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherAppartement.fxml"));
+                            Parent root = loader.load();
+                            Scene scene = new Scene(root);
+                            Stage stage = new Stage();
+                            stage.setScene(scene);
+                            stage.show();
+                            // Fermer la fenêtre de connexion
+                            Stage loginStage = (Stage) loginbtn.getScene().getWindow();
+                            loginStage.close();
+                        } else if (role == User.Role.RESIDENT) {
+                            // Charger l'interface AfficherAppartResident.fxml pour le résident
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherAppartResident.fxml"));
                             Parent root = loader.load();
                             Scene scene = new Scene(root);
                             Stage stage = new Stage();
@@ -86,6 +97,7 @@ public class Login {
             e.printStackTrace();
         }
     }
+
 
 
 

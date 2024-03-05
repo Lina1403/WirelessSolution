@@ -12,7 +12,7 @@ public class Appartement {
     private int nbrEtage;
     private statutAppartement statutAppartement;
     private List<Facture> factures = new ArrayList<>();
-
+  User user;
 
 
     public enum statutAppartement{
@@ -108,11 +108,11 @@ public class Appartement {
 
     @Override
     public String toString() {
-        return "Appartement{" +
-                "numAppartement=" + numAppartement +
-                ", nomResident='" + nomResident + '\'' +
-
-                '}';
+        return "Numéro d'appartement : '" + getNumAppartement() + "',\n" +
+                "Nom du résident : '" + getNomResident() + "',\n" +
+                "Taille : '" + getTaille() + "',\n" +
+                "Étage : '" + getNbrEtage() + "',\n" +
+                "Statut de l'appartement : '" + getStatutAppartement() + "',\n";
     }
 
     @Override

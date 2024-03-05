@@ -1,52 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Statistics">
-    <Label text="Statistiques" />
-    <HBox spacing="10" />
-    <HBox spacing="10" />
-    <HBox spacing="10" />
-    <HBox spacing="10" />
-     <Button layoutX="358.0" layoutY="331.0" onAction="#afficherStatistiquesEtage" text="Un Étage Précis" />
-     <DatePicker fx:id="dateFinPicker" layoutX="328.0" layoutY="5.0" />
-     <Button layoutX="179.0" layoutY="331.0" onAction="#afficherStatistiquesTousAppartements" text="Tous les Appartements" />
-     <Button layoutX="15.0" layoutY="331.0" onAction="#afficherStatistiquesAppartement" text="Un seul Appartement" />
-     <Label layoutX="31.0" layoutY="113.0" text="Nombre d'Étages:" />
-     <TextField fx:id="nbrEtagesTextField" layoutX="176.0" layoutY="107.0" />
-     <DatePicker fx:id="dateDebutPicker" layoutX="357.0" layoutY="43.0" />
-     <Label layoutX="275.0" layoutY="47.0" text="Date Début:" />
-     <Label layoutX="284.0" layoutY="7.0" text="Date Fin:" />
-     <Label layoutX="21.0" layoutY="51.0" text="Type de Facture:" />
-     <ComboBox fx:id="typeFactureComboBox" layoutX="59.0" layoutY="69.0" prefWidth="150" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="546.0" prefWidth="758.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Statistics">
+
+
+    <Label layoutX="31.0" layoutY="69.0" text="Type de Facture:" />
+
+    <ComboBox fx:id="typeFactureComboBox" layoutX="31.0" layoutY="87.0">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Gaz" />
                 <String fx:value="Electricite" />
                 <String fx:value="Eau" />
                 <String fx:value="Dechets" />
+                <!-- Add other type values as needed -->
             </FXCollections>
         </items>
     </ComboBox>
-    <!-- Ajout du graphique -->
-    <BarChart fx:id="barChart" layoutX="20.0" layoutY="150.0" prefWidth="560.0" prefHeight="150.0">
+    <Label layoutX="177.0" layoutY="91.0" text="Date de Début:" />
+    <DatePicker fx:id="dateDebutPicker" layoutX="283.0" layoutY="78.0" />
+    <Label layoutX="200.0" layoutY="131.0" text="Date de Fin:" />
+    <DatePicker fx:id="dateFinPicker" layoutX="283.0" layoutY="127.0" />
+    <Label layoutX="539.0" layoutY="109.0" text="Nombre d'Étages:" />
+    <TextField fx:id="nbrEtagesTextField" layoutX="525.0" layoutY="127.0" />
+
+
+    <Button fx:id="floorButton" layoutX="411.0" layoutY="506.0" mnemonicParsing="false" onAction="#displayStatisticsForFloor" text="Stats par Étage" />
+    <Button fx:id="allApartmentsButton" layoutX="521.0" layoutY="506.0" mnemonicParsing="false" onAction="#displayStatisticsForAllApartments" text="Stats pour Tous" />
+
+
+    <LineChart fx:id="BarChart" layoutY="255.0" prefHeight="243.0" prefWidth="407.0">
         <xAxis>
-            <CategoryAxis />
+            <CategoryAxis fx:id="xAxis" />
         </xAxis>
         <yAxis>
-            <NumberAxis />
+            <NumberAxis fx:id="yAxis" />
         </yAxis>
-    </BarChart>
+    </LineChart>
+
+    <!-- Tableau pour afficher les statistiques -->
+    <TableView fx:id="tableView" layoutX="429.0" layoutY="198.0" prefHeight="300.0" prefWidth="326.0">
+        <!-- Colonnes du tableau -->
+        <columns>
+            <!-- Colonne pour les dates -->
+            <TableColumn prefWidth="134.39996337890625" text="Date">
+                <cellValueFactory>
+                    <PropertyValueFactory property="date" />
+                </cellValueFactory>
+            </TableColumn>
+
+            <TableColumn prefWidth="164.80010986328125" text="Statistique">
+                <cellValueFactory>
+                    <PropertyValueFactory property="value" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="164.80010986328125" text="Statistique">
+                <cellValueFactory>
+                    <PropertyValueFactory property="montant" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
 
 </AnchorPane>

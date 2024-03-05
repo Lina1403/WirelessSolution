@@ -217,8 +217,8 @@ public class AfficherAppartement {
         List<Appartement> searchResult = appartementList.stream()
                 .filter(appartement -> {
                     String numAppartementString = String.valueOf(appartement.getNumAppartement());
-                    return numAppartementString.contains(searchText.toLowerCase()) ||
-                            appartement.getNomResident().toLowerCase().contains(searchText.toLowerCase());
+                    return numAppartementString.contains(searchText.toLowerCase()) ;
+
                 })
                 .collect(Collectors.toList());
 
@@ -245,6 +245,8 @@ public class AfficherAppartement {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace(); // Gérez l'exception correctement
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 

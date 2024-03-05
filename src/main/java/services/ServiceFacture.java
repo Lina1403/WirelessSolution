@@ -222,94 +222,23 @@ public class ServiceFacture implements IService<Facture>{
 
         return factures;
     }
-    public float calculerConsommationEnergieAppartementParTypeEtPeriode(int idAppartement, Facture.Type typeFacture, LocalDate dateDebut, LocalDate dateFin) throws SQLException {
-        // Convertir les LocalDate en java.sql.Date
-        Date sqlDateDebut = convertToLocalDateViaSqlDate(dateDebut);
-        Date sqlDateFin = convertToLocalDateViaSqlDate(dateFin);
 
-        float consommation = 0;
 
-        // Requête pour récupérer les factures d'un type spécifique pour un appartement donné dans une période donnée
-        String req = "SELECT montant FROM facture WHERE idAppartement = ? AND type = ? AND date BETWEEN ? AND ?";
-        try (PreparedStatement statement = cnx.prepareStatement(req)) {
-            statement.setInt(1, idAppartement);
-            statement.setString(2, typeFacture.toString());
-            statement.setDate(3, sqlDateDebut);
-            statement.setDate(4, sqlDateFin);
 
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    consommation += rs.getFloat("montant");
-                }
-            }
-        }
-        return consommation;
-    }
-    public float calculerConsommationEnergieTotaleParTypeEtPeriode(Facture.Type typeFacture, LocalDate dateDebut, LocalDate dateFin) throws SQLException {
-        // Convertir les LocalDate en java.sql.Date
-        Date sqlDateDebut = convertToLocalDateViaSqlDate(dateDebut);
-        Date sqlDateFin = convertToLocalDateViaSqlDate(dateFin);
 
-        float consommationTotale = 0;
 
-        // Requête pour récupérer les factures d'un type spécifique pour tous les appartements dans une période donnée
-        String req = "SELECT montant FROM facture WHERE type = ? AND date BETWEEN ? AND ?";
-        try (PreparedStatement statement = cnx.prepareStatement(req)) {
-            statement.setString(1, typeFacture.toString());
-            statement.setDate(2, sqlDateDebut);
-            statement.setDate(3, sqlDateFin);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    consommationTotale += rs.getFloat("montant");
-                }
-            }
-        }
-        return consommationTotale;
-    }
-    public float calculerConsommationEnergieTotaleParEtageEtType(int numeroEtage, Facture.Type typeFacture) throws SQLException {
-        float consommationEtage = 0;
-
-        // Requête pour récupérer les appartements dans un étage spécifique
-        String req = "SELECT idAppartement FROM appartement WHERE nbrEtage = ?";
-        try (PreparedStatement statement = cnx.prepareStatement(req)) {
-            statement.setInt(1, numeroEtage);
-
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    int idAppartement = rs.getInt("idAppartement");
-                    consommationEtage += calculerConsommationEnergieAppartementParType(idAppartement, typeFacture);
-                }
-            }
-        }
-        return consommationEtage;
-    }
-    public float calculerConsommationEnergieAppartementParType(int idAppartement, Facture.Type typeFacture) throws SQLException {
-        float consommation = 0;
-
-        // Requête pour récupérer les factures d'un type spécifique pour un appartement donné
-        String req = "SELECT montant FROM facture WHERE idAppartement = ? AND type = ?";
-        try (PreparedStatement statement = cnx.prepareStatement(req)) {
-            statement.setInt(1, idAppartement);
-            statement.setString(2, typeFacture.toString());
-
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    consommation += rs.getFloat("montant");
-                }
-            }
-        }
-        return consommation;
-    }
 
     private Date convertToLocalDateViaSqlDate(LocalDate dateToConvert) {
         return java.sql.Date.valueOf(dateToConvert);
     }
 
-
-
-
 }
+
+
+
+
+
+
 
 
 
