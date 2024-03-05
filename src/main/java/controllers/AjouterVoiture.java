@@ -44,6 +44,8 @@ import java.util.Map;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AjouterVoiture {
 
@@ -140,6 +142,8 @@ public class AjouterVoiture {
         String modele = modeleField.getText();
         String couleur = couleurField.getText();
         String matricule = matriculeField.getText();
+        String email = currentUser.getMail();
+
 
         if (!validateMarque(marque) || !validateModele(modele) || !validateCouleur(couleur) || !validateMatricule(matricule)) {
             ajouterButton.setDisable(false);
@@ -192,14 +196,27 @@ public class AjouterVoiture {
                     afficherQRCode(matricule); // Affichage du code QR après le délai
                     // Activer la visibilité du bouton Télécharger QR Code
                     telechargerButton.setVisible(true);
+                    LocalDateTime currentDateTime = LocalDateTime.now();
 
+                    // Définit un format pour afficher la date et l'heure
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                    // Formate la date et l'heure actuelles en utilisant le format spécifié
+                    String formattedDateTime = currentDateTime.format(formatter);
                     afficherMessageSucces("Voiture ajoutée avec succès!");
+                    String subject = "Voiture ";
+                    String message = "Votre voiture a été ajouter au parking le  : " + formattedDateTime;
+                    Gmailer gmailer = new Gmailer();
+                    gmailer.sendMail(email, subject, message); // Utiliser l'adresse e-mail saisie comme destinataire
+                   // afficherMessageSucces("Succès");
                  //   showNotification();
                 } else {
                     // Traitement en cas d'échec de l'ajout de la voiture
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             } finally {
                 ajouterButton.setDisable(false);
                 progressBar.setVisible(false); // Désactiver la barre de progression
