@@ -10,7 +10,7 @@ public class MainFx extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Charger le fichier FXML
-     //  Parent root = FXMLLoader.load(getClass().getResource("/Calendrier.fxml"));
+     //Parent root = FXMLLoader.load(getClass().getResource("/Calendrier.fxml"));
        //  Parent root = FXMLLoader.load(getClass().getResource("/stats.fxml"));
        // Parent root = FXMLLoader.load(getClass().getResource("/AcceuilFront.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/AcceuilBack.fxml"));

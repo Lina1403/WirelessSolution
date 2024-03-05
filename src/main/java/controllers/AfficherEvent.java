@@ -89,7 +89,6 @@ public class AfficherEvent {
                 rechercherParNom(newValue.trim());
             });
 
-            boutonGererEspace.setOnAction(event -> ouvrirAjouterEspace());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -129,22 +128,7 @@ public class AfficherEvent {
         }
     }
 
-    @FXML
-    private void ouvrirAjouterEspace() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterEspace.fxml"));
-            Parent root = loader.load();
-            AjouterEspace controller = loader.getController();
-            controller.initData(new Espace());
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Ajouter un espace");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     private void modifierEvent() {
