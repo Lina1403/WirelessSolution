@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -308,7 +309,7 @@ public class AfficherEspace {
 
                 // Passer l'espace sélectionné au contrôleur du calendrier
                 CalendrierController calendrierController = loader.getController();
-                calendrierController.selectEspace(espace);
+              calendrierController.selectEspace(espace);
 
                 // Créer une nouvelle scène pour afficher le calendrier
                 Stage stage = new Stage();
@@ -336,7 +337,19 @@ public class AfficherEspace {
         }
     }
 
+    @FXML
+    private void retournerVersAcceuil(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/BtnReservation.fxml"));
+            Parent root = loader.load();
 
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

@@ -43,16 +43,13 @@ public class ServiceEvent implements IService<Event> {
             }
         }
     }
-
-    public Set<Event> getEventsByUserId(int Id) throws SQLException {
+/*
+    public Set<Event> getEventsByUserId(User user) throws SQLException {
         Set<Event> events = new HashSet<>();
-        String req = "SELECT e.*, espace.name AS name " +
-                "FROM event e " +
-                "INNER JOIN espace ON e.idEspace = espace.idEspace " +
-                "WHERE e.Id = ?";
+        String req = "SELECT * from event WHERE  id = ";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
-            pstmt.setInt(1, Id);
+            pstmt.setInt(1, user.getId()); // Supposons que l'identifiant de l'utilisateur est accessible via getId()
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Event event = new Event();
@@ -72,9 +69,47 @@ public class ServiceEvent implements IService<Event> {
                 }
             }
         }
-
         return events;
     }
+
+*/public Set<Event> getEventsByUserId(User user) throws SQLException {
+    Set<Event> events = new HashSet<>();
+
+    // Assurez-vous que l'objet utilisateur n'est pas null avant de l'utiliser
+    if (user == null) {
+        System.out.println("User is null.");
+        return events; // ou lancez une exception appropriée selon vos besoins
+    }
+
+   String req = "SELECT * FROM event WHERE `id`=" + user.getId();
+
+
+    try (PreparedStatement pstmt = cnx.prepareStatement(req)) {
+        pstmt.setInt(1, user.getId()); // Supposons que l'identifiant de l'utilisateur est accessible via getId()
+        try (ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Event event = new Event();
+                event.setIdEvent(rs.getInt("idEvent"));
+                event.setTitle(rs.getString("title"));
+                event.setDate(rs.getDate("date"));
+                event.setNbrPersonne(rs.getInt("nbrPersonne"));
+                event.setListeInvites(rs.getString("listeInvites"));
+
+                // Création de l'objet Espace et assignation au nouvel événement
+                Espace espace = new Espace();
+                espace.setIdEspace(rs.getInt("idEspace"));
+                espace.setName(rs.getString("name"));
+                event.setEspace(espace);
+
+                events.add(event);
+            }
+        }
+    }
+
+    return events;
+}
+
+
 
     private boolean isEspaceOccupied(java.util.Date date, int idEspace) throws SQLException {
         String sql = "SELECT COUNT(*) FROM event WHERE date = ? AND idEspace = ?";

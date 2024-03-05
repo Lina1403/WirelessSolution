@@ -25,7 +25,7 @@ public class ServiceUser implements IService<User> {
             return;
         }
 
-        String sql = "INSERT INTO users (id, nom, prenom, mail, password, number, num_urgence, date_of_arrival, horraire_service, service, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user (id, nom, prenom, mail, password, number, num_urgence, date_of_arrival, horraire_service, service, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
             pstmt.setInt(1, r.getId());
@@ -70,7 +70,7 @@ public class ServiceUser implements IService<User> {
             role = "User";
         }
 
-        String sql = "UPDATE users SET nom = ?, prenom = ?, mail = ?, password = ?,number=?, num_urgence = ?, date_of_arrival = ?,horraire_service=?,service=?, role = ? WHERE id = ?";
+        String sql = "UPDATE user SET nom = ?, prenom = ?, mail = ?, password = ?,number=?, num_urgence = ?, date_of_arrival = ?,horraire_service=?,service=?, role = ? WHERE id = ?";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
             pstmt.setString(1, r.getNom());
@@ -107,7 +107,7 @@ public class ServiceUser implements IService<User> {
 
     @Override
     public void supprimer(int id)throws SQLException {
-        String sql = "DELETE FROM users WHERE id = ?";
+        String sql = "DELETE FROM user WHERE id = ?";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
             pstmt.setInt(1, id);
@@ -127,7 +127,7 @@ public class ServiceUser implements IService<User> {
     @Override
     public User getOneById(int id) throws SQLException{
         User user = null;
-        String sql = "SELECT * FROM users WHERE id = ?";
+        String sql = "SELECT * FROM user WHERE id = ?";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
             pstmt.setInt(1, id);
@@ -160,7 +160,7 @@ public class ServiceUser implements IService<User> {
     @Override
     public Set<User> getAll() throws SQLException {
         Set<User> users = new HashSet<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM user";
 
         try (PreparedStatement pstmt = cnx.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {

@@ -42,18 +42,16 @@ public class Login {
     }
 
     public void loginbtnonaction(ActionEvent event) throws SQLException {
-
         if (emailfield.getText().isBlank() == false && passwordfield.getText().isBlank() == false) {
             validatelogin();
         } else {
-            loginmessagelabel.setText("fill all the spots");
+            loginmessagelabel.setText("Fill all the spots");
         }
-
     }
 
     public User getCurrentUserFromDatabase(String email) throws SQLException {
         Connection cnx = DataSource.getInstance().getCnx();
-        String query = "SELECT * FROM users WHERE mail=?";
+        String query = "SELECT * FROM user WHERE mail=?";
 
         try (PreparedStatement statement = cnx.prepareStatement(query)) {
             statement.setString(1, email);
@@ -77,22 +75,23 @@ public class Login {
 
     public void validatelogin() {
         Connection cnx = DataSource.getInstance().getCnx();
-        String verifyLogin = "SELECT count(1), role FROM users WHERE mail=? AND password=?";
+        String verifyLogin = "SELECT count(1), role FROM user WHERE mail=? AND password=?";
         try (PreparedStatement statement = cnx.prepareStatement(verifyLogin)) {
             statement.setString(1, emailfield.getText());
             statement.setString(2, passwordfield.getText());
             try (ResultSet queryResult = statement.executeQuery()) {
                 if (queryResult.next()) {
+
                     int count = queryResult.getInt(1);
                     if (count == 1) {
                         String roleString = queryResult.getString("role");
                         User.Role role = User.Role.valueOf(roleString.toUpperCase());
                         if (role == User.Role.RESIDENT) {
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterEvent.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AcceuilFront.fxml"));
                                 Parent root = loader.load();
 
-                                AjouterEvent controller = loader.getController();
+                                AcceuilFront controller = loader.getController();
                                 if (controller != null) {
                                     String currentUserEmail = emailfield.getText();
                                     User currentUser = getCurrentUserFromDatabase(currentUserEmail);

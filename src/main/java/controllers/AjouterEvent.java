@@ -7,6 +7,7 @@ import entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -212,7 +213,40 @@ public class AjouterEvent {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/EventAjoutes.fxml"));
             Parent root = loader.load();
-            Stage stage = new Stage();
+
+            // Récupérer le contrôleur AjouterEvent
+            EventAjoutes controller = loader.getController();
+            if (controller != null) {
+                controller.initData(currentUser);
+
+                // Afficher la scène
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
+
+                // Obtenir la scène actuelle à partir de l'événement
+
+                // Définir la nouvelle scène
+                stage.setScene(scene);
+                stage.show();
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    private void retournerVersAcceuil(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AcceuilFront.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
