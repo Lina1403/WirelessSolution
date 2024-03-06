@@ -10,23 +10,24 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.esprit.controllers.AfficherReclamation">
     <children>
-        <ImageView fitHeight="586.0" fitWidth="667.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@ListeVoiture.png" />
-            </image>
+        <ImageView fitHeight="750.0" fitWidth="1051.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Capture.PNG" />
+         </image>
         </ImageView>
-        <Label layoutX="185.0" layoutY="87.0" text="Category" />
-        <TextField fx:id="CategorieRecTF" layoutX="237.0" layoutY="83.0" prefHeight="25.0" prefWidth="150.0" />
-        <TextField fx:id="searchTextField" layoutX="476.0" layoutY="22.0" promptText="Search by description" />
+        <TextField fx:id="CategorieRecTF" layoutX="489.0" layoutY="233.0" prefHeight="25.0" prefWidth="150.0" />
+        <TextField fx:id="searchTextField" layoutX="728.0" layoutY="172.0" promptText="Search by description" />
 
-        <Label layoutX="396.0" layoutY="87.0" text="Description" />
-        <TextField fx:id="descriRecTF" layoutX="466.0" layoutY="83.0" prefHeight="25.0" prefWidth="150.0" />
-        <Button fx:id="ajouterButton" layoutX="209.0" layoutY="373.0" onAction="#ajouter" text="Ajouter" />
+        <Label layoutX="648.0" layoutY="237.0" text="Description" />
+        <TextField fx:id="descriRecTF" layoutX="718.0" layoutY="233.0" prefHeight="25.0" prefWidth="150.0" />
+        <Button fx:id="ajouterButton" layoutX="461.0" layoutY="523.0" onAction="#ajouter" text="Ajouter" />
 
-        <Button fx:id="modifierButton" layoutX="405.0" layoutY="373.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
-        <Button fx:id="supprimerButton" layoutX="478.0" layoutY="373.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
-        <Button fx:id="ajouterReponseButton" layoutX="282.0" layoutY="373.0" mnemonicParsing="false" onAction="#goToAjouterReponse" text="Ajouter Réponse" />
-        <Button fx:id="consulterReponseButton" layoutX="488.0" layoutY="404.0" mnemonicParsing="false" onAction="#consulterReponse" prefHeight="17.0" prefWidth="125.0" text="Consulter Réponses" />
-        <ListView fx:id="listViewRec" layoutX="237.0" layoutY="119.0" prefHeight="245.0" prefWidth="352.0" />
+        <Button fx:id="modifierButton" layoutX="657.0" layoutY="523.0" mnemonicParsing="false" onAction="#modifier" text="Modifier" />
+        <Button fx:id="supprimerButton" layoutX="730.0" layoutY="523.0" mnemonicParsing="false" onAction="#supprimer" text="Supprimer" />
+        <Button fx:id="ajouterReponseButton" opacity="0.0" layoutX="534.0" layoutY="523.0" mnemonicParsing="false" onAction="#goToAjouterReponse" text="Ajouter Réponse" />
+        <Button fx:id="consulterReponseButton" layoutX="740.0" layoutY="554.0" mnemonicParsing="false" onAction="#consulterReponse" prefHeight="17.0" prefWidth="125.0" text="Consulter Réponses" />
+        <Button fx:id="loginbtn" layoutX="830.0" layoutY="34.0" mnemonicParsing="false" onAction="#acceuil" opacity="0.0" prefHeight="54.0" prefWidth="191.0" text="login" />
+
+        <ListView fx:id="listViewRec" layoutX="489.0" layoutY="269.0" prefHeight="245.0" prefWidth="352.0" />
     </children>
 </AnchorPane>

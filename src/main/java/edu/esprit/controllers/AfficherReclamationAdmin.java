@@ -76,6 +76,20 @@ public class AfficherReclamationAdmin {
         }
     }
     @FXML
+    void goToStatistiquesReclamation(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/StatistiquesReclamation.fxml")); // Adjust the path to your StatistiquesReclamation FXML file
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Statistiques des Reclamations");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to open statistiques view:\n" + e.getMessage());
+        }
+    }
+    @FXML
     void consulterReponse(ActionEvent event) {
         Reclamation selectedReclamation = listViewRec.getSelectionModel().getSelectedItem();
         if (selectedReclamation != null) {

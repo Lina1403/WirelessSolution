@@ -9,5 +9,7 @@
         <ListView fx:id="listViewRec" layoutX="24.0" layoutY="50.0" prefHeight="300.0" prefWidth="552.0"/>
         <Button fx:id="ajouterReponseButton" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#goToAjouterReponse" text="Ajouter Réponse"/>
         <Button layoutX="132.0" layoutY="361.0" mnemonicParsing="false" onAction="#consulterReponse" text="Consulter Réponse"/>
+        <Button fx:id="consulterStatistiquesButton" text="Consulter Statistiques" onAction="#goToStatistiquesReclamation" />
+
     </children>
 </AnchorPane>

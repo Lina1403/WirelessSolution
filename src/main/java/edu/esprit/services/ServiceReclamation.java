@@ -4,11 +4,9 @@ import edu.esprit.utils.DataSource;
 import edu.esprit.entities.User;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
+
 
 public class ServiceReclamation implements IService<Reclamation> {
     private Connection cnx;
@@ -30,7 +28,7 @@ public class ServiceReclamation implements IService<Reclamation> {
             System.out.println("Reclamation or associated user is null. Cannot add to database.");
             return;
         }
-        String requete = "INSERT INTO reclamation (idU, descriRec, DateRec, CategorieRec, StatutRec) VALUES (?, ?, ?, ?, ?)";
+        String requete = "INSERT INTO reclamation (idU, descriRec, DateRec, CategorieRec, StatutRec, imageData) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(requete)) {
             pst.setInt(1, r.getUser().getId());
@@ -38,6 +36,8 @@ public class ServiceReclamation implements IService<Reclamation> {
             pst.setDate(3, new java.sql.Date(r.getDateRec().getTime()));
             pst.setString(4, r.getCategorieRec());
             pst.setString(5, r.getStatutRec());
+            pst.setBytes(6, r.getImageData());
+
             pst.executeUpdate();
             System.out.println("Reclamation ajoutée!");
         } catch (SQLException e) {
@@ -120,5 +120,17 @@ public class ServiceReclamation implements IService<Reclamation> {
             e.printStackTrace();
         }
         return reclamations;
+    }
+    public Map<Integer, Integer> countReclamationsPerUser() throws SQLException {
+        String sql = "SELECT IdU, COUNT(*) AS count FROM Reclamation GROUP BY IdU";
+        try (Connection cnx = DataSource.getInstance().getCnx();
+             PreparedStatement ps = cnx.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            Map<Integer, Integer> counts = new HashMap<>();
+            while (rs.next()) {
+                counts.put(rs.getInt("IdU"), rs.getInt("count"));
+            }
+            return counts;
+        }
     }
 }

@@ -15,6 +15,7 @@ public class Reclamation {
     private Date DateRec;
     private String CategorieRec;
     private String StatutRec;
+    private byte[] imageData;
 
     public Reclamation() {
     }
@@ -28,12 +29,13 @@ public class Reclamation {
         StatutRec = statutRec;
     }
 
-    public Reclamation(User user, String descriRec, Date dateRec, String categorieRec, String statutRec) {
+    public Reclamation(User user, String descriRec, Date dateRec, String categorieRec, String statutRec, byte[] imageData) {
         this.user = user;
         this.descriRec = descriRec;
         DateRec = dateRec;
         CategorieRec = categorieRec;
         StatutRec = statutRec;
+        this.imageData = imageData;
     }
 
     public Reclamation(int idRec, User user, String descriRec, Date dateRec, String categorieRec, String statutRec) {
@@ -44,7 +46,13 @@ public class Reclamation {
         CategorieRec = categorieRec;
         StatutRec = statutRec;
     }
+    public byte[] getImageData() {
+        return imageData;
+    }
 
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
     /* public Reclamation(User userAdd, String text, String text1, String text2) {
         }*/
     public String getNom_user() {
@@ -110,8 +118,7 @@ public class Reclamation {
     @Override
     public String toString() {
         return "Reclamation{" +
-                "idRec=" + idRec +
-                ", idU=" + user.getId() +
+
                 ", descriRec=" + descriRec +
                 ", DateRec=" + DateRec +
                 ", CategorieRec=" + CategorieRec +
