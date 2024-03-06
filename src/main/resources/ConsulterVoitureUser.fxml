@@ -21,7 +21,6 @@
         <TextField fx:id="textFieldModele" layoutX="221.0" layoutY="375.0" prefHeight="41.0" prefWidth="212.0" />
         <TextField fx:id="textFieldCouleur" layoutX="221.0" layoutY="442.0" prefHeight="41.0" prefWidth="212.0" />
         <TextField fx:id="textFieldMatricule" layoutX="221.0" layoutY="506.0" prefHeight="41.0" prefWidth="212.0" />
-
         <ListView fx:id="voituresListView" layoutX="526.0" layoutY="276.0" prefHeight="331.0" prefWidth="491.0" VBox.vgrow="ALWAYS" />
     <Button layoutX="144.0" layoutY="614.0" onAction="#modifierVoiture" prefHeight="41.0" prefWidth="154.0" text="Modifier" />
     <Button layoutX="344.0" layoutY="614.0" onAction="#supprimerVoiture" prefHeight="41.0" prefWidth="154.0" text="Supprimer" />

@@ -213,7 +213,7 @@ public class ConsulterVoitureUser {
     }
 
 
-    public void retournerVersAcceuil(javafx.event.ActionEvent actionEvent) {
+    /*public void retournerVersAcceuil(javafx.event.ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
             Parent root = loader.load();
@@ -229,6 +229,20 @@ public class ConsulterVoitureUser {
         }
     }
 
+     */
+    @FXML
+    private void retournerVersAcceuil(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVoiture.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void refreshList() {
@@ -243,6 +257,7 @@ public class ConsulterVoitureUser {
             throw new RuntimeException("Erreur lors du rafraîchissement de la liste des voitures", e);
         }
     }
+
 
 
 
