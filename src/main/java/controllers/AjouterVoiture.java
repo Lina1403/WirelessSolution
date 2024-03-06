@@ -6,6 +6,7 @@ import entities.User;
 import entities.Voiture;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -365,11 +366,15 @@ public class AjouterVoiture {
     }
 
     private void afficherMessageErreur(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Platform.runLater(() -> {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erreur");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+        });
+
     }
 
     private void afficherMessageSucces(String message) {
