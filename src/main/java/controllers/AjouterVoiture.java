@@ -46,6 +46,7 @@ import java.time.format.DateTimeFormatter;
 
 public class AjouterVoiture {
 
+
     @FXML
     private Label placesDispoLabel;
 
@@ -83,6 +84,11 @@ public class AjouterVoiture {
     private Timeline timeline;
 
     private User currentUser;
+    private Stage stage; // Gardez une référence à la fenêtre précédente
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
@@ -395,7 +401,7 @@ public class AjouterVoiture {
             afficherMessageErreur("La marque ne peut pas dépasser 20 caractères.");
             return false;
         }
-        if (!Pattern.matches("^[a-zA-Z]*$", marque)) {
+        if (!Pattern.matches("^[a-zA-Z ]*$", marque)) {
             afficherMessageErreur("La marque doit contenir uniquement des lettres.");
             return false;
         }
@@ -514,6 +520,7 @@ public class AjouterVoiture {
     @FXML
     private void handleConsulterButton(ActionEvent event) {
         try {
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsulterVoitureUser.fxml"));
             Parent root = loader.load();
 
@@ -521,8 +528,8 @@ public class AjouterVoiture {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
+            */
 
-          */
             // Utilisez la référence à l'objet event pour obtenir la source
             Node sourceNode = (Node) event.getSource();
 
@@ -532,6 +539,10 @@ public class AjouterVoiture {
             ConsulterVoitureUser controller = loader.getController();
             System.out.println(currentUser);
             controller.setCurrentUser(currentUser);
+
+
+
+
 
 
         } catch (IOException e) {

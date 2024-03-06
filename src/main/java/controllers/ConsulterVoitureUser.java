@@ -133,7 +133,7 @@ public class ConsulterVoitureUser {
         if (marque.isEmpty()) {
             afficherErreur("Erreur", "Veuillez saisir une marque pour la voiture.");
             return false;
-        } else if (!marque.matches("[a-zA-Z]{1,20}")) {
+        } else if (!marque.matches("[a-zA-Z ]{1,20}")) {
             afficherErreur("Erreur", "La marque doit contenir uniquement des lettres et avoir au maximum 20 caractères.");
             return false;
         }
@@ -144,7 +144,7 @@ public class ConsulterVoitureUser {
         if (modele.isEmpty()) {
             afficherErreur("Erreur", "Veuillez saisir un modèle pour la voiture.");
             return false;
-        } else if (!modele.matches("[a-zA-Z0-9]{1,20}")) {
+        } else if (!modele.matches("[a-zA-Z0-9 ]{1,20}")) {
             afficherErreur("Erreur", "Le modèle doit contenir des lettres et des chiffres et avoir au maximum 20 caractères.");
             return false;
         }
@@ -193,13 +193,23 @@ public class ConsulterVoitureUser {
                     try {
                         serviceVoiture.supprimer(voiture.getIdVoiture());
                         refreshList();
-                        // Fermer la fenêtre de détails de voiture
+                        // Réinitialiser les champs après la suppression
+                        resetFields();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
             });
         }
+    }
+    private void resetFields() {
+        // Réinitialiser les champs en les vidant
+        // Par exemple :
+        textFieldMarque.clear();
+        textFieldModele.clear();
+        textFieldCouleur.clear();
+        textFieldMatricule.clear();
+        // Assurez-vous de réinitialiser tous les autres champs si nécessaire
     }
 
 
@@ -211,9 +221,16 @@ public class ConsulterVoitureUser {
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
+            ConsulterVoitureUser controller = loader.getController();
+            System.out.println(currentUser);
+            controller.setCurrentUser(currentUser);
         } catch (IOException e) {
             e.printStackTrace();
-        } }
+        }
+    }
+
+
+
     private void refreshList() {
         try {
             if (currentUser != null) {
