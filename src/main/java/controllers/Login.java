@@ -7,17 +7,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import utils.Datasource;
-import javafx.scene.input.MouseEvent;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 
 public class Login {
-
+    public TextField captchaInput;
+    public Label captchaLabel;
     @FXML
     private Button cancelbtn;
 
@@ -37,6 +40,23 @@ public class Login {
     @FXML
     private Label ShownPassword;
     private String captchaChallenge;
+    @FXML
+    public void initialize() {
+        captchaChallenge = generateCaptcha();
+        captchaLabel.setText(captchaChallenge);
+    }
+
+    // Method to generate a simple CAPTCHA challenge
+    private String generateCaptcha() {
+        int length = 6; // Length of the CAPTCHA challenge
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder captcha = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            captcha.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return captcha.toString();
+    }
     public void cancelbtnonaction(ActionEvent event)
     {
         Stage stage =(Stage) cancelbtn.getScene().getWindow();
@@ -69,7 +89,10 @@ public class Login {
             // Check if a user exists with the provided credentials
             if (queryResult.next()) {
                 String role = queryResult.getString("role"); // Get the user's role from the result set
-            try{
+                String userInput = captchaInput.getText().trim();
+                if (userInput.equals(captchaChallenge)) {
+
+                    try{
                 if (role.equals("ADMIN")) {
                     Parent page1 = FXMLLoader.load(getClass().getResource("/add.fxml"));
                     Scene scene = new Scene(page1);
@@ -100,6 +123,9 @@ public class Login {
             }catch (IOException e) {  // Catch FXML loading exceptions
                 System.out.println("Error loading FXML: " + e.getMessage());
             }
+                } else {
+                    showAlert("Login Failed", "Invalid CAPTCHA. Please try again.");
+                }
             } else {  // User not found
                 System.out.println("Invalid credentials.");  // Display error message
                 // ... handle incorrect credentials (e.g., display error message to user)
@@ -157,4 +183,5 @@ public class Login {
     void opt(MouseEvent event) {
 
     }
+
 }

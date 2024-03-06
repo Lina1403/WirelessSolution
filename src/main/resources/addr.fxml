@@ -52,6 +52,7 @@
         </ChoiceBox>
         <HBox alignment="center" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" />
         <Button layoutX="531.0" layoutY="541.0" onAction="#handleAddUserButtonClick" text="REGISTER" />
+        <Button fx:id="loginbtn" layoutX="831.0" layoutY="30.0" mnemonicParsing="false" onAction="#backtolog" opacity="0.0" prefHeight="54.0" prefWidth="191.0" text="login" />
 
     </children>
 </AnchorPane>

@@ -205,4 +205,23 @@ public class showcaseUser {
         // Show the Stage
         stage.show();
     }
+    @FXML
+    private void yarjaaliladd(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/add.fxml"));
+
+        // Create a Scene with the root node
+        Scene scene = new Scene(root);
+
+        // Create a new Stage
+        Stage stage = new Stage();
+
+        // Set the Scene to the Stage
+        stage.setScene(scene);
+
+        // Set the title of the Stage
+        stage.setTitle("FXML Example");
+
+        // Show the Stage
+        stage.show();
+    }
 }
