@@ -6,6 +6,7 @@ import entities.Resident;
 import utils.Datasource;
 import entities.Role;
 
+import java.security.MessageDigest;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class ServiceUser implements IService<User> {
             System.out.println(e.getMessage());
         }
     }
+
 
     @Override
     public  void modifier(User r)throws SQLException {

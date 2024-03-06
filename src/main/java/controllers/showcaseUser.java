@@ -1,22 +1,23 @@
 package controllers;
 
 import entities.User;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import service.ServiceUser;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.stage.Stage;
+import service.ServiceUser;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class showcaseUser {
     private final ServiceUser su = new ServiceUser();
@@ -33,8 +34,9 @@ public class showcaseUser {
     private Button boutonGererEspace;
     @FXML
     private TextField txtRechercheNom;
-    private ObservableList<User> eventsObservableList;
-
+    private ObservableList<User> eventsObservableList= FXCollections.observableArrayList();;
+    private ObservableList<User> allUsers; // Store full list of users
+    private ObservableList<User> filteredUsers;
 
 /*
     public showcaseUser() throws SQLException {
@@ -110,6 +112,23 @@ public class showcaseUser {
             }
         });
         attachContextMenuToListView(listeUsers);
+        allUsers = FXCollections.observableArrayList(su.getAll()); // Fetch all users
+        filteredUsers = allUsers; // Initially, show all users
+        listeUsers.setItems(filteredUsers);
+        txtRechercheNom.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercherParNom(newValue.trim());
+        });
+    }
+    void rechercherParNom(String nomRecherche) {
+        if (!nomRecherche.isEmpty()) {
+            filteredUsers = allUsers;
+        } else {
+            filteredUsers = allUsers.stream() // Use stream for efficient filtering
+                    .filter(user -> user.getNom().toLowerCase().contains(nomRecherche.toLowerCase()))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList)); // Collect filtered users into a new list
+        }
+        listeUsers.setItems(filteredUsers); // Update the list view with search results
+
     }
 
     public void showcaseUser(ListView<User> listView) {

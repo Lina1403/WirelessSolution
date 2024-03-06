@@ -58,7 +58,7 @@
 
         <HBox alignment="center" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-          <Button layoutX="35.0" layoutY="184.0" mnemonicParsing="false" onAction="#handleShowcaseUserButtonClick" opacity="0.0" prefHeight="33.0" prefWidth="260.0" text="Show Users" />
+          <Button layoutX="9.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleShowcaseUserButtonClick" opacity="0.0" prefHeight="53.0" prefWidth="345.0" text="Show Users" />
           <Button layoutX="622.0" layoutY="540.0" onAction="#handleAddUserButtonClick" text="Add User" />
 
     </children>

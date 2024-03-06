@@ -25,7 +25,7 @@
         <TextField fx:id="txtRechercheNom" layoutX="701.0" layoutY="175.0" prefHeight="26.0" prefWidth="147.0" promptText="Rechercher par nom" />
         <Button layoutX="852.0" layoutY="176.0" prefHeight="26.0" prefWidth="80.0" text="Rechercher" />
         <Button layoutX="526.0" layoutY="176.0" prefHeight="26.0" prefWidth="115.0" text="Trier par role" />
-        <Button layoutX="35.0" layoutY="184.0" mnemonicParsing="false" onAction="#yarjaaliladd" opacity="0.0" prefHeight="33.0" prefWidth="260.0" text="Show Users" />
+        <Button layoutX="20.0" layoutY="477.0" mnemonicParsing="false" onAction="#yarjaaliladd" opacity="0.0" prefHeight="66.0" prefWidth="341.0" text="Show Users" />
 
     </children>
 </AnchorPane>

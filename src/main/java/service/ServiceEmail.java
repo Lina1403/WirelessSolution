@@ -8,7 +8,7 @@ import java.util.Properties;
 public class ServiceEmail {
     public static void sendEmail(String userEmail,String header, String bodyP) {
         // Sender's email details
-        String senderEmail = "koussay.rahmouni@esprit.tn";
+        String senderEmail = "oumaimaamdouni69@gmail.com";
         String senderPassword = "nxsa gtgl noya nwiw\n";
 
         // SMTP server details
