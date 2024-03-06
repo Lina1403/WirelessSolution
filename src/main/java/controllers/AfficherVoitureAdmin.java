@@ -187,6 +187,8 @@ public class AfficherVoitureAdmin {
         // Supposons que textFieldMarque, textFieldModele, etc., sont les champs que vous souhaitez vider
         textFieldMarque.setText("");
         textFieldModele.setText("");
+        textFieldCouleur.setText("");
+        textFieldMatricule.setText("");
         // Répétez pour les autres champs
     }
 
