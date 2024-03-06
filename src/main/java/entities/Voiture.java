@@ -103,12 +103,12 @@ public class Voiture {
 
     @Override
     public String toString() {
-        return "Voiture : " +
-                "marque : " + marque + '\n' +
-                " model : " + model + '\n' +
-                " couleur : " + couleur + '\n' +
-                " matricule : " + matricule + '\n' +
-                " parking : " + parking
+        return "Voiture : " +'\n' +
+                "MARQUE : " + marque + '\n' +
+                " MODEL : " + model + '\n' +
+                " COULEUR : " + couleur + '\n' +
+                " MATRICULE : " + matricule + '\n' +
+                " PLACE : " + parking.getNom()
                 ;
     }
 

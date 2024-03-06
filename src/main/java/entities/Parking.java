@@ -72,7 +72,10 @@ public class Parking {
     @Override
     public String toString() {
         return
-                nom
+                "NOM :" + nom +'\n' +
+                "CAPACITE :" + capacite +'\n' +
+                "TYPE DE PARKING :" + type +'\n' +
+                "NOMBRE ACTUELLES DE VOITURE :" + nombreActuelles +'\n'
                 ;
     }
 

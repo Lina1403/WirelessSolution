@@ -22,6 +22,8 @@ import java.util.List;
 // import java.util.Comparator;
 
 public class AfficherParking {
+
+
     @FXML
     private TextField textFieldNom;
 
@@ -62,7 +64,6 @@ public class AfficherParking {
 
     @FXML
     public void initialize() {
-
         try {
             // Initialisation de la liste des parkings...
             parkingsObservableList.addAll(serviceParking.getAll());
@@ -222,6 +223,8 @@ public class AfficherParking {
             try {
                 serviceParking.supprimer(parking.getIdParking());
                 afficherParking.refreshList();
+                // Réinitialiser les champs
+                clearFields();
                 /*Stage stage = (Stage) textFieldNom.getScene().getWindow();
                 stage.close();
 
@@ -232,7 +235,13 @@ public class AfficherParking {
             }
         }
     }
-
+    private void clearFields() {
+        // Vider les champs
+        textFieldNom.setText("");
+        textFieldCapacite.setText("");
+        comboBoxType.getSelectionModel().clearSelection();
+        textFieldNombreActuelles.setText("");
+    }
 
     private void chargerTypes() {
         // Vous pouvez obtenir les types à partir de votre source de données, ici je les ai définis manuellement

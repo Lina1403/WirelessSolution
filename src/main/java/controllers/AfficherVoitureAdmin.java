@@ -172,6 +172,8 @@ public class AfficherVoitureAdmin {
                     try {
                         serviceVoiture.supprimer(voiture.getIdVoiture());
                         refreshList();
+                        // Réinitialiser les champs
+                        clearFields();
                         // Fermer la fenêtre de détails de voiture
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -179,6 +181,13 @@ public class AfficherVoitureAdmin {
                 }
             });
         }
+    }
+    private void clearFields() {
+        // Vider les champs
+        // Supposons que textFieldMarque, textFieldModele, etc., sont les champs que vous souhaitez vider
+        textFieldMarque.setText("");
+        textFieldModele.setText("");
+        // Répétez pour les autres champs
     }
 
     public AfficherVoitureAdmin() {
