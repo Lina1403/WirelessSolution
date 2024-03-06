@@ -13,7 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import utils.Datasource;
-
+import controllers.Login;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -48,9 +48,8 @@ public class ModifyUser {
         ftnumber.setText(String.valueOf(user.getNumber()));
     }
     @FXML
-    void modifier(ActionEvent event) throws IOException {
+    void modifier(ActionEvent event) throws IOException, SQLException {
 
-        Connection cnx = Datasource.getInstance().getCnx();  // Get connection
         String nom = ftnom.getText();
         String prenom = ftprenom.getText();
         String mot_de_passe = ftmot_de_passe.getText();
@@ -76,7 +75,10 @@ public class ModifyUser {
         }
 
         // Créer un objet Utilisateurs avec les nouvelles informations
-        User utilisateurs = new User(nom, prenom,number, mot_de_passe, email);
+
+
+         User  utilisateurs = new Login().getCurrentUserFromDatabase(email);
+            System.out.println(utilisateurs);
 
 
         // Mettre à jour l'utilisateur dans la base de données

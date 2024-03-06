@@ -1,5 +1,7 @@
 package controllers;
 
+import entities.Role;
+import entities.User;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,6 +42,7 @@ public class Login {
     @FXML
     private Label ShownPassword;
     private String captchaChallenge;
+    private static User CurrentUser ;
     @FXML
     public void initialize() {
         captchaChallenge = generateCaptcha();
@@ -56,6 +59,29 @@ public class Login {
             captcha.append(chars.charAt(random.nextInt(chars.length())));
         }
         return captcha.toString();
+    }
+    public User getCurrentUserFromDatabase(String email) throws SQLException {
+        Connection cnx = Datasource.getInstance().getCnx();
+        String query = "SELECT * FROM user WHERE mail=?";
+
+        try (PreparedStatement statement = cnx.prepareStatement(query)) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("nom");
+                    // Vous pouvez récupérer d'autres informations de l'utilisateur à partir de la base de données
+                    // selon votre modèle de données
+
+                    // Créer un objet User avec les informations récupérées
+                    User currentUser = new User(); // Supposons que votre User a un constructeur avec ces champs
+
+                    return currentUser;
+                }
+            }
+        }
+
+        return null; // Si aucun utilisateur n'est trouvé avec l'email spécifié
     }
     public void cancelbtnonaction(ActionEvent event)
     {

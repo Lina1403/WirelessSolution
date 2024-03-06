@@ -44,16 +44,18 @@ public class ServiceUser implements IService<User> {
 
 
     @Override
-    public  void modifier(User r)throws SQLException {
+    public void modifier(User r) throws SQLException {
+        if (r == null) {
+            throw new NullPointerException("L'utilisateur ne peut pas être nul");
+        }
         try {
-            String requete = "UPDATE user SET nom=?, prenom=?,number=?,mail=?, password=?  WHERE id=?";
+            String requete = "UPDATE user SET nom=?, prenom=?, number=?, mail=?, password=? WHERE id=?";
             PreparedStatement pst = cnx.prepareStatement(requete);
             pst.setString(1, r.getNom());
             pst.setString(2, r.getPrenom());
-            pst.setInt(3,r.getNumber());
+            pst.setInt(3, r.getNumber());
             pst.setString(4, r.getMail());
             pst.setString(5, r.getPassword());
-
             pst.setInt(6, r.getId());  // Utilisation de l'ID pour identifier l'utilisateur à mettre à jour
             pst.executeUpdate();
             System.out.println("Mise à jour avec succès");
