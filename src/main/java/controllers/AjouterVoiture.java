@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -515,17 +516,24 @@ public class AjouterVoiture {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ConsulterVoitureUser.fxml"));
             Parent root = loader.load();
+
+            /*   Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+          */
+            // Utilisez la référence à l'objet event pour obtenir la source
+            Node sourceNode = (Node) event.getSource();
+
+            Stage stage = (Stage) sourceNode.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
             ConsulterVoitureUser controller = loader.getController();
             System.out.println(currentUser);
             controller.setCurrentUser(currentUser);
 
-            // Ici, assurez-vous d'avoir une instance de currentUser
 
-            Scene scene = new Scene(root);
-
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

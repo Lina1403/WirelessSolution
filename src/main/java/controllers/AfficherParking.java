@@ -87,10 +87,12 @@ public class AfficherParking {
 
             // Ajout d'un écouteur d'événements pour détecter les modifications dans le champ de recherche
             searchField.textProperty().addListener((observable, oldValue, newValue) -> rechercher());
-            // Initialiser le nombre actuel de voitures à 0 pour chaque parking
+          /*  // Initialiser le nombre actuel de voitures à 0 pour chaque parking
             for (Parking parking : parkingsObservableList) {
                 parking.setNombreActuelles(0);
             }
+
+           */
           /*  // Tri des parkings par capacité
             parkingsObservableList.sort(Comparator.comparingInt(Parking::getCapacite));
 
