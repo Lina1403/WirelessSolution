@@ -36,5 +36,7 @@
                 </FXCollections>
             </items>
         </ComboBox>
+        <Button layoutX="839.0" layoutY="35.0" onAction="#retournerPagePrecedente" opacity="0.0" prefHeight="54.0" prefWidth="178.0" text="EXIT" />
+
     </children>
 </AnchorPane>

@@ -82,5 +82,7 @@
             </TableColumn>
         </columns>
     </TableView>
+    <Button layoutX="835.0" layoutY="47.0" onAction="#retournerPagePrecedente" opacity="0.0" prefHeight="54.0" prefWidth="178.0" text="EXIT" />
+
 
 </AnchorPane>

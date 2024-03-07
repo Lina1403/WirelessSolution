@@ -114,15 +114,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", number=" + number +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
+        return "Nom : '" + nom + "',\n" +
+                "Prénom : '" + prenom + "',\n" +
+                "Numéro : '" + number + "',\n" +
+                "Mail : '" + mail + "',\n" +
+                "Mot de passe : '" + password + "',\n" +
+                "Rôle : '" + role + "',\n";
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -558,6 +558,17 @@ public class AjouterVoiture {
             e.printStackTrace();
         }
     }
+    @FXML
+    void retournerPagePrecedente(ActionEvent actionEvent) {
+        // Récupérer la source de l'événement
+        Node source = (Node) actionEvent.getSource();
+        // Récupérer la scène de la source
+        Scene scene = source.getScene();
+        // Récupérer la fenêtre parente de la scène
+        Stage stage = (Stage) scene.getWindow();
+        // Fermer la fenêtre parente pour revenir à la page précédente
+        stage.close();
+    }
 
 
 
