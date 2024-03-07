@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ce1865b4-89b0-4059-94fe-1a415f985d14" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/forgetpassword.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/photo.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/photo.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjoutDiscussion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjoutDiscussion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ListeDiscussion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ListeDiscussion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/MessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/MessageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierTitre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierTitre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Discussion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Discussion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/DiscussionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/DiscussionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/IService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/IService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tests/MainFx.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tests/MainFx.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/DataSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/MessageCell.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/MessageCell.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AjouterDiscussion.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AjouterDiscussion.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ListeDiscussion.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ListeDiscussion.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/Message.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/Message.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ModifierTitre.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ModifierTitre.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/_5af52a7a-515e-46d7-9107-985015e972a6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/style.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2dI6Xk6drWqYo43wkBagIf87w87" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;GestionMessagerie&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/LENOVO/projectpi/Integration&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ce1865b4-89b0-4059-94fe-1a415f985d14" name="Changes" comment="" />
+      <created>1709683287337</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709683287337</updated>
+      <workItem from="1709683288352" duration="3377000" />
+      <workItem from="1709718420466" duration="14927000" />
+      <workItem from="1709755552735" duration="16311000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
